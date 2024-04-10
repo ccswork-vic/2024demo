@@ -1,0 +1,110 @@
+<html>
+<head>
+</head>
+<body>
+<!-- Connect or Disconnect WebSocket Server -->
+<button id="connect">Connect</button>
+<br>
+<br>
+<div>
+    Account: <input type="text" id="account" value="sptest1128">
+    <br>
+    Password: <input type="text" id="passwd" value="1111">
+    <br>
+    <button id="login">login</button>
+</div>
+<br>
+<div>
+    GameID:
+    <select name="gameId" id="gameId">
+        <option value="25">變臉2</option>
+    </select>
+    <br>
+    <button id="startGame">StartGame</button>
+</div>
+<br>
+<div>
+    Bet:
+    <select name="bet" id="bet">
+        <option value="300">300</option>
+    </select>
+    <br>
+    Round: <input type="text" id="round" value="10">
+    <br>
+    <button id="spin">Spin</button>
+</div>
+<br>
+<button id="disconnect">Disconnect</button>
+
+
+<div>
+<textarea id='log' rows=25 cols=70 autofocus>
+</textarea>
+</div>
+
+<script>
+    var ws;
+
+    // 監聽 click 事件
+    document.querySelector('#connect')?.addEventListener('click', connect)
+    document.querySelector('#disconnect')?.addEventListener('click', disconnect)
+    document.querySelector('#login')?.addEventListener('click', login)
+    document.querySelector('#startGame')?.addEventListener('click', startGame)
+    document.querySelector('#spin')?.addEventListener('click', spin)
+
+    function connect() {
+        ws = new WebSocket('ws://localhost:8080')
+        ws.onopen = () => console.log('[open connection]')
+        ws.onmessage = ((msg) => onMessage(msg.data))
+    }
+
+    function disconnect() {
+        ws.close()
+        ws.onclose = () => console.log('[close connection]')
+    }
+
+    function login() {
+        const account = document.querySelector('#account')?.value
+        const passwd = document.querySelector('#passwd')?.value
+        console.log(account, passwd)
+        const params = {
+            type: "Login",
+            data: {"userId": account, "password": passwd}
+        }
+        ws.send(JSON.stringify(params))
+    }
+
+    function startGame() {
+        const gameId = document.querySelector('#gameId')?.value
+        const params = {
+            type: "StartGame",
+            data: {
+                "gameId": gameId,
+            }
+        }
+        ws.send(JSON.stringify(params))
+    }
+
+    function spin() {
+        const bet = document.querySelector('#bet')?.value
+        const round = document.querySelector('#round')?.value
+
+        const params = {
+            type: "Spin",
+            data: {
+                "bet": bet,
+                "round": round
+            }
+        }
+        ws.send(JSON.stringify(params))
+    }
+
+    function onMessage(msg) {
+        console.log(msg)
+        const textarea = document.getElementById('log');
+        textarea.value += msg + '\n';
+        textarea.scrollTop = textarea.scrollHeight
+    }
+</script>
+</body>
+</html>
