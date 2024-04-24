@@ -65,7 +65,7 @@ var SeleniumMaInstance = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.driver.get('https://test-report.zestplay.co/')];
+                    case 0: return [4 /*yield*/, this.driver.get('https://test-agent.zestplay.co/')];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];

@@ -53,6 +53,7 @@ var Main = /** @class */ (function () {
         // this.expressServer.startListen();
         this.seleniumWorker.login();
         this.seleniumWorker.verifyName();
+        //this.seleniumWorker.quit()
     }
     Main.prototype.onClientMessage = function (msg) {
         return __awaiter(this, void 0, void 0, function () {

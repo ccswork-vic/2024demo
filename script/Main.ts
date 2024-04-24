@@ -24,6 +24,7 @@ class Main {
         // this.expressServer.startListen();
         this.seleniumWorker.login()
         this.seleniumWorker.verifyName()
+        //this.seleniumWorker.quit()
 
     }
 

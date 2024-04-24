@@ -25,7 +25,7 @@ export class SeleniumMaInstance {
     }
 
     public async getJdb() {
-        await this.driver.get('https://test-report.zestplay.co/')
+        await this.driver.get('https://test-agent.zestplay.co/')
     }
 
     public async login() {
