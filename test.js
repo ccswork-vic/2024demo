@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
-
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 (async () => {
     const browser = await puppeteer.launch({
         headless: false ,
@@ -17,8 +19,8 @@ const puppeteer = require('puppeteer');
     await page.type('#password', 'aaaa1234');
     await page.click("#root > div > div > div > div > form > div > div:nth-child(4) > button")
     await page.waitForSelector('#root > div > div > div > div > main > div.ant-row.ant-row-center.css-1qfezbu > div:nth-child(1) > div > div > div > h2.text-3xl.my-0',{ timeout: 60000 })
-
-    await page.screenshot({path: 'agent8.png'});
-    //await browser.close();
+    await delay(5000)
+    await page.screenshot({path: 'agent9.png'});
+    await browser.close();
 })();
 
