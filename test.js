@@ -5,14 +5,18 @@ function delay(ms) {
 (async () => {
     const browser = await puppeteer.launch({
         headless: false ,
-        args: ['--enable-cache'] // 禁用緩存
-        //args: ['--start-fullscreen']
+        //args: ['--enable-cache'] , // 禁用緩存
+        //args: ['--start-fullscreen'], //全螢幕
+        //args:['--window-size=1920,1080'],//設定螢幕解析度
+        defaultViewport :null //關掉預設小窗口
     });
 
     const page = await browser.newPage();
    // await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
 
-    await page.goto('https://test-agent.zestplay.co/login',{timeout:60000});
+    await page.goto('https://test-agent.zestplay.co/login',{waitUntil:"domcontentloaded"});
+
+    //await page.goto('https://test-agent.zestplay.co/login',{timeout:60000});
     //await page.click('#nav > div > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > a > span')
     await page.waitForSelector('#root > div > div > div > div > form > div > div:nth-child(4) > button', { timeout: 60000 })
     await page.type('#account', 'admin');
