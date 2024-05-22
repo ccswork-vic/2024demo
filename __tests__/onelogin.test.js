@@ -43,7 +43,15 @@ describe('檢查左側目錄', () => {
   });
   test('檢查admin 左邊選單存在統計報表', async () => {
     const reportText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(4) > div > span', element => element.textContent.trim());
-    assert.equal(reportText, '統計報表', 'report Textelement text is incorrect');
+    assert.equal(reportText, '統計報表', 'report Text element text is incorrect');
+  });
+  test('檢查admin 左邊選單存在快速搜尋', async () => {
+    const searchText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(5) > div > span', element => element.textContent.trim());
+    assert.equal(searchText, '快速搜尋', 'search Text element text is incorrect');
+  });
+  test('檢查admin 左邊選單存在帳目查詢', async () => {
+    const StatementText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(6) > div > span', element => element.textContent.trim());
+    assert.equal(StatementText, '帳目查詢', 'Statement Text element text is incorrect');
   });
 });
 describe('檢查上方目錄', () => {
