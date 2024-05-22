@@ -1,3 +1,4 @@
+// 指定跑哪一個檔案 npx jest __tests__/xxxxxx.test.js
 const puppeteer = require('puppeteer');
 const assert = require('assert');
 
@@ -28,6 +29,7 @@ afterAll(async () => {
 
 describe('Login Test', () => {
   test('檢查admin 左邊選單存在管理員設定', async () => {
+    await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(1) > div', { timeout: 60000 });
     const adminSettingText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(1) > div', element => element.textContent.trim());
     assert.equal(adminSettingText, '管理員設定', 'Admin setting element text is incorrect');
   });
@@ -36,4 +38,14 @@ describe('Login Test', () => {
     const memberManagementText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(2) > div > span', element => element.textContent.trim());
     assert.equal(memberManagementText, '會員管理', 'Member management element text is incorrect');
   });
+  test('檢查admin 左邊選單存在在線玩家', async () => {
+    const onlineplayerText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li.ant-menu-item > span > a', element => element.textContent.trim());
+    assert.equal(onlineplayerText, '在線玩家', 'online player element text is incorrect');
+  });
+  test('檢查admin 左邊選單存在統計報表', async () => {
+    const reportText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(4) > div > span', element => element.textContent.trim());
+    assert.equal(reportText, '統計報表', 'report Textelement text is incorrect');
+  });
 });
+
+
