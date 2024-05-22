@@ -1,4 +1,5 @@
-// login.test.js
+// 指定跑哪一個檔案 npx jest __tests__/checkwinloss.test.js
+
 
 const puppeteer = require('puppeteer');
 const assert = require('assert');
@@ -22,37 +23,38 @@ describe('Login Test', () => {
     await browser.close();
   });
 
-  test('Admin login should be successful', async () => {
+  test('檢查admin 左邊選單存在管理員設定', async () => {
     await page.type('#account', 'admin');
     await page.type('#password', 'aaaa1234');
     await page.click("#root > div > div > div > div > form > div > div:nth-child(4) > button");
     await page.waitForSelector('#root > div > div > header > div._icon_iyfbn_38.ml-auto.flex.items-center.justify-center > div.ml-4.cursor-pointer.font-bold > button > span.ml-1', { timeout: 60000 });
     const accountName = await page.$eval('#root > div > div > header > div._icon_iyfbn_38.ml-auto.flex.items-center.justify-center > div.ml-4.cursor-pointer.font-bold > button > span.ml-1', element => element.textContent.trim());
     assert.equal(accountName.toLowerCase(), 'admin', 'Login failed for admin');
+    await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(1) > div', { timeout: 60000 });
+    const adminSettingText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(1) > div', element => element.textContent.trim());
+    assert.equal(adminSettingText, '管理員設定', 'Admin setting element text is incorrect');
+
     // 點擊登出按鈕
     await page.click("#root > div > div > header > div._icon_iyfbn_38.ml-auto.flex.items-center.justify-center > span > i");
     // 等待帳號輸入框再次可見
     await page.waitForSelector('#account');
   });
-
-  test('Vicma login should fail', async () => {
-    await page.reload(); // 重新加载页面以重置状态
-    await page.type('#account', 'vicma');
-    await page.type('#password', 'incorrect_password');
-    await page.click("#root > div > div > div > div > form > div > div:nth-child(4) > button");
-    await page.waitForSelector('div > div > div > div > span:nth-child(2)', { timeout: 60000 });
-    const loginFailed = await page.$eval('div > div > div > div > span:nth-child(2)', element => element.textContent.trim());
-    assert.equal(loginFailed, '密碼錯誤，請檢查密碼是否正確', 'Login should fail for vicma');
-    // 等待帳號輸入框再次可見
-    await page.waitForSelector('#account'); 
-  });
-  test('Vicag login should succeed', async () => {
-    await page.reload(); // 重新加载页面以重置状态
-    await page.type('#account', 'vicag');
+  test('檢查admin 左邊選單存在會員管理', async () => {
+    
+    await page.type('#account', 'admin');
     await page.type('#password', 'aaaa1234');
     await page.click("#root > div > div > div > div > form > div > div:nth-child(4) > button");
     await page.waitForSelector('#root > div > div > header > div._icon_iyfbn_38.ml-auto.flex.items-center.justify-center > div.ml-4.cursor-pointer.font-bold > button > span.ml-1', { timeout: 60000 });
     const accountName = await page.$eval('#root > div > div > header > div._icon_iyfbn_38.ml-auto.flex.items-center.justify-center > div.ml-4.cursor-pointer.font-bold > button > span.ml-1', element => element.textContent.trim());
-    expect(accountName.toLowerCase()).toBe('vicag');
+    assert.equal(accountName.toLowerCase(), 'admin', 'Login failed for admin');
+    await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li.ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-open > div', { timeout: 60000 });
+    const memberManagementText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li.ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-open > div', element => element.textContent.trim());
+    assert.equal(memberManagementText, '會員管理', 'Member management element text is incorrect');
+    }, 20000); // 10秒超时
+  
+    // // 點擊登出按鈕
+    // await page.click("#root > div > div > header > div._icon_iyfbn_38.ml-auto.flex.items-center.justify-center > span > i");
+    // // 等待帳號輸入框再次可見
+    // await page.waitForSelector('#account');
   });
-});
+
