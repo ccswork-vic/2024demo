@@ -81,24 +81,24 @@ describe('檢查上方目錄', () => {
 describe('檢查畫面中間區塊', () => {
   test('檢查admin中間區塊-壓碼量', async () => {
     await page.waitForSelector('#root > div > div > div > div > main > div.ant-row.ant-row-center.css-1r287do > div:nth-child(1) > div > div > div > h2.text-xl.mt-0', { timeout: 60000 });
-    const TurnoverText = await page.$eval('#root > div > div > div > div > main > div.ant-row.ant-row-center.css-1r287do > div:nth-child(1) > div > div > div > h2.text-xl.mt-0', element => element.textContent.trim());
-    assert.equal(TurnoverText, '壓碼量', 'Turnover Text element text is incorrect');
+    const TurnoverTodayText = await page.$eval('#root > div > div > div > div > main > div.ant-row.ant-row-center.css-1r287do > div:nth-child(1) > div > div > div > h2.text-xl.mt-0', element => element.textContent.trim());
+    assert.equal(TurnoverTodayText, '壓碼量', 'TurnoverToday Text is incorrect');
   });
   test('檢查admin中間區塊-玩家淨輸贏', async () => {
-    const NetwinText = await page.$eval('#root > div > div > div > div > main > div.ant-row.ant-row-center.css-1r287do > div:nth-child(2) > div > div > div > h2.text-xl.mt-0', element => element.textContent.trim());
-    assert.equal(NetwinText, '會員管理', 'Member management element text is incorrect');
+    const PlayerNetwinTodayText = await page.$eval('#root > div > div > div > div > main > div.ant-row.ant-row-center.css-1r287do > div:nth-child(2) > div > div > div > h2.text-xl.mt-0', element => element.textContent.trim());
+    assert.equal(PlayerNetwinTodayText, '玩家淨輸贏', 'PlayerNetwinToday Text is incorrect');
   });
   test('檢查admin中間區塊-同時在線人數', async () => {
-    const onlineplayerText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li.ant-menu-item > span > a', element => element.textContent.trim());
-    assert.equal(onlineplayerText, '在線玩家', 'Netwin Text  element text is incorrect');
+    const ConcurrentusersText = await page.$eval('#root > div > div > div > div > main > div.ant-row.ant-row-center.css-1r287do > div:nth-child(3) > div > div > div > h2.text-xl.mt-0', element => element.textContent.trim());
+    assert.equal(ConcurrentusersText, '同時在線人數', 'Concurrentusers Text is incorrect');
   });
   test('檢查admin中間區塊-每小時累計壓碼量', async () => {
-    const reportText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(4) > div > span', element => element.textContent.trim());
-    assert.equal(reportText, '統計報表', 'report Textelement text is incorrect');
+    const TurnoverHourText = await page.$eval('#root > div > div > div > div > main > div.mt-6 > div.mb-6 > div > div > div > div > div > h2', element => element.textContent.trim());
+    assert.equal(TurnoverHourText, '每小時累計壓碼量', 'TurnoverHour Text is incorrect');
   });
   test('檢查admin中間區塊-每小時玩家輸贏狀況', async () => {
-    const reportText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(4) > div > span', element => element.textContent.trim());
-    assert.equal(reportText, '統計報表', 'report Textelement text is incorrect');
+    const PlayerNetwinHourText = await page.$eval('#root > div > div > div > div > main > div.mt-6 > div:nth-child(2) > div > div > div > div > h2', element => element.textContent.trim());
+    assert.equal(PlayerNetwinHourText, '每小時玩家輸贏狀況', 'PlayerNetwinHour Text is incorrect');
   });
 });
 
