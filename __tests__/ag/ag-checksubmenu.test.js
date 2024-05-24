@@ -174,15 +174,28 @@ describe('會員管理子目錄', () => {
             // assert.strictEqual(winLoseReportText, '輸贏報表aaa');
 
              // 檢查輸贏報表是否存在
-        const winLoseReportExists = await page.evaluate(() => {
-            const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
-            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-            const link = result.singleNodeValue;
-            return link ? true : false;
-        });
+        // const winLoseReportExists = await page.evaluate(() => {
+        //     const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
+        //     const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+        //     const link = result.singleNodeValue;
+        //     return link ? true : false;
+        // });
     
         // 斷言輸贏報表存在
-        expect(winLoseReportExists).toBeTruthy();
+        // expect(winLoseReportExists).toBeTruthy();
+
+            //直接點擊
+        const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 4000));
         });
-        
+       
 });
