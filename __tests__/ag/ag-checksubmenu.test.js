@@ -46,7 +46,9 @@ describe('會員管理測試', () => {
       });
   
       // 斷言會員清單存在
-      expect(memberListExists).toBeTruthy();
+      //expect(memberListExists).toBeTruthy();
+      //assert.ok(memberListExists, '會員清單不存在');
+      assert.equal(memberListExists, true, '會員清單不存在'); 
     });
   });
 // describe('會員管理測試', () => {
