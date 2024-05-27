@@ -46,7 +46,7 @@ afterAll(async () => {
                 throw new Error(`Element with XPath ${xpath} not found.`);
             }
         }, xpath);
-        await new Promise(resolve => setTimeout(resolve, 4000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
         });
         test('點擊玩家帳變紀錄', async () => {
           await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(3) > div', { timeout: 60000 });
@@ -55,7 +55,8 @@ afterAll(async () => {
           await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
           //直接點擊
       //const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
-      const xpath = "//ul[starts-with(@id, 'rc-menu-uuid-') and contains(@id, '-report-popup')]/li[4]/span/a";
+      const xpath = "//*[text()='投注與玩家']";
+      //$x('//*[text()="在線玩家" or text()="壓碼量" or text()="輸贏報表"]')
       await new Promise(resolve => setTimeout(resolve, 1000));
       await page.evaluate((xpath) => {
           const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -65,7 +66,7 @@ afterAll(async () => {
               throw new Error(`Element with XPath ${xpath} not found.`);
           }
       }, xpath);
-      await new Promise(resolve => setTimeout(resolve, 4000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       });
       
 });
@@ -87,9 +88,50 @@ describe('點帳目查詢子目錄', () => {
           throw new Error(`Element with XPath ${xpath} not found.`);
       }
   }, xpath);
-  await new Promise(resolve => setTimeout(resolve, 4000));
+  await new Promise(resolve => setTimeout(resolve, 1000));
   });
-});
 
+  describe('點快速搜尋子目錄', () => {
+    test('點擊依玩家ID查詢', async () => {
+      const xpathForsearch = "//*[text()='快速搜尋']";
+
+      // 等待元素出现
+      await page.waitForFunction((xpath) => {
+          const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+          return result.singleNodeValue !== null;
+      }, { timeout: 60000 }, xpathForsearch);
+
+      // 点击元素
+      await page.evaluate((xpath) => {
+          const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+          const element = result.singleNodeValue;
+          if (element) {
+              element.click();
+          } else {
+              throw new Error(`Element with XPath ${xpath} not found.`);
+          }
+      }, xpathForsearch);
+
+
+        //await page.waitForSelector('//*[@id="root"]/div/div/div/aside/div/div[2]/ul/li[4]/div', { timeout: 60000 });
+        //await page.click('//*[@id="root"]/div/div/div/aside/div/div[2]/ul/li[4]/div'); // 點統計報表
+        // 等待子菜单展開
+        await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
+        //直接點擊
+    //const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
+    const xpath = "//*[text()='依玩家ID查詢']";
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    await page.evaluate((xpath) => {
+        const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        if (element) {
+            element.click();
+        } else {
+            throw new Error(`Element with XPath ${xpath} not found.`);
+        }
+    }, xpath);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    })
+});
+});
 
 
