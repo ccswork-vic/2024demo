@@ -28,7 +28,7 @@ afterAll(async () => {
   await browser.close();
 });
 
-    describe('統計報表子目錄', () => {
+    describe('點統計報表子目錄', () => {
         test('點擊對帳報表', async () => {
             await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(3) > div', { timeout: 60000 });
             await page.click('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(3) > div'); // 點統計報表
@@ -69,7 +69,7 @@ afterAll(async () => {
       });
       
 });
-describe('帳目查詢', () => {
+describe('點帳目查詢子目錄', () => {
   test('點擊現金轉帳', async () => {
       await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(5) > div', { timeout: 60000 });
       await page.click('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(5) > div'); // 點統計報表
