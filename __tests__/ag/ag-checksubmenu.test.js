@@ -128,34 +128,6 @@ describe('會員管理子目錄', () => {
 //       });
 //     });
 //   });
-// describe('統計報表子目錄', () => {
-//     test('確認輸贏報表是否存在', async () => {
-//         const currentMenuIndex = 3;
-//         console.log("aa232342a");
-//         const menuSelector = `#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(${currentMenuIndex}) > div`;
-        
-//         await page.waitForSelector(menuSelector, { timeout: 60000 });
-//         await page.click(menuSelector); // 點統計報表
-//         // 等待子菜單展開
-//         await new Promise(resolve => setTimeout(resolve, 2000)); // 等待1秒鐘，確保子菜單展開
-//         // 檢查輸贏報表是否存在
-//         const winLoseReportExists = await page.evaluate(() => {
-//             console.log("aaaaa");
-//             const links = document.querySelectorAll(`[aria-controls*="report-popup"] a`);
-//             console.log(links);
-//             let winLoseReportFound = false;
-//             links.forEach(link => {
-//                 if (link.textContent.trim() === '輸贏報表') {
-//                     winLoseReportFound = true;
-//                 }
-//                 console.log(link.textContent.trim());
-//             });
-//             return winLoseReportFound;
-//         }, menuSelector);
-    
-//         // 斷言輸贏報表存在
-//         expect(winLoseReportExists).toBeTruthy();
-//     });
     describe('統計報表子目錄', () => {
         test('確認輸贏報表是否存在', async () => {
             await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(3) > div', { timeout: 60000 });
@@ -164,7 +136,8 @@ describe('會員管理子目錄', () => {
             await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
             // 檢查輸贏報表是否存在
             // const winLoseReportText = await page.evaluate(() => {
-            //     const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
+            //     //const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
+            //     const xpath = "//ul[starts-with(@id, 'rc-menu-uuid-') and contains(@id, '-report-popup')]/li[2]/span/a";
             //     const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
             //     const link = result.singleNodeValue;
             //     return link ? link.textContent.trim() : null;
@@ -173,29 +146,82 @@ describe('會員管理子目錄', () => {
             // // 斷言輸贏報表存在
             // assert.strictEqual(winLoseReportText, '輸贏報表aaa');
 
-             // 檢查輸贏報表是否存在
-        // const winLoseReportExists = await page.evaluate(() => {
-        //     const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
-        //     const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-        //     const link = result.singleNodeValue;
-        //     return link ? true : false;
-        // });
+             //檢查輸贏報表是否存在
+        const winLoseReportExists = await page.evaluate(() => {
+            //const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
+            const xpath = "//ul[starts-with(@id, 'rc-menu-uuid-') and contains(@id, '-report-popup')]/li[2]/span/a";
+            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+            const link = result.singleNodeValue;
+            return link ? true : false;
+        });
     
-        // 斷言輸贏報表存在
-        // expect(winLoseReportExists).toBeTruthy();
+        //斷言輸贏報表存在
+        expect(winLoseReportExists).toBeTruthy();
 
             //直接點擊
-        const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        //const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
+        // const xpath = "//ul[starts-with(@id, 'rc-menu-uuid-') and contains(@id, '-report-popup')]/li[2]/span/a";
+        // await new Promise(resolve => setTimeout(resolve, 1000));
+        // await page.evaluate((xpath) => {
+        //     const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        //     if (element) {
+        //         element.click();
+        //     } else {
+        //         throw new Error(`Element with XPath ${xpath} not found.`);
+        //     }
+        // }, xpath);
+        // await new Promise(resolve => setTimeout(resolve, 4000));
+        // });
+       
+});
+});
+describe('快速搜尋子目錄', () => {
+    test('確認玩家id查詢是否存在', async () => {
+        const xpathForSearch = '//*[@id="root"]/div/div/div/aside/div/div[2]/ul/li[4]/div';
+
+        // 等待元素出现
+        await page.waitForFunction((xpath) => {
+            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+            return result.singleNodeValue !== null;
+        }, { timeout: 60000 }, xpathForSearch);
+
+        // 点击元素
         await page.evaluate((xpath) => {
-            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+            const element = result.singleNodeValue;
             if (element) {
                 element.click();
             } else {
                 throw new Error(`Element with XPath ${xpath} not found.`);
             }
-        }, xpath);
-        await new Promise(resolve => setTimeout(resolve, 4000));
-        });
-       
+        }, xpathForSearch);
+
+        // 等待子菜单展开
+        await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
+
+        // // 檢查輸贏報表是否存在expect版
+        // const winLoseReportExists = await page.evaluate(() => {
+        //     const xpath = "//ul[starts-with(@id, 'rc-menu-uuid-') and contains(@id, '-report-popup')]/li[2]/span/a";
+        //     const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+        //     const link = result.singleNodeValue;
+        //     return link ? true : false;
+        // });
+
+        // // 斷言輸贏報表存在
+        // expect(winLoseReportExists).toBeTruthy();
+        
+
+        //檢查輸贏報表是否存在assert版
+            const winLoseReportText = await page.evaluate(() => {
+                //const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
+                const xpath = "//ul[starts-with(@id, 'rc-menu-uuid-') and contains(@id, '-search-popup')]/li[1]/span/a";
+                const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+                const link = result.singleNodeValue;
+                return link ? link.textContent.trim() : null;
+            });
+        
+            // 斷言輸贏報表存在
+            assert.strictEqual(winLoseReportText, '依玩家ID查詢');
+    });
 });
+
