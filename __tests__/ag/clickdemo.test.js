@@ -90,7 +90,7 @@ describe('點帳目查詢子目錄', () => {
   }, xpath);
   await new Promise(resolve => setTimeout(resolve, 1000));
   });
-
+});
   describe('點快速搜尋子目錄', () => {
     test('點擊依玩家ID查詢', async () => {
       const xpathForsearch = "//*[text()='快速搜尋']";
@@ -132,6 +132,6 @@ describe('點帳目查詢子目錄', () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     })
 });
-});
+
 
 
