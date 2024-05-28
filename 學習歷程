@@ -1,4 +1,4 @@
-jest report設定
+＊ jest report設定
 1.npm install --save-dev jest-html-reporters jest-junit
 2.在根目錄新增jest.config.js
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
       }],
     ],
   };
-3.或者在在package.json 新增節點3
+3.或者在package.json 新增節點
 "jest": {
     "reporters": [
       "default",
@@ -30,8 +30,13 @@ module.exports = {
       }]
     ]
   }
+
+  在这个例子中，我们使用了 date-fns 库来格式化日期。你可以先安装这个库：
+npm install date-fns
   -----------------------------------
   npx 語法收集
   npx jest --silent=false __tests__/ag/ag-checksubmenu.test.js 指定檔案跑而且開啟console.log
   npx jest __tests__/xxxxxx.test.js 指定檔案跑
   npx jest 全跑
+
+  
