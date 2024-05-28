@@ -50,7 +50,7 @@ describe('檢查左側目錄', () => {
   });
   test('檢查ma 左邊選單存在遊戲設定', async () => {
     const StatementText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(6) > div', element => element.textContent.trim());
-    assert.equal(StatementText, '帳目查詢', 'Statement Text element text is incorrect');
+    assert.equal(StatementText, '遊戲設定', 'Statement Text element text is incorrect');
   });
 });
 describe('檢查上方目錄', () => {
