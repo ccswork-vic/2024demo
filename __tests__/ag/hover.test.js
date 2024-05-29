@@ -29,7 +29,7 @@ afterAll(async () => {
 });
 
 describe('點語系', () => {
-    test('點擊語系切換', async () => {
+    test('點擊語系切換，且驗證文案變成英文', async () => {
       const xpathForchangelanguage = '//*[@data-trigger-id="dropdown-language-i"]';
 
       // 等待元素出现
@@ -85,11 +85,12 @@ describe('點語系', () => {
   }
   await new Promise(resolve => setTimeout(resolve, 5000)); // 等待1秒鐘，確保子菜單展開
 
-    //const onlineplayerText = await page.$eval('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li.ant-menu-item > span > a', element => element.textContent.trim());
+   //拿頁面上變成英文的文字比對
     const onlinePlayerText = await page.evaluate(() => {
         const element = document.evaluate("//*[text()='Online player']", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
         return element ? element.textContent.trim() : null;
       });
+    expect(onlinePlayerText).toBeTruthy();
     assert.equal(onlinePlayerText, 'Online player22222', 'online player element text is incorrect');
 // 斷言切換到英文成功
 
