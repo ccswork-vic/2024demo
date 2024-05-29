@@ -214,14 +214,21 @@ describe('快速搜尋子目錄', () => {
         //檢查輸贏報表是否存在assert版
             const winLoseReportText = await page.evaluate(() => {
                 //const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
-                const xpath = "//ul[starts-with(@id, 'rc-menu-uuid-') and contains(@id, '-search-popup')]/li[1]/span/a";
+                //const xpath = "//ul[starts-with(@id, 'rc-menu-uuid-') and contains(@id, '-search-popup')]/li[1]/span/a"; 可用
+                const xpath ="//*[text()='依玩家ID查詢']" //可用
                 const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
                 const link = result.singleNodeValue;
                 return link ? link.textContent.trim() : null;
             });
         
             // 斷言輸贏報表存在
-            assert.strictEqual(winLoseReportText, '依玩家ID查詢');
+            assert.strictEqual(winLoseReportText, '依玩家ID2查詢');
     });
 });
 
+//這樣也可以用
+// const onlinePlayerText = await page.evaluate(() => {
+//   const element = document.evaluate("//*[text()='Online player']", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+//   return element ? element.textContent.trim() : null;
+// });
+// assert.equal(onlinePlayerText, 'Online player22222', 'online player element text is incorrect');
