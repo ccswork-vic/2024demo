@@ -27,7 +27,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await browser.close();
 });
-describe('會員管理子目錄', () => {
+describe('會員管理子目錄顯示正常', () => {
   test('檢查新增會員', async () => {
       await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(1) > div', { timeout: 60000 });
       await page.click('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(1) > div'); // 點會員管理
@@ -51,7 +51,7 @@ describe('會員管理子目錄', () => {
       //assert.equal(memberListExists, true, '會員清單不存在'); 
       
     });
-  test('確認會員清單是否存在', async () => {
+  test('檢查會員清單', async () => {
     await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
     // 檢查會員清單是否存在
     const memberListExists = await page.evaluate(() => {
@@ -67,7 +67,7 @@ describe('會員管理子目錄', () => {
     // 斷言會員清單存在
     expect(memberListExists).toBeTruthy();
   });
-  test('確認新增子帳號是否存在', async () => {
+  test('檢查新增子帳號', async () => {
     await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
     // 檢查新增子帳號是否存在
     const newSubAccountExists = await page.evaluate(() => {
@@ -82,7 +82,7 @@ describe('會員管理子目錄', () => {
     });
     expect(newSubAccountExists).toBeTruthy();
   });
-  test('確認子帳號清單是否存在', async () => {
+  test('檢查子帳號清單', async () => {
     await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
     // 檢查子帳號清單是否存在
     const subAccountListExists = await page.evaluate(() => {
@@ -98,7 +98,6 @@ describe('會員管理子目錄', () => {
     expect(subAccountListExists).toBeTruthy();
   });
 });
-// describe('會員管理測試', () => {
 //     test('確認新增會員、會員清單、新增子帳號和子帳號清單是否存在', async () => {
 //       await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(1) > div', { timeout: 60000 });
 //       await page.click('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(1) > div'); // 點會員管理
@@ -129,12 +128,12 @@ describe('會員管理子目錄', () => {
 //       });
 //     });
 //   });
-    describe('統計報表子目錄', () => {
-        test('確認輸贏報表是否存在', async () => {
-            await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(3) > div', { timeout: 60000 });
-            await page.click('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(3) > div'); // 點統計報表
+describe('統計報表子目錄顯示正常', () => {
+test('檢查輸贏報表', async () => {
+    await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(3) > div', { timeout: 60000 });
+    await page.click('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(3) > div'); // 點統計報表
             // 等待子菜单展開
-            await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
+    await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
             // 檢查輸贏報表是否存在
             // const winLoseReportText = await page.evaluate(() => {
             //     //const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
@@ -148,16 +147,16 @@ describe('會員管理子目錄', () => {
             // assert.strictEqual(winLoseReportText, '輸贏報表aaa');
 
              //檢查輸贏報表是否存在
-        const winLoseReportExists = await page.evaluate(() => {
+    const winLoseReportExists = await page.evaluate(() => {
             //const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
-            const xpath = "//ul[starts-with(@id, 'rc-menu-uuid-') and contains(@id, '-report-popup')]/li[2]/span/a";
-            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-            const link = result.singleNodeValue;
-            return link ? true : false;
+    const xpath = "//ul[starts-with(@id, 'rc-menu-uuid-') and contains(@id, '-report-popup')]/li[2]/span/a";
+    const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+    const link = result.singleNodeValue;
+          return link ? true : false;
         });
     
         //斷言輸贏報表存在
-        expect(winLoseReportExists).toBeTruthy();
+    expect(winLoseReportExists).toBeTruthy();
 
             //直接點擊
         //const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
@@ -175,9 +174,43 @@ describe('會員管理子目錄', () => {
         // });
        
 });
+test('檢查對帳報表(Day)', async () => {
+  await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(3) > div', { timeout: 60000 });
+  await page.click('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(3) > div'); // 點統計報表
+          // 等待子菜单展開
+  await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
+          //檢查輸贏報表是否存在
+  const settlementReportExists = await page.evaluate(() => {
+          //const xpath = "/html/body/div/div/div/div/aside/div/div[2]/ul/li[3]/ul/li[1]/span/a";
+  const xpath ="//*[text()='對帳報表(Day)']" //可用
+  const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+  const link = result.singleNodeValue;
+        return link ? link.textContent.trim() : null;
+      });
+  
+      //斷言輸贏報表存在
+  expect(settlementReportExists).toBeTruthy();
+  assert.strictEqual(settlementReportExists, '對帳報表(Day)');
+
 });
-describe('快速搜尋子目錄', () => {
-    test('確認玩家id查詢是否存在', async () => {
+test('檢查遊戲統計報表', async () => {
+  await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(3) > div', { timeout: 60000 });
+  await page.click('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(3) > div'); // 點統計報表
+  await new Promise(resolve => setTimeout(resolve, 1000)); 
+        //檢查輸贏報表是否存在
+        const gameReportExists = await page.evaluate(() => {
+        const xpath ="//*[text()='遊戲統計報表']" //可用
+        const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+        const link = result.singleNodeValue;
+              return link ? link.textContent.trim() : null;
+            });
+  expect(gameReportExists).toBeTruthy();
+  assert.strictEqual(gameReportExists, '遊戲統計報表');
+
+});
+});
+describe('快速搜尋子目錄顯示正常', () => {
+    test('檢查玩家id查詢', async () => {
         const xpathForSearch = '//*[@id="root"]/div/div/div/aside/div/div[2]/ul/li[4]/div';
 
         // 等待元素出现
