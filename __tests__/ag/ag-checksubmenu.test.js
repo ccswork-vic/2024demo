@@ -1,6 +1,6 @@
 // 指定跑哪一個檔案 npx jest __tests__/xxxxxx.test.js
 //加上看log 語法npx jest --silent=false __tests__/ag/ag-checksubmenu.test.js
-//在 macOS 上，默认快捷键是 Option + Shift + F。
+//在 macOS 上，排版快捷键是 Option + Shift + F。
 const puppeteer = require('puppeteer');
 const assert = require('assert');
 
@@ -11,14 +11,14 @@ jest.setTimeout(60000);
 beforeAll(async () => {
 
   browser = await puppeteer.launch({
-    headless: false, // 设置为 true 则在无头模式下运行测试
-    defaultViewport: null // 关闭默认视窗
+    headless: false, // 設定false，才會打開視窗，不然會什麼都看不到
+    defaultViewport: null // 關閉預設的小視窗
   });
   page = await browser.newPage();
   await page.goto('https://test-agent.zestplay.co/login', { waitUntil: "domcontentloaded" });
   await page.waitForSelector('#root > div > div > div > div > form > div > div:nth-child(4) > button', { timeout: 60000 });
 
-  // 登录
+  // 登入帳號
   await page.type('#account', 'vicag');
   await page.type('#password', 'aaaa1234');
   await page.click("#root > div > div > div > div > form > div > div:nth-child(4) > button");
@@ -28,11 +28,11 @@ afterAll(async () => {
   await browser.close();
 });
 describe('會員管理子目錄', () => {
-  test('確認新增會員是否存在', async () => {
+  test('檢查新增會員', async () => {
       await page.waitForSelector('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(1) > div', { timeout: 60000 });
       await page.click('#root > div > div > div > aside > div > div._menu_t2mh1_44 > ul > li:nth-child(1) > div'); // 點會員管理
-      // 等待子菜单展開
-      await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
+      // 等待第二層展開
+      await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘
       // 檢查新增會員是否存在
       const createaccountExists = await page.evaluate(() => {
         const links = document.querySelectorAll('a');
@@ -49,6 +49,7 @@ describe('會員管理子目錄', () => {
       expect(createaccountExists).toBeTruthy();
       //assert.ok(memberListExists, '會員清單不存在');
       //assert.equal(memberListExists, true, '會員清單不存在'); 
+      
     });
   test('確認會員清單是否存在', async () => {
     await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
@@ -222,7 +223,8 @@ describe('快速搜尋子目錄', () => {
             });
         
             // 斷言輸贏報表存在
-            assert.strictEqual(winLoseReportText, '依玩家ID2查詢');
+            expect(winLoseReportText).toBeTruthy();
+            assert.strictEqual(winLoseReportText, '依玩家ID查詢');
     });
 });
 
