@@ -14,7 +14,8 @@ beforeAll(async () => {
     headless: false, // 设置为 true 则在无头模式下运行测试
     defaultViewport: null // 关闭默认视窗
   });
-  page = await browser.newPage();
+  page = await browser.pages().then(pages => pages[0]);
+  //page = await browser.newPage();
   await page.goto('https://test-agent.zestplay.co/login', { waitUntil: "domcontentloaded" });
   await page.waitForSelector('#root > div > div > div > div > form > div > div:nth-child(4) > button', { timeout: 60000 });
 

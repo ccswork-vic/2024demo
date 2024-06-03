@@ -14,7 +14,8 @@ beforeAll(async () => {
     headless: false, // 設定false，才會打開視窗，不然會什麼都看不到
     defaultViewport: null // 關閉預設的小視窗
   });
-  page = await browser.newPage();
+  page = await browser.pages().then(pages => pages[0]);
+  //page = await browser.newPage();
   await page.goto('https://test-agent.zestplay.co/login', { waitUntil: "domcontentloaded" });
   await page.waitForSelector('#root > div > div > div > div > form > div > div:nth-child(4) > button', { timeout: 60000 });
 
