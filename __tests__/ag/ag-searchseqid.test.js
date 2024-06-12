@@ -101,13 +101,12 @@ describe('點快速搜尋子目錄', () => {
         await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-success > span > span");
         await page.type('#userId', '99999');
         await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise(resolve => setTimeout(resolve, 3000));
         const nodata = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > p', element => element.textContent.trim());
         expect(nodata).toBeTruthy(); 
         assert.equal(nodata, '暫無數據', 'online player element text is incorrect');
         })
     test('輸入不合格式單號，檢查錯誤提示', async () => {
-
         const xpath = "//*[text()='依單號查詢']";
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate((xpath) => {
@@ -122,9 +121,31 @@ describe('點快速搜尋子目錄', () => {
         await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-success > span > span");
         await page.type('#userId', '測試');
         await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise(resolve => setTimeout(resolve, 3000));
         const errormsg = await page.$eval('#userId_help > div', element => element.textContent.trim());
         expect(errormsg).toBeTruthy(); 
-        assert.equal(errormsg, '!!!此欄位只能輸入數字，不包含特殊符號或空格', 'online player element text is incorrect');
+        assert.equal(errormsg, '此欄位只能輸入數字，不包含特殊符號或空格', 'online player element text is incorrect');
             })
+    test('沒輸入單號，檢查錯誤提示', async () => {
+        const xpath = "//*[text()='依單號查詢']";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+                const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                if (element) {
+                    element.click();
+                } else {
+                    throw new Error(`Element with XPath ${xpath} not found.`);
+                }
+            }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div.ant-row.ant-form-item-row.css-1r287do > div > div.ant-form-item-control-input > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-error > span > span > span > svg > path");
+        await page.type('#userId', '');
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        const noentermsg = await page.$eval('#userId_help > div', element => element.textContent.trim());
+        expect(noentermsg).toBeTruthy(); 
+        assert.equal(noentermsg, '此欄位為必填', 'noentermsg text is incorrect');
+            })
+      
+
 });
