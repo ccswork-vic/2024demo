@@ -1,3 +1,5 @@
+//com+k+c 註解
+//com+k+u 反註解
 const puppeteer = require('puppeteer');
 const assert = require('assert');
 
@@ -26,8 +28,45 @@ afterAll(async () => {
   await browser.close();
 });
 
-describe('點快速搜尋子目錄', () => {
+describe('檢查玩家id功能', () => {
     test('點擊依玩家ID查詢', async () => {
+                  const xpathForsearch = "//*[text()='快速搜尋']";
+            
+                  // 等待元素出现
+                  await page.waitForFunction((xpath) => {
+                      const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+                      return result.singleNodeValue !== null;
+                  }, { timeout: 60000 }, xpathForsearch);
+            
+                  // 点击元素
+                  await page.evaluate((xpath) => {
+                      const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+                      const element = result.singleNodeValue;
+                      if (element) {
+                          element.click();
+                      } else {
+                          throw new Error(`Element with XPath ${xpath} not found.`);
+                      }
+                  }, xpathForsearch);
+            
+                    // 等待子菜单展開
+                    await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
+             
+                const xpath = "//*[text()='依玩家ID查詢']";
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                await page.evaluate((xpath) => {
+                    const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                    if (element) {
+                        element.click();
+                    } else {
+                        throw new Error(`Element with XPath ${xpath} not found.`);
+                    }
+                }, xpath);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+        })
+});
+describe('檢查單號查詢功能', () => {
+    test('點擊單號查詢', async () => {
       const xpathForsearch = "//*[text()='快速搜尋']";
 
       // 等待元素出现
@@ -50,7 +89,7 @@ describe('點快速搜尋子目錄', () => {
         // 等待子菜单展開
         await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
  
-    const xpath = "//*[text()='依玩家ID查詢']";
+    const xpath = "//*[text()='依單號查詢']";
     await new Promise(resolve => setTimeout(resolve, 1000));
     await page.evaluate((xpath) => {
         const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -61,7 +100,7 @@ describe('點快速搜尋子目錄', () => {
         }
     }, xpath);
     await new Promise(resolve => setTimeout(resolve, 1000));
-    })
+        })
     test('輸入存在單號，檢查遊戲紀錄', async () => {
 
       const xpath = "//*[text()='依單號查詢']";
@@ -84,7 +123,7 @@ describe('點快速搜尋子目錄', () => {
       expect(Netwin).toBeTruthy(); 
       assert.equal(Netwin, '$952.800', 'online player element text is incorrect');
       
-      })
+        })
     test('輸入不存在單號，檢查錯誤提示', async () => {
 
         const xpath = "//*[text()='依單號查詢']";
@@ -125,7 +164,7 @@ describe('點快速搜尋子目錄', () => {
         const errormsg = await page.$eval('#userId_help > div', element => element.textContent.trim());
         expect(errormsg).toBeTruthy(); 
         assert.equal(errormsg, '此欄位只能輸入數字，不包含特殊符號或空格', 'online player element text is incorrect');
-            })
+        })
     test('沒輸入單號，檢查錯誤提示', async () => {
         const xpath = "//*[text()='依單號查詢']";
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -145,7 +184,6 @@ describe('點快速搜尋子目錄', () => {
         const noentermsg = await page.$eval('#userId_help > div', element => element.textContent.trim());
         expect(noentermsg).toBeTruthy(); 
         assert.equal(noentermsg, '此欄位為必填', 'noentermsg text is incorrect');
-            })
-      
-
+    });
 });
+
