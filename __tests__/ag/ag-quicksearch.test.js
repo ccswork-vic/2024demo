@@ -64,6 +64,27 @@ describe('檢查玩家id功能', () => {
                 }, xpath);
                 await new Promise(resolve => setTimeout(resolve, 1000));
         })
+    test('輸入不存在玩家id，檢查錯誤提示', async () => {
+
+            const xpath = "//*[text()='依玩家ID查詢']";
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await page.evaluate((xpath) => {
+                const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                if (element) {
+                    element.click();
+                } else {
+                    throw new Error(`Element with XPath ${xpath} not found.`);
+                }
+            }, xpath);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-success > span > span");
+            await page.type('#userId', 'jon5566');
+            await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            const nouser = await page.$eval('body > div.ant-message.ant-message-top.css-1r287do > div > div > div > div > span:nth-child(2)', element => element.textContent.trim());
+            expect(nouser).toBeTruthy(); 
+            assert.equal(nouser, '下線抓到了', 'online player element text is incorrect');
+            })
 });
 describe('檢查單號查詢功能', () => {
     test('點擊單號查詢', async () => {

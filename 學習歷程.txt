@@ -39,4 +39,8 @@ npm install date-fns
   npx jest __tests__/xxxxxx.test.js 指定檔案跑
   npx jest 全跑
 
+
+抓彈窗內容的方法
+---------
+因為彈窗一下子就消失，再出現時找到該div 右鍵duplicate element 這樣就能保留一份下來，讓你慢慢複製css selector
   
