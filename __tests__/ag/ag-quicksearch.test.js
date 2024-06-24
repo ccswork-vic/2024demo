@@ -1,5 +1,6 @@
 //com+k+c 註解
 //com+k+u 反註解
+//排版文件：Shift + Option + F
 const puppeteer = require('puppeteer');
 const assert = require('assert');
 
@@ -28,7 +29,7 @@ afterAll(async () => {
     await browser.close();
 });
 
-describe('檢查玩家id功能', () => {
+describe('檢查玩家id查詢功能', () => {
     test('點擊依玩家ID查詢', async () => {
         const xpathForsearch = "//*[text()='快速搜尋']";
 
@@ -63,6 +64,25 @@ describe('檢查玩家id功能', () => {
             }
         }, xpath);
         await new Promise(resolve => setTimeout(resolve, 1000));
+        const playidsearch = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > h2', element => element.textContent.trim());
+        expect(playidsearch).toBeTruthy();
+        assert.equal(playidsearch, '依玩家ID查詢', 'playidsearch text is incorrect');
+    })
+    test('檢查輸入框預設文字', async () => {
+        const xpath = "//*[text()='依玩家ID查詢']";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const placeholderText = await page.$eval('input.ant-input.ant-input-lg.css-1r287do', element => element.getAttribute('placeholder'));
+        expect(placeholderText).toBeTruthy();
+        assert.equal(placeholderText, '請輸入玩家ID', 'playidsearch text is incorrect');
     })
     test('輸入不存在玩家id，檢查錯誤提示', async () => {
         const xpath = "//*[text()='依玩家ID查詢']";
@@ -84,7 +104,7 @@ describe('檢查玩家id功能', () => {
         expect(nouser).toBeTruthy();
         assert.equal(nouser, '下線不存在', 'nouser text is incorrect');
     })
-    test('輸入存在玩家id，檢查使用者名稱', async () => {
+    test('輸入存在玩家id，滾動畫面並檢查使用者名稱', async () => {
         const xpath = "//*[text()='依玩家ID查詢']";
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate((xpath) => {
@@ -100,6 +120,40 @@ describe('檢查玩家id功能', () => {
         await page.type('#userId', 'vic0522');
         await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
         await new Promise(resolve => setTimeout(resolve, 3000));
+
+        // const scrollHeight = await page.evaluate(() => document.body.scrollHeight);
+        // const viewportHeight = await page.evaluate(() => window.innerHeight);
+
+        // let scrollPosition = 0;
+        // const scrollStep = 250; // 每次滚动的距离
+
+        // // 循环滚动直到页面底部
+        // while (scrollPosition < scrollHeight) {
+        //     await page.evaluate((scrollStep) => {
+        //         window.scrollBy(0, scrollStep); // 向下滚动指定距离
+        //     }, scrollStep);
+
+        //     scrollPosition += scrollStep;
+        //     await new Promise(resolve => setTimeout(resolve, 3000));; // 等待页面加载和渲染
+        // }
+
+        // 等待一段时间，确保滚动完成
+        //await new Promise(resolve => setTimeout(resolve, 3000));;
+     
+        //滾動往下特定元素今日輸贏統計
+        const element1 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(4) > h3');
+        await element1.scrollIntoView();
+        await new Promise(resolve => setTimeout(resolve, 3000));;
+        //滾動往上特定元素會員資料
+        const element2 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > h3');
+        await element2.scrollIntoView();
+        await new Promise(resolve => setTimeout(resolve, 3000));;
+        //滾動往上特定元素會員資料
+        const element3 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(3) > div > canvas');
+        await element3.scrollIntoView();
+        await new Promise(resolve => setTimeout(resolve, 3000));;
+
+
         const userdata = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > div > div:nth-child(2) > span', element => element.textContent.trim());
         expect(userdata).toBeTruthy();
         assert.equal(userdata, 'vic0522(RMB)', 'online player element text is incorrect');
@@ -161,6 +215,45 @@ describe('檢查單號查詢功能', () => {
             }
         }, xpath);
         await new Promise(resolve => setTimeout(resolve, 1000));
+        const seqidsearch = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > h2', element => element.textContent.trim());
+        expect(seqidsearch).toBeTruthy();
+        assert.equal(seqidsearch, '依單號查詢', 'playidsearch text is incorrect');
+    })
+    test('檢查麵包屑', async () => {
+        const xpath = "//*[text()='依單號查詢']";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const Breadcrumbs = await page.$eval('#root > div > div > div > div > nav > ol', element => element.textContent.trim());
+        expect(Breadcrumbs).toBeTruthy();
+        assert.equal(Breadcrumbs, '總覽/快速搜尋/依單號查詢', 'playidsearch text is incorrect');
+        expect(Breadcrumbs).toContain('總覽');
+        expect(Breadcrumbs).toContain('快速搜尋');
+        expect(Breadcrumbs).toContain('依單號查詢');
+    })
+    test('檢查輸入框預設文字', async () => {
+        const xpath = "//*[text()='依單號查詢']";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const seqplaceholderText = await page.$eval('input.ant-input.ant-input-lg.css-1r287do', element => element.getAttribute('placeholder'));
+        expect(seqplaceholderText).toBeTruthy();
+        expect(seqplaceholderText).toBe('請輸入遊戲序');
+        //assert.equal(seqplaceholderText, '請輸入遊戲序號', 'seqplaceholderText text is incorrect');
     })
     test('輸入存在單號，檢查遊戲紀錄', async () => {
 
