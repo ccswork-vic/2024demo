@@ -158,7 +158,7 @@ describe('檢查玩家id查詢功能', () => {
 
         // 等待一段时间，确保滚动完成
         //await new Promise(resolve => setTimeout(resolve, 3000));;
-     
+
         //滾動往下特定元素今日輸贏統計
         const element1 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(4) > h3');
         await element1.scrollIntoView();
@@ -178,7 +178,7 @@ describe('檢查玩家id查詢功能', () => {
         assert.equal(userdata, 'vic0522(RMB)', 'online player element text is incorrect');
 
     })
-    test('切換語系，檢查錯誤提示', async () => {
+    test('切換成英文，檢查使用者名稱，在切換回中文', async () => {
         const xpathForchangelanguage = '//*[@data-trigger-id="dropdown-language-i"]';
 
         // 等待元素出现
@@ -186,53 +186,53 @@ describe('檢查玩家id查詢功能', () => {
             const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
             return result.singleNodeValue !== null;
         }, { timeout: 60000 }, xpathForchangelanguage);
-  
-  
-   // 获取 CSS 选择器
-   const cssSelector = await page.evaluate((xpath) => {
-      const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-      return element ? `[data-trigger-id="${element.getAttribute('data-trigger-id')}"]` : null;
-    }, xpathForchangelanguage);
-  
-    if (cssSelector) {
-        // 鼠标悬停在元素上
-        await page.hover(cssSelector);
-  
-        // 等待弹出窗口完全显示
-        await page.waitForSelector('.ant-dropdown-menu', { visible: true });
-  
-        // 等待一段时间以确保弹出窗口完全显示
-        await new Promise(resolve => setTimeout(resolve, 4000)); // 你可以调整这个等待时间
-  
-        // 检查弹窗是否存在
-        const isVisible = await page.evaluate(() => {
-          const menu = document.querySelector('.ant-dropdown-menu');
-          return menu && window.getComputedStyle(menu).display !== 'none' && menu.offsetWidth > 0 && menu.offsetHeight > 0;
-      });
-      if (!isVisible) {
-          throw new Error('Dropdown menu is not visible.');
-      }
-  
-        // 点击弹出菜单中的 '简体中文' 选项
-        const xpathForEN = "//*[text()='English']";
-        await page.waitForFunction((xpath) => {
-            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-            return result.singleNodeValue !== null;
-        }, { timeout: 60000 }, xpathForEN);
-  
-        await page.evaluate((xpath) => {
+
+
+        // 获取 CSS 选择器
+        const cssSelector = await page.evaluate((xpath) => {
             const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (element) {
-                element.click();
-            } else {
-                throw new Error(`Element with XPath ${xpath} not found.`);
+            return element ? `[data-trigger-id="${element.getAttribute('data-trigger-id')}"]` : null;
+        }, xpathForchangelanguage);
+
+        if (cssSelector) {
+            // 鼠标悬停在元素上
+            await page.hover(cssSelector);
+
+            // 等待弹出窗口完全显示
+            await page.waitForSelector('.ant-dropdown-menu', { visible: true });
+
+            // 等待一段时间以确保弹出窗口完全显示
+            await new Promise(resolve => setTimeout(resolve, 4000)); // 你可以调整这个等待时间
+
+            // 检查弹窗是否存在
+            const isVisible = await page.evaluate(() => {
+                const menu = document.querySelector('.ant-dropdown-menu');
+                return menu && window.getComputedStyle(menu).display !== 'none' && menu.offsetWidth > 0 && menu.offsetHeight > 0;
+            });
+            if (!isVisible) {
+                throw new Error('Dropdown menu is not visible.');
             }
-        }, xpathForEN);
-  
-    } else {
-        throw new Error(`Failed to get CSS selector for element with XPath ${xpathForchangelanguage}.`);
-    }
-    await new Promise(resolve => setTimeout(resolve, 5000)); // 等待1秒鐘，確保子菜單展開
+
+            // 点击弹出菜单中的 '简体中文' 选项
+            const xpathForEN = "//*[text()='English']";
+            await page.waitForFunction((xpath) => {
+                const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+                return result.singleNodeValue !== null;
+            }, { timeout: 60000 }, xpathForEN);
+
+            await page.evaluate((xpath) => {
+                const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                if (element) {
+                    element.click();
+                } else {
+                    throw new Error(`Element with XPath ${xpath} not found.`);
+                }
+            }, xpathForEN);
+
+        } else {
+            throw new Error(`Failed to get CSS selector for element with XPath ${xpathForchangelanguage}.`);
+        }
+        await new Promise(resolve => setTimeout(resolve, 5000)); // 等待1秒鐘，確保子菜單展開
         const xpath = "//*[text()='By Player ID']";
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate((xpath) => {
@@ -248,9 +248,9 @@ describe('檢查玩家id查詢功能', () => {
         await page.type('#userId', 'vic032522');
         await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
         await new Promise(resolve => setTimeout(resolve, 3000));
-        const userdata = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > div > div:nth-child(2) > span', element => element.textContent.trim());
-        expect(userdata).toBeTruthy();
-        assert.equal(userdata, 'vic032522(RMB)', 'online player element text is incorrect');
+        const eninfo = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > div > div:nth-child(1) > small', element => element.textContent.trim());
+        expect(eninfo).toBeTruthy();
+        assert.equal(eninfo, 'Online Info', 'onlineinfo element text is incorrect');
 
         const xpathForchangelanguageback = '//*[@data-trigger-id="dropdown-language-i"]';
 
@@ -259,53 +259,53 @@ describe('檢查玩家id查詢功能', () => {
             const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
             return result.singleNodeValue !== null;
         }, { timeout: 60000 }, xpathForchangelanguageback);
-  
-  
-   // 获取 CSS 选择器
-   const cssSelectortozh = await page.evaluate((xpath) => {
-      const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-      return element ? `[data-trigger-id="${element.getAttribute('data-trigger-id')}"]` : null;
-    }, xpathForchangelanguageback);
-  
-    if (cssSelectortozh) {
-        // 鼠标悬停在元素上
-        await page.hover(cssSelectortozh);
-  
-        // 等待弹出窗口完全显示
-        await page.waitForSelector('.ant-dropdown-menu', { visible: true });
-  
-        // 等待一段时间以确保弹出窗口完全显示
-        await new Promise(resolve => setTimeout(resolve, 4000)); // 你可以调整这个等待时间
-  
-        // 检查弹窗是否存在
-        const isVisible = await page.evaluate(() => {
-          const menu = document.querySelector('.ant-dropdown-menu');
-          return menu && window.getComputedStyle(menu).display !== 'none' && menu.offsetWidth > 0 && menu.offsetHeight > 0;
-      });
-      if (!isVisible) {
-          throw new Error('Dropdown menu is not visible.');
-      }
-  
-        // 点击弹出菜单中的 '中文' 选项
-        const xpathForCN = "//*[text()='繁體中文']";
-        await page.waitForFunction((xpath) => {
-            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-            return result.singleNodeValue !== null;
-        }, { timeout: 60000 }, xpathForCN);
-  
-        await page.evaluate((xpath) => {
+
+
+        // 获取 CSS 选择器
+        const cssSelectortozh = await page.evaluate((xpath) => {
             const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (element) {
-                element.click();
-            } else {
-                throw new Error(`Element with XPath ${xpath} not found.`);
+            return element ? `[data-trigger-id="${element.getAttribute('data-trigger-id')}"]` : null;
+        }, xpathForchangelanguageback);
+
+        if (cssSelectortozh) {
+            // 鼠标悬停在元素上
+            await page.hover(cssSelectortozh);
+
+            // 等待弹出窗口完全显示
+            await page.waitForSelector('.ant-dropdown-menu', { visible: true });
+
+            // 等待一段时间以确保弹出窗口完全显示
+            await new Promise(resolve => setTimeout(resolve, 4000)); // 你可以调整这个等待时间
+
+            // 检查弹窗是否存在
+            const isVisible = await page.evaluate(() => {
+                const menu = document.querySelector('.ant-dropdown-menu');
+                return menu && window.getComputedStyle(menu).display !== 'none' && menu.offsetWidth > 0 && menu.offsetHeight > 0;
+            });
+            if (!isVisible) {
+                throw new Error('Dropdown menu is not visible.');
             }
-        }, xpathForCN);
-  
-    } else {
-        throw new Error(`Failed to get CSS selector for element with XPath ${xpathForchangelanguageback}.`);
-    }
-    await new Promise(resolve => setTimeout(resolve, 5000)); // 等待1秒鐘，確保子菜單展開
+
+            // 点击弹出菜单中的 '中文' 选项
+            const xpathForCN = "//*[text()='繁體中文']";
+            await page.waitForFunction((xpath) => {
+                const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+                return result.singleNodeValue !== null;
+            }, { timeout: 60000 }, xpathForCN);
+
+            await page.evaluate((xpath) => {
+                const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                if (element) {
+                    element.click();
+                } else {
+                    throw new Error(`Element with XPath ${xpath} not found.`);
+                }
+            }, xpathForCN);
+
+        } else {
+            throw new Error(`Failed to get CSS selector for element with XPath ${xpathForchangelanguageback}.`);
+        }
+        await new Promise(resolve => setTimeout(resolve, 5000)); // 等待1秒鐘，確保子菜單展開
     })
     test('不輸入玩家id，檢查錯誤提示', async () => {
         const xpath = "//*[text()='依玩家ID查詢']";
@@ -495,53 +495,53 @@ describe('檢查單號查詢功能', () => {
             const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
             return result.singleNodeValue !== null;
         }, { timeout: 60000 }, xpathForchangelanguage);
-  
-  
-   // 获取 CSS 选择器
-   const cssSelector = await page.evaluate((xpath) => {
-      const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-      return element ? `[data-trigger-id="${element.getAttribute('data-trigger-id')}"]` : null;
-    }, xpathForchangelanguage);
-  
-    if (cssSelector) {
-        // 鼠标悬停在元素上
-        await page.hover(cssSelector);
-  
-        // 等待弹出窗口完全显示
-        await page.waitForSelector('.ant-dropdown-menu', { visible: true });
-  
-        // 等待一段时间以确保弹出窗口完全显示
-        await new Promise(resolve => setTimeout(resolve, 4000)); // 你可以调整这个等待时间
-  
-        // 检查弹窗是否存在
-        const isVisible = await page.evaluate(() => {
-          const menu = document.querySelector('.ant-dropdown-menu');
-          return menu && window.getComputedStyle(menu).display !== 'none' && menu.offsetWidth > 0 && menu.offsetHeight > 0;
-      });
-      if (!isVisible) {
-          throw new Error('Dropdown menu is not visible.');
-      }
-  
-        // 点击弹出菜单中的 '简体中文' 选项
-        const xpathForCN = "//*[text()='English']";
-        await page.waitForFunction((xpath) => {
-            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-            return result.singleNodeValue !== null;
-        }, { timeout: 60000 }, xpathForCN);
-  
-        await page.evaluate((xpath) => {
+
+
+        // 获取 CSS 选择器
+        const cssSelector = await page.evaluate((xpath) => {
             const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (element) {
-                element.click();
-            } else {
-                throw new Error(`Element with XPath ${xpath} not found.`);
+            return element ? `[data-trigger-id="${element.getAttribute('data-trigger-id')}"]` : null;
+        }, xpathForchangelanguage);
+
+        if (cssSelector) {
+            // 鼠标悬停在元素上
+            await page.hover(cssSelector);
+
+            // 等待弹出窗口完全显示
+            await page.waitForSelector('.ant-dropdown-menu', { visible: true });
+
+            // 等待一段时间以确保弹出窗口完全显示
+            await new Promise(resolve => setTimeout(resolve, 4000)); // 你可以调整这个等待时间
+
+            // 检查弹窗是否存在
+            const isVisible = await page.evaluate(() => {
+                const menu = document.querySelector('.ant-dropdown-menu');
+                return menu && window.getComputedStyle(menu).display !== 'none' && menu.offsetWidth > 0 && menu.offsetHeight > 0;
+            });
+            if (!isVisible) {
+                throw new Error('Dropdown menu is not visible.');
             }
-        }, xpathForCN);
-  
-    } else {
-        throw new Error(`Failed to get CSS selector for element with XPath ${xpathForchangelanguage}.`);
-    }
-    await new Promise(resolve => setTimeout(resolve, 5000)); // 等待1秒鐘，確保子菜單展開
+
+            // 点击弹出菜单中的 '简体中文' 选项
+            const xpathForCN = "//*[text()='English']";
+            await page.waitForFunction((xpath) => {
+                const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+                return result.singleNodeValue !== null;
+            }, { timeout: 60000 }, xpathForCN);
+
+            await page.evaluate((xpath) => {
+                const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                if (element) {
+                    element.click();
+                } else {
+                    throw new Error(`Element with XPath ${xpath} not found.`);
+                }
+            }, xpathForCN);
+
+        } else {
+            throw new Error(`Failed to get CSS selector for element with XPath ${xpathForchangelanguage}.`);
+        }
+        await new Promise(resolve => setTimeout(resolve, 5000)); // 等待1秒鐘，確保子菜單展開
         const xpath = "//*[text()='By Sequence ID']";
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate((xpath) => {
