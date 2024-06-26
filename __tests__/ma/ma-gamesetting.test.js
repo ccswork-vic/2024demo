@@ -20,7 +20,7 @@ beforeAll(async () => {
     await page.waitForSelector('#root > div > div > div > div > form > div > div:nth-child(4) > button', { timeout: 60000 });
 
     // 登入
-    await page.type('#account', 'vicag');
+    await page.type('#account', 'vicma');
     await page.type('#password', 'aaaa1234');
     await page.click("#root > div > div > div > div > form > div > div:nth-child(4) > button");
     await page.waitForSelector('#root > div > div > header > div._icon_iyfbn_38.ml-auto.flex.items-center.justify-center > div.ml-4.cursor-pointer.font-bold > button > span.ml-1', { timeout: 60000 });
@@ -30,8 +30,8 @@ afterAll(async () => {
 });
 
 describe('檢查玩家id查詢功能', () => {
-    test.only('點擊依玩家ID查詢', async () => {
-        const xpathForsearch = "//*[text()='快速搜尋']";
+    test.only('點擊遊戲設定', async () => {
+        const xpathForsearch = "//*[text()='遊戲設定']";
 
         // 等待元素出現
         await page.waitForFunction((xpath) => {
@@ -53,7 +53,7 @@ describe('檢查玩家id查詢功能', () => {
         // 等待submenu打開
         await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，等待submenu打開
 
-        const xpath = "//*[text()='依玩家ID查詢']";
+        const xpath = "//*[text()='遊戲列表']";
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate((xpath) => {
             const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -64,12 +64,12 @@ describe('檢查玩家id查詢功能', () => {
             }
         }, xpath);
         await new Promise(resolve => setTimeout(resolve, 1000));
-        const playidsearch = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > h2', element => element.textContent.trim());
-        expect(playidsearch).toBeTruthy();
-        assert.equal(playidsearch, '依玩家ID查詢', 'playidsearch text is incorrect');
+        const gamelist = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > h2', element => element.textContent.trim());
+        expect(gamelist).toBeTruthy();
+        assert.equal(gamelist, '遊戲列表', 'text is incorrect');
     })
     test.only('檢查麵包屑', async () => {
-        const xpath = "//*[text()='依玩家ID查詢']";
+        const xpath = "//*[text()='遊戲列表']";
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate((xpath) => {
             const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -82,13 +82,13 @@ describe('檢查玩家id查詢功能', () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
         const Breadcrumbs = await page.$eval('#root > div > div > div > div > nav > ol', element => element.textContent.trim());
         expect(Breadcrumbs).toBeTruthy();
-        assert.equal(Breadcrumbs, '總覽/快速搜尋/依玩家ID查詢', 'Breadcrumbs text is incorrect');
+        assert.equal(Breadcrumbs, '總覽/遊戲設定/遊戲列表', 'text is incorrect');
         expect(Breadcrumbs).toContain('總覽');
-        expect(Breadcrumbs).toContain('快速搜尋');
-        expect(Breadcrumbs).toContain('依玩家ID查詢');
+        expect(Breadcrumbs).toContain('遊戲設定');
+        expect(Breadcrumbs).toContain('遊戲列表');
     })
-    test('檢查輸入框預設文字', async () => {
-        const xpath = "//*[text()='依玩家ID查詢']";
+    test.only('檢查輸入框預設文字', async () => {
+        const xpath = "//*[text()='遊戲列表']";
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate((xpath) => {
             const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -101,10 +101,10 @@ describe('檢查玩家id查詢功能', () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
         const placeholderText = await page.$eval('input.ant-input.ant-input-lg.css-1r287do', element => element.getAttribute('placeholder'));
         expect(placeholderText).toBeTruthy();
-        assert.equal(placeholderText, '請輸入玩家ID', 'playidsearch text is incorrect');
+        assert.equal(placeholderText, '請輸入遊戲名稱 (選填)', 'text is incorrect');
     })
-    test('輸入不存在玩家id，檢查錯誤提示', async () => {
-        const xpath = "//*[text()='依玩家ID查詢']";
+    test.only('檢查按鈕-全選', async () => {
+        const xpath = "//*[text()='遊戲列表']";
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate((xpath) => {
             const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -115,13 +115,78 @@ describe('檢查玩家id查詢功能', () => {
             }
         }, xpath);
         await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-success > span > span");
-        await page.type('#userId', 'jon5566');
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
+        //await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-success > span > span");
+        //await page.type('#userId', 'jon5566');
+        //await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
+        //await new Promise(resolve => setTimeout(resolve, 1000));
+        const btn1 = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(2) > button', element => element.textContent.trim());
+        expect(btn1).toBeTruthy();
+        assert.equal(btn1, '全 選', 'text is incorrect');
+    })
+    test.only('檢查按鈕-全部清除', async () => {
+        const xpath = "//*[text()='遊戲列表']";
         await new Promise(resolve => setTimeout(resolve, 1000));
-        const nouser = await page.$eval('body > div.ant-message.ant-message-top.css-1r287do > div > div > div > div > span:nth-child(2)', element => element.textContent.trim());
-        expect(nouser).toBeTruthy();
-        assert.equal(nouser, '下線不存在', 'nouser text is incorrect');
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(2) > button");
+        const btn2 = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(2) > button', element => element.textContent.trim());
+        expect(btn2).toBeTruthy();
+        assert.equal(btn2, '全部清除', 'text is incorrect');
+    })
+    test.only('檢查按鈕-查詢', async () => {
+        const xpath = "//*[text()='遊戲列表']";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const btn3 = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div.ant-col.ant-col-4.css-1r287do > div > div > div > div > div > button > span', element => element.textContent.trim());
+        expect(btn3).toBeTruthy();
+        assert.equal(btn3, '查 詢', 'text is incorrect');
+    })
+    test.only('檢查按鈕-押注設定', async () => {
+        const xpath = "//*[text()='遊戲列表']";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const btn4 = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div > div > div > div > div > div > table > tbody > tr.ant-table-row.ant-table-row-level-0 > td.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first > div > div:nth-child(1) > button > span', element => element.textContent.trim());
+        expect(btn4).toBeTruthy();
+        assert.equal(btn4, '押注設定', 'text is incorrect');
+    })
+    test.only('檢查按鈕-Payment 設定', async () => {
+        const xpath = "//*[text()='遊戲列表']";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const btn5 = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div > div > div > div > div > div > table > tbody > tr.ant-table-row.ant-table-row-level-0 > td.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first > div > div:nth-child(2) > button > span', element => element.textContent.trim());
+        expect(btn5).toBeTruthy();
+        assert.equal(btn5, 'Payment 設定', 'text is incorrect');
     })
     test('輸入存在玩家id，滾動畫面並檢查使用者名稱', async () => {
         const xpath = "//*[text()='依玩家ID查詢']";
@@ -310,220 +375,3 @@ describe('檢查玩家id查詢功能', () => {
 
     })
 });
-describe('檢查單號查詢功能', () => {
-    test('點擊單號查詢', async () => {
-
-        // 等待submenu打開
-        await new Promise(resolve => setTimeout(resolve, 1000)); 
-
-        const xpath = "//*[text()='依單號查詢']";
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.evaluate((xpath) => {
-            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (element) {
-                element.click();
-            } else {
-                throw new Error(`Element with XPath ${xpath} not found.`);
-            }
-        }, xpath);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const seqidsearch = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > h2', element => element.textContent.trim());
-        expect(seqidsearch).toBeTruthy();
-        assert.equal(seqidsearch, '依單號查詢', 'playidsearch text is incorrect');
-    })
-    test('檢查麵包屑', async () => {
-        const xpath = "//*[text()='依單號查詢']";
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.evaluate((xpath) => {
-            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (element) {
-                element.click();
-            } else {
-                throw new Error(`Element with XPath ${xpath} not found.`);
-            }
-        }, xpath);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const Breadcrumbs = await page.$eval('#root > div > div > div > div > nav > ol', element => element.textContent.trim());
-        expect(Breadcrumbs).toBeTruthy();
-        assert.equal(Breadcrumbs, '總覽/快速搜尋/依單號查詢', 'playidsearch text is incorrect');
-        expect(Breadcrumbs).toContain('總覽');
-        expect(Breadcrumbs).toContain('快速搜尋');
-        expect(Breadcrumbs).toContain('依單號查詢');
-    })
-    test('檢查輸入框預設文字', async () => {
-        const xpath = "//*[text()='依單號查詢']";
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.evaluate((xpath) => {
-            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (element) {
-                element.click();
-            } else {
-                throw new Error(`Element with XPath ${xpath} not found.`);
-            }
-        }, xpath);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const seqplaceholderText = await page.$eval('input.ant-input.ant-input-lg.css-1r287do', element => element.getAttribute('placeholder'));
-        expect(seqplaceholderText).toBeTruthy();
-        expect(seqplaceholderText).toBe('請輸入遊戲序號');
-        //assert.equal(seqplaceholderText, '請輸入遊戲序號', 'seqplaceholderText text is incorrect');
-    })
-    test('輸入存在單號，檢查遊戲紀錄', async () => {
-
-        const xpath = "//*[text()='依單號查詢']";
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.evaluate((xpath) => {
-            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (element) {
-                element.click();
-            } else {
-                throw new Error(`Element with XPath ${xpath} not found.`);
-            }
-        }, xpath);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        await page.type('#userId', '28265');
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        const Netwin = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(7) > div:nth-child(2) > span', element => element.textContent.trim());
-        expect(Netwin).toBeTruthy();
-        assert.equal(Netwin, '$952.800', 'online player element text is incorrect');
-
-    })
-    test('輸入不存在單號，檢查錯誤提示', async () => {
-
-        const xpath = "//*[text()='依單號查詢']";
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.evaluate((xpath) => {
-            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (element) {
-                element.click();
-            } else {
-                throw new Error(`Element with XPath ${xpath} not found.`);
-            }
-        }, xpath);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-success > span > span");
-        await page.type('#userId', '99999');
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const nodata = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > p', element => element.textContent.trim());
-        expect(nodata).toBeTruthy();
-        assert.equal(nodata, '暫無數據', 'online player element text is incorrect');
-    })
-    test('輸入不合格式單號，檢查錯誤提示', async () => {
-        const xpath = "//*[text()='依單號查詢']";
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.evaluate((xpath) => {
-            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (element) {
-                element.click();
-            } else {
-                throw new Error(`Element with XPath ${xpath} not found.`);
-            }
-        }, xpath);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-success > span > span");
-        await page.type('#userId', '測試');
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const errormsg = await page.$eval('#userId_help > div', element => element.textContent.trim());
-        expect(errormsg).toBeTruthy();
-        assert.equal(errormsg, '此欄位只能輸入數字，不包含特殊符號或空格', 'online player element text is incorrect');
-    })
-    test('沒輸入單號，檢查錯誤提示', async () => {
-        const xpath = "//*[text()='依單號查詢']";
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.evaluate((xpath) => {
-            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (element) {
-                element.click();
-            } else {
-                throw new Error(`Element with XPath ${xpath} not found.`);
-            }
-        }, xpath);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div.ant-row.ant-form-item-row.css-1r287do > div > div.ant-form-item-control-input > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-error > span > span > span > svg > path");
-        await page.type('#userId', '');
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const noentermsg = await page.$eval('#userId_help > div', element => element.textContent.trim());
-        expect(noentermsg).toBeTruthy();
-        assert.equal(noentermsg, '此欄位為必填', 'noentermsg text is incorrect');
-    });
-    test('切換語系，檢查錯誤提示', async () => {
-        const xpathForchangelanguage = '//*[@data-trigger-id="dropdown-language-i"]';
-
-        // 等待元素出现
-        await page.waitForFunction((xpath) => {
-            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-            return result.singleNodeValue !== null;
-        }, { timeout: 60000 }, xpathForchangelanguage);
-
-
-        //取 CSS 選擇器
-        const cssSelector = await page.evaluate((xpath) => {
-            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            return element ? `[data-trigger-id="${element.getAttribute('data-trigger-id')}"]` : null;
-        }, xpathForchangelanguage);
-
-        if (cssSelector) {
-            // 滑鼠懸浮停在在元素上
-            await page.hover(cssSelector);
-
-            // 等待彈窗，
-            await page.waitForSelector('.ant-dropdown-menu', { visible: true });
-
-            // 等待彈窗完全展示
-            await new Promise(resolve => setTimeout(resolve, 2000)); 
-
-            // 检查弹窗是否存在
-            const isVisible = await page.evaluate(() => {
-                const menu = document.querySelector('.ant-dropdown-menu');
-                return menu && window.getComputedStyle(menu).display !== 'none' && menu.offsetWidth > 0 && menu.offsetHeight > 0;
-            });
-            if (!isVisible) {
-                throw new Error('Dropdown menu is not visible.');
-            }
-
-            // 點彈窗中english的選項
-            const xpathForCN = "//*[text()='English']";
-            await page.waitForFunction((xpath) => {
-                const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-                return result.singleNodeValue !== null;
-            }, { timeout: 60000 }, xpathForCN);
-
-            await page.evaluate((xpath) => {
-                const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-                if (element) {
-                    element.click();
-                } else {
-                    throw new Error(`Element with XPath ${xpath} not found.`);
-                }
-            }, xpathForCN);
-
-        } else {
-            throw new Error(`Failed to get CSS selector for element with XPath ${xpathForchangelanguage}.`);
-        }
-        await new Promise(resolve => setTimeout(resolve, 2000)); // 等待1秒鐘，確保submenu打開
-        const xpath = "//*[text()='By Sequence ID']";
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.evaluate((xpath) => {
-            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (element) {
-                element.click();
-            } else {
-                throw new Error(`Element with XPath ${xpath} not found.`);
-            }
-        }, xpath);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div.ant-row.ant-form-item-row.css-1r287do > div > div.ant-form-item-control-input > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-error > span > span > span > svg > path");
-        await page.type('#userId', '');
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const noentermsg = await page.$eval('#userId_help > div', element => element.textContent.trim());
-        expect(noentermsg).toBeTruthy();
-        assert.equal(noentermsg, 'Column is required.', 'noentermsg text is incorrect');
-    });
-});
-
