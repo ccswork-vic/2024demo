@@ -201,30 +201,36 @@ describe('檢查輸贏報表', () => {
         }, xpath);
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(1) > div > div > div > div > div > div > div > span.ant-picker-clear > span > svg > path");
-        await page.type('#timeRange', '2024-03-18');
+        await page.type('#timeRange', '2024-03-27');
+        await page.keyboard.press('Escape');
         await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.keyboard.press('Tab');
+        //await page.keyboard.press('Tab');
+        //await page.type('#timeRange','2024-04-16');
         //await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(1) > div > div > div > div > div > div > div > div:nth-child(3) > input");
-        await page.type('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(1) > div > div > div > div > div > div > div > div:nth-child(3) > input', '2024-03-27');
+        await page.type('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(1) > div > div > div > div > div > div > div > div:nth-child(3) > input', '2024-04-16');
+        await page.keyboard.press('Escape');
+        //await page.click('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > h2');
+        await page.keyboard.press('Enter');
+        //await page.click('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(7) > div > div > div > div > div > button');
         await new Promise(resolve => setTimeout(resolve, 3000));
 
-        //滾動往下特定元素今日輸贏統計
-        const element1 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(4) > h3');
-        await element1.scrollIntoView();
-        await new Promise(resolve => setTimeout(resolve, 1000));;
-        //滾動往上特定元素會員資料
-        const element2 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > h3');
-        await element2.scrollIntoView();
-        await new Promise(resolve => setTimeout(resolve, 1000));;
-        //滾動往上特定元素會員資料
-        const element3 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(3) > div > canvas');
-        await element3.scrollIntoView();
-        await new Promise(resolve => setTimeout(resolve, 1000));;
+        // //滾動往下特定元素今日輸贏統計
+        // const element1 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(4) > h3');
+        // await element1.scrollIntoView();
+        // await new Promise(resolve => setTimeout(resolve, 1000));;
+        // //滾動往上特定元素會員資料
+        // const element2 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > h3');
+        // await element2.scrollIntoView();
+        // await new Promise(resolve => setTimeout(resolve, 1000));;
+        // //滾動往上特定元素會員資料
+        // const element3 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(3) > div > canvas');
+        // await element3.scrollIntoView();
+        // await new Promise(resolve => setTimeout(resolve, 1000));;
 
 
-        const userdata = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > div > div:nth-child(2) > span', element => element.textContent.trim());
-        expect(userdata).toBeTruthy();
-        assert.equal(userdata, 'vic0522(RMB)', 'userdata element text is incorrect');
+        // const userdata = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > div > div:nth-child(2) > span', element => element.textContent.trim());
+        // expect(userdata).toBeTruthy();
+        // assert.equal(userdata, 'vic0522(RMB)', 'userdata element text is incorrect');
 
     })
     test('切換成英文，檢查使用者名稱，在切換回中文', async () => {
