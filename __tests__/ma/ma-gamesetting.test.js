@@ -188,6 +188,28 @@ describe('檢查玩家id查詢功能', () => {
         expect(btn5).toBeTruthy();
         assert.equal(btn5, 'Payment 設定', 'text is incorrect');
     })
+    test.only('檢查表格-遊戲名稱/類型/操作', async () => {
+        const xpath = "//*[text()='遊戲列表']";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const gameName = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1) > span', element => element.textContent.trim());
+        expect(gameName).toBeTruthy();
+        assert.equal(gameName, '遊戲名稱', 'text is incorrect');
+        const gameType = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2) > span', element => element.textContent.trim());
+        expect(gameType).toBeTruthy();
+        assert.equal(gameType, '遊戲類型', 'text is incorrect');
+        const operate = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first > span', element => element.textContent.trim());
+        expect(operate).toBeTruthy();
+        assert.equal(operate, '操作', 'text is incorrect');
+    })
     test('輸入存在玩家id，滾動畫面並檢查使用者名稱', async () => {
         const xpath = "//*[text()='依玩家ID查詢']";
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -224,7 +246,7 @@ describe('檢查玩家id查詢功能', () => {
         assert.equal(userdata, 'vic0522(RMB)', 'userdata element text is incorrect');
 
     })
-    test('切換成英文，檢查使用者名稱，在切換回中文', async () => {
+    test.only('切換成簡體，檢查奔馳寶馬，在切換回繁體', async () => {
         const xpathForchangelanguage = '//*[@data-trigger-id="dropdown-language-i"]';
 
         // 等待元素出现
@@ -260,7 +282,7 @@ describe('檢查玩家id查詢功能', () => {
             }
 
             // 點擊彈窗中english的選項
-            const xpathForEN = "//*[text()='English']";
+            const xpathForEN = "//*[text()='简体中文']";
             await page.waitForFunction((xpath) => {
                 const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
                 return result.singleNodeValue !== null;
@@ -279,7 +301,7 @@ describe('檢查玩家id查詢功能', () => {
             throw new Error(`Failed to get CSS selector for element with XPath ${xpathForchangelanguage}.`);
         }
         await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保submenu打開
-        const xpath = "//*[text()='By Player ID']";
+        const xpath = "//*[text()='游戏列表']";
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate((xpath) => {
             const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -290,29 +312,27 @@ describe('檢查玩家id查詢功能', () => {
             }
         }, xpath);
         await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-success > span > span > span > svg");
-        await page.type('#userId', 'vic032522');
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const eninfo = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > div > div:nth-child(1) > small', element => element.textContent.trim());
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div.ant-col.ant-col-4.css-1r287do > div > div > div > div > div > button > span");
+        const eninfo = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div > div > div > div > div > div > table > tbody > tr.ant-table-row.ant-table-row-level-0 > td:nth-child(1)', element => element.textContent.trim());
         expect(eninfo).toBeTruthy();
-        assert.equal(eninfo, 'Online Info', 'onlineinfo element text is incorrect');
+        assert.equal(eninfo, '奔驰宝马', ' text is incorrect');
+
 
         //準備切換回另一個語系
-        const xpathForchangelanguageback = '//*[@data-trigger-id="dropdown-language-i"]';
+        const xpathForchangelanguagebacktw = '//*[@data-trigger-id="dropdown-language-i"]';
 
         // 等待元素出现
         await page.waitForFunction((xpath) => {
             const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
             return result.singleNodeValue !== null;
-        }, { timeout: 60000 }, xpathForchangelanguageback);
+        }, { timeout: 60000 }, xpathForchangelanguagebacktw);
 
 
         // 取 CSS 選擇器
         const cssSelectortozh = await page.evaluate((xpath) => {
             const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
             return element ? `[data-trigger-id="${element.getAttribute('data-trigger-id')}"]` : null;
-        }, xpathForchangelanguageback);
+        }, xpathForchangelanguagebacktw);
 
         if (cssSelectortozh) {
             // 滑鼠懸停在元素上
@@ -352,7 +372,7 @@ describe('檢查玩家id查詢功能', () => {
         } else {
             throw new Error(`Failed to get CSS selector for element with XPath ${xpathForchangelanguageback}.`);
         }
-        await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保submenu打開
+        await new Promise(resolve => setTimeout(resolve, 1000)); 
     })
     test('不輸入玩家id，檢查錯誤提示', async () => {
         const xpath = "//*[text()='依玩家ID查詢']";
