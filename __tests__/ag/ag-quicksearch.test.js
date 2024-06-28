@@ -30,7 +30,7 @@ afterAll(async () => {
 });
 
 describe('檢查玩家id查詢功能', () => {
-    test.only('點擊依玩家ID查詢', async () => {
+    test('點擊依玩家ID查詢', async () => {
         const xpathForsearch = "//*[text()='快速搜尋']";
 
         // 等待元素出現
@@ -68,7 +68,7 @@ describe('檢查玩家id查詢功能', () => {
         expect(playidsearch).toBeTruthy();
         assert.equal(playidsearch, '依玩家ID查詢', 'playidsearch text is incorrect');
     })
-    test.only('檢查麵包屑', async () => {
+    test('檢查麵包屑', async () => {
         const xpath = "//*[text()='依玩家ID查詢']";
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate((xpath) => {
