@@ -38,9 +38,12 @@ npm install date-fns
   npx jest --silent=false __tests__/ag/ag-checksubmenu.test.js 指定檔案跑而且開啟console.log
   npx jest __tests__/xxxxxx.test.js 指定檔案跑
   npx jest 全跑
+  npx jest --silent=false __tests__/ag/ag-quicksearch.test.js -t '點擊依玩家ID查詢' 指定跑檔案內某一個節點，或者用test.only('點擊依玩家ID查詢', async
 
 
 抓彈窗內容的方法
 ---------
 因為彈窗一下子就消失，再出現時找到該div 右鍵duplicate element 這樣就能保留一份下來，讓你慢慢複製css selector
+
+取元素顏色方式 寫在color.test.js上 共有兩種 一種是色碼 一種是rgb
   
