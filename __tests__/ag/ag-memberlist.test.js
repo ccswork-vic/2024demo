@@ -171,10 +171,6 @@ describe('檢查會員清單', () => {
         //點操作
         await page.click("#root > div > div > div > div > main > div > div:nth-child(2) > div > div:nth-child(2) > div > div > div.ant-table-wrapper.css-1r287do > div > div > div > div > div > table > tbody > tr.ant-table-row.ant-table-row-level-0 > td.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first > button");
         await new Promise(resolve => setTimeout(resolve, 2000));
-        //await page.click("body > div:nth-child(2) > div > div.ant-tooltip-content > div > button.ant-btn.css-1r287do.ant-btn-default.ant-btn-sm.m-1.btn-danger > span");
-        //await new Promise(resolve => setTimeout(resolve, 1000));
-        //await page.waitForSelector('body > div:nth-child(2)');
-        //await new Promise(resolve => setTimeout(resolve, 3000));
         const xpathForLock = "//*[text()='鎖 定']";
         const xpathForUnlock = "//*[text()='取消鎖定']";
         // 等待其中一个按钮出现
@@ -357,7 +353,7 @@ describe('檢查會員清單', () => {
         }
         await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保submenu打開
     })
-    test.only('檢查下拉清單，檢查錯誤提示', async () => {
+    test.only('下拉清單過濾限制的使用者，檢查數據正確', async () => {
         const xpath = "//*[text()='會員清單']";
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate((xpath) => {
@@ -370,7 +366,8 @@ describe('檢查會員清單', () => {
         }, xpath);
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(1) > div > div > div > div > div > button > div > span > svg");
-        const xpathFor00 = "//*[text()='限制']";
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const xpathFor00 = "//ul[contains(@class, 'ant-dropdown-menu')]//li[@role='menuitem' and .//span[text()='限制']]";
         await page.waitForFunction((xpath) => {
             const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
             return result.singleNodeValue !== null;
@@ -385,10 +382,29 @@ describe('檢查會員清單', () => {
             }
         }, xpathFor00);
         await new Promise(resolve => setTimeout(resolve, 2000));
-
-        const btn5 = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(2) > div > div > div > div > div > div > button', element => element.textContent.trim());
-        expect(btn5).toBeTruthy();
-        assert.equal(btn5, '00:00', 'text is incorrect');
+        //清除之前帳號
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(2) > div > div > div > div > div > span > span > span > span > svg > path");
+        //點查詢
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(3) > div > div > div > div > div > button");
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        const rows = await page.$$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div:nth-child(2) > div > div > div.ant-table-wrapper.css-1r287do > div > div > div > div > div >table > tbody > tr');
+        expect(rows.length).toBe(6);
+        const userNames = [
+            'vic032522',
+            'vic032523',
+            'vic0410',
+            'vicgu03082',
+            'vic0701',//故意寫錯一個
+            // 添加其他使用者名称
+        ];
+        
+        for (let i = 2; i <= 6; i++) {
+            const selector = `#root > div > div > div > div > main > div > div:nth-child(2) > div > div:nth-child(2) > div > div > div.ant-table-wrapper.css-1r287do > div > div > div > div > div > table > tbody > tr:nth-child(${i}) > td:nth-child(2)`;
+        
+            const userSerial = await page.$eval(selector, cell => cell.textContent.trim());
+        
+            expect(userNames).toContain(userSerial);
+        }
 
     })
 });
