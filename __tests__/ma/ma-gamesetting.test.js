@@ -3,6 +3,7 @@
 //排版文件：Shift + Option + F
 const puppeteer = require('puppeteer');
 const assert = require('assert');
+const sleep = require('/Users/vic/auto_play/__tests__/sleep');
 
 let browser;
 let page;
@@ -51,7 +52,8 @@ describe('檢查玩家id查詢功能', () => {
         }, xpathForsearch);
 
         // 等待submenu打開
-        await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，等待submenu打開
+        //await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，等待submenu打開
+        await sleep(3000);
 
         const xpath = "//*[text()='遊戲列表']";
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -464,6 +466,65 @@ describe('檢查玩家id查詢功能', () => {
         const btn5 = await page.$eval('body > div:nth-child(3) > div > div.ant-modal-wrap.ant-modal-centered > div > div:nth-child(2) > div > div.ant-modal-body > div > div > div > form > div.ant-form-item.mb-4.css-1r287do.ant-form-item-has-success > div > div.ant-col.ant-form-item-control.css-1r287do > div > div > div > div > span.ant-select-selection-item', element => element.textContent.trim());
         expect(btn5).toBeTruthy();
         assert.equal(btn5, 'RMB', 'text is incorrect');
+        
+        // await new Promise(resolve => setTimeout(resolve, 1000));
+        // const returnbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(2) > button > span', element => element.textContent.trim());
+        // expect(returnbtn).toBeTruthy();
+        // assert.equal(returnbtn, '返 回', 'text is incorrect');
+        // const editbetbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div > div > div > div > table > tbody > tr:nth-child(2) > td.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first > button > span', element => element.textContent.trim());
+        // expect(editbetbtn).toBeTruthy();
+        // assert.equal(editbetbtn, '編輯押注設定', 'text is incorrect');
+    })
+    test.only('進入押注設定後，檢查新增押注設定彈窗，按新增按鈕檢查錯誤訊息', async () => {
+        //點新增押注設定 
+        await page.click("#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(1) > button");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        //const currencymsg = await page.$eval('#chips_3', element => element.textContent.trim());
+        const currencymsg = await page.$eval('#chips_3', element => element.value.trim());
+        //console.log(currencymsg); // 輸出獲取的值
+        expect(currencymsg).toBeTruthy();
+        assert.equal(currencymsg, '50.0', ' value is incorrect');
+        //點彈窗內的新增
+        // 點彈窗內的新增 (使用 XPath)
+        const xpathForaddbtn = "//*[text()='新 增']";
+        await page.waitForFunction((xpath) => {
+            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+            return result.singleNodeValue !== null;
+        }, { timeout: 60000 }, xpathForaddbtn);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpathForaddbtn);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        //點彈窗內的儲存
+        //const saveButton = await page.waitForXPath("//button[contains(., '儲 存')]", { timeout: 60000 });
+        //await saveButton.click();
+        const xpathForsavebtn = "//button[contains(., '儲 存')]";
+        await page.waitForFunction((xpath) => {
+            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+            return result.singleNodeValue !== null;
+        }, { timeout: 60000 }, xpathForsavebtn);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpathForsavebtn);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        // await page.click("#currency_list_0 > div");
+        // await new Promise(resolve => setTimeout(resolve, 2000));
+        // const btn5 = await page.$eval('body > div:nth-child(3) > div > div.ant-modal-wrap.ant-modal-centered > div > div:nth-child(2) > div > div.ant-modal-body > div > div > div > form > div.ant-form-item.mb-4.css-1r287do.ant-form-item-has-success > div > div.ant-col.ant-form-item-control.css-1r287do > div > div > div > div > span.ant-select-selection-item', element => element.textContent.trim());
+        // expect(btn5).toBeTruthy();
+        // assert.equal(btn5, 'RMB', 'text is incorrect');
         
         // await new Promise(resolve => setTimeout(resolve, 1000));
         // const returnbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(2) > button > span', element => element.textContent.trim());
