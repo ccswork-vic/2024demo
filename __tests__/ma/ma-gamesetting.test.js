@@ -30,7 +30,7 @@ afterAll(async () => {
     await browser.close();
 });
 
-describe('檢查玩家id查詢功能', () => {
+describe('檢查遊戲列表', () => {
     test.only('點擊遊戲設定', async () => {
         const xpathForsearch = "//*[text()='遊戲設定']";
 
@@ -212,42 +212,6 @@ describe('檢查玩家id查詢功能', () => {
         expect(operate).toBeTruthy();
         assert.equal(operate, '操作', 'text is incorrect');
     })
-    test('輸入存在玩家id，滾動畫面並檢查使用者名稱', async () => {
-        const xpath = "//*[text()='依玩家ID查詢']";
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.evaluate((xpath) => {
-            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (element) {
-                element.click();
-            } else {
-                throw new Error(`Element with XPath ${xpath} not found.`);
-            }
-        }, xpath);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-success > span > span > span > svg");
-        await page.type('#userId', 'vic0522');
-        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        //滾動往下特定元素今日輸贏統計
-        const element1 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(4) > h3');
-        await element1.scrollIntoView();
-        await new Promise(resolve => setTimeout(resolve, 1000));;
-        //滾動往上特定元素會員資料
-        const element2 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > h3');
-        await element2.scrollIntoView();
-        await new Promise(resolve => setTimeout(resolve, 1000));;
-        //滾動往上特定元素會員資料
-        const element3 = await page.$('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(3) > div > canvas');
-        await element3.scrollIntoView();
-        await new Promise(resolve => setTimeout(resolve, 1000));;
-
-
-        const userdata = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div:nth-child(1) > div > div > div:nth-child(2) > span', element => element.textContent.trim());
-        expect(userdata).toBeTruthy();
-        assert.equal(userdata, 'vic0522(RMB)', 'userdata element text is incorrect');
-
-    })
     test.only('切換成簡體，檢查奔馳寶馬，在切換回繁體', async () => {
         const xpathForchangelanguage = '//*[@data-trigger-id="dropdown-language-i"]';
 
@@ -376,7 +340,31 @@ describe('檢查玩家id查詢功能', () => {
         }
         await new Promise(resolve => setTimeout(resolve, 1000)); 
     })
+});
+describe('押注設定', () => {
     test.only('點擊押注設定', async () => {
+        const xpathForsearch = "//*[text()='遊戲設定']";
+
+        // 等待元素出現
+        await page.waitForFunction((xpath) => {
+            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+            return result.singleNodeValue !== null;
+        }, { timeout: 60000 }, xpathForsearch);
+
+        // 點元素
+        await page.evaluate((xpath) => {
+            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+            const element = result.singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpathForsearch);
+
+        // 等待submenu打開
+        //await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，等待submenu打開
+        await sleep(3000);
         const xpath = "//*[text()='遊戲列表']";
         await new Promise(resolve => setTimeout(resolve, 1000));
         await page.evaluate((xpath) => {
@@ -423,11 +411,11 @@ describe('檢查玩家id查詢功能', () => {
         const editbetbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div > div > div > div > table > tbody > tr:nth-child(2) > td.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first > button > span', element => element.textContent.trim());
         expect(editbetbtn).toBeTruthy();
         assert.equal(editbetbtn, '編輯押注設定', 'text is incorrect');
+        await new Promise(resolve => setTimeout(resolve, 2000));
     })
     test.only('進入押注設定後，檢查新增押注設定彈窗，切換二次確認', async () => {
         //點新增押注設定 
         await page.click("#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(1) > button");
-        await new Promise(resolve => setTimeout(resolve, 2000));
         const msg = await page.$eval('body > div:nth-child(3) > div > div.ant-modal-wrap.ant-modal-centered > div > div:nth-child(2) > div > div.ant-modal-body > div > div > small', element => element.textContent.trim());
         expect(msg).toBeTruthy();
         assert.equal(msg, '最少需要設定五個不重複籌碼，最多沒有上限，需視遊戲端可供顯示幾個籌碼', ' text is incorrect');
@@ -476,6 +464,182 @@ describe('檢查玩家id查詢功能', () => {
         // assert.equal(editbetbtn, '編輯押注設定', 'text is incorrect');
     })
     test.only('進入押注設定後，檢查新增押注設定彈窗，按新增按鈕檢查錯誤訊息', async () => {
+        //點新增押注設定 
+        await page.click("#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(1) > button");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        //const currencymsg = await page.$eval('#chips_3', element => element.textContent.trim());
+        const currencymsg = await page.$eval('#chips_3', element => element.value.trim());
+        //console.log(currencymsg); // 輸出獲取的值
+        expect(currencymsg).toBeTruthy();
+        assert.equal(currencymsg, '50.0', ' value is incorrect');
+        //點彈窗內的新增
+        // 點彈窗內的新增 (使用 XPath)
+        const xpathForaddbtn = "//*[text()='新 增']";
+        await page.waitForFunction((xpath) => {
+            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+            return result.singleNodeValue !== null;
+        }, { timeout: 60000 }, xpathForaddbtn);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpathForaddbtn);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        //點彈窗內的儲存
+        const xpathForsavebtn = "//button[contains(., '儲 存')]";
+        await page.waitForFunction((xpath) => {
+            const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+            return result.singleNodeValue !== null;
+        }, { timeout: 60000 }, xpathForsavebtn);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpathForsavebtn);
+        await sleep(1000);
+        const popuperrormsg = await page.$eval('.ant-form-item-explain-error', element => element.textContent.trim());
+        expect(popuperrormsg).toBeTruthy();
+        assert.equal(popuperrormsg, 'RMB', 'text is incorrect');
+        
+        // await new Promise(resolve => setTimeout(resolve, 1000));
+        // const returnbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(2) > button > span', element => element.textContent.trim());
+        // expect(returnbtn).toBeTruthy();
+        // assert.equal(returnbtn, '返 回', 'text is incorrect');
+        // const editbetbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div > div > div > div > table > tbody > tr:nth-child(2) > td.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first > button > span', element => element.textContent.trim());
+        // expect(editbetbtn).toBeTruthy();
+        // assert.equal(editbetbtn, '編輯押注設定', 'text is incorrect');
+    })
+    test('不輸入玩家id，檢查錯誤提示', async () => {
+        const xpath = "//*[text()='依玩家ID查詢']";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-1r287do.ant-input-outlined.ant-input-status-success > span > span > span > svg");
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > div > form > div > div > div > div > div > span > span > span.ant-input-group-addon > button > span");
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const noinputuserdata = await page.$eval('#userId_help > div', element => element.textContent.trim());
+        expect(noinputuserdata).toBeTruthy();
+        assert.equal(noinputuserdata, '請輸入玩家ID', 'online player element text is incorrect');
+
+    })
+});
+describe('Payment 設定', () => {
+    test.only('點擊payment設定', async () => {
+        const xpath = "//*[text()='遊戲列表']";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        //點payment設定
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(2) > div > div > div > div > div > div > div > div > div > div > table > tbody > tr.ant-table-row.ant-table-row-level-0 > td.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first > div > div:nth-child(2) > button");
+        //await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div.ant-col.ant-col-4.css-1r287do > div > div > div > div > div > button > span");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const betsettinglist = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(1) > h2', element => element.textContent.trim());
+        expect(betsettinglist).toBeTruthy();
+        assert.equal(betsettinglist, '押注設定列表', ' text is incorrect');
+    })
+    test('進入押注設定後，檢查表格內容', async () => {
+        
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const gameName = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div > div > div > div > table > thead > tr > th:nth-child(1) > span', element => element.textContent.trim());
+        expect(gameName).toBeTruthy();
+        assert.equal(gameName, '遊戲名稱', 'text is incorrect');
+        const Domain = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div > div > div > div > table > thead > tr > th:nth-child(2) > span', element => element.textContent.trim());
+        expect(Domain).toBeTruthy();
+        assert.equal(Domain, '域名', 'text is incorrect');
+        const Currency = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div > div > div > div > table > thead > tr > th:nth-child(3) > span', element => element.textContent.trim());
+        expect(Currency).toBeTruthy();
+        assert.equal(Currency, '幣別', 'text is incorrect');
+        const operate = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first > span', element => element.textContent.trim());
+        expect(operate).toBeTruthy();
+        assert.equal(operate, '操作', 'text is incorrect');
+    })
+    test('進入押注設定後，檢查按鈕', async () => {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const addbetbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(1) > button > span', element => element.textContent.trim());
+        expect(addbetbtn).toBeTruthy();
+        assert.equal(addbetbtn, '新增押注設定', 'text is incorrect');
+        const returnbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(2) > button > span', element => element.textContent.trim());
+        expect(returnbtn).toBeTruthy();
+        assert.equal(returnbtn, '返 回', 'text is incorrect');
+        const editbetbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div > div > div > div > table > tbody > tr:nth-child(2) > td.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first > button > span', element => element.textContent.trim());
+        expect(editbetbtn).toBeTruthy();
+        assert.equal(editbetbtn, '編輯押注設定', 'text is incorrect');
+    })
+    test('進入押注設定後，檢查新增押注設定彈窗，切換二次確認', async () => {
+        //點新增押注設定 
+        await page.click("#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(1) > button");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const msg = await page.$eval('body > div:nth-child(3) > div > div.ant-modal-wrap.ant-modal-centered > div > div:nth-child(2) > div > div.ant-modal-body > div > div > small', element => element.textContent.trim());
+        expect(msg).toBeTruthy();
+        assert.equal(msg, '最少需要設定五個不重複籌碼，最多沒有上限，需視遊戲端可供顯示幾個籌碼', ' text is incorrect');
+        //切換二次確認
+        const twocheckc = await page.$eval('#confirmToggle > span > span.ant-switch-inner-unchecked', element => element.textContent.trim());
+        expect(twocheckc).toBeTruthy();
+        assert.equal(twocheckc, '關閉', 'text is incorrect');
+        //切換二次確認
+        await page.click("#confirmToggle");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const twochecko = await page.$eval('#confirmToggle > span > span.ant-switch-inner-checked', element => element.textContent.trim());
+        expect(twochecko).toBeTruthy();
+        assert.equal(twochecko, '開啟', ' text is incorrect');
+        
+        // await new Promise(resolve => setTimeout(resolve, 1000));
+        // const returnbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(2) > button > span', element => element.textContent.trim());
+        // expect(returnbtn).toBeTruthy();
+        // assert.equal(returnbtn, '返 回', 'text is incorrect');
+        // const editbetbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div > div > div > div > table > tbody > tr:nth-child(2) > td.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first > button > span', element => element.textContent.trim());
+        // expect(editbetbtn).toBeTruthy();
+        // assert.equal(editbetbtn, '編輯押注設定', 'text is incorrect');
+    })
+    test('進入押注設定後，檢查新增押注設定彈窗，選擇設置幣別', async () => {
+        //點新增押注設定 
+        await page.click("#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(1) > button");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const currencymsg = await page.$eval('body > div:nth-child(3) > div > div.ant-modal-wrap.ant-modal-centered > div > div:nth-child(2) > div > div.ant-modal-body > div > div > div > form > div:nth-child(2) > div > div.ant-col.ant-form-item-label.css-1r287do > label', element => element.textContent.trim());
+        expect(currencymsg).toBeTruthy();
+        assert.equal(currencymsg, '選擇設置幣別', ' text is incorrect');
+        //點設置幣別下拉箭頭
+        await page.click("body > div:nth-child(3) > div > div.ant-modal-wrap.ant-modal-centered > div > div:nth-child(2) > div > div.ant-modal-body > div > div > div > form > div:nth-child(2) > div > div.ant-col.ant-form-item-control.css-1r287do > div > div > div > div");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        await page.click("#currency_list_0 > div");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const btn5 = await page.$eval('body > div:nth-child(3) > div > div.ant-modal-wrap.ant-modal-centered > div > div:nth-child(2) > div > div.ant-modal-body > div > div > div > form > div.ant-form-item.mb-4.css-1r287do.ant-form-item-has-success > div > div.ant-col.ant-form-item-control.css-1r287do > div > div > div > div > span.ant-select-selection-item', element => element.textContent.trim());
+        expect(btn5).toBeTruthy();
+        assert.equal(btn5, 'RMB', 'text is incorrect');
+        
+        // await new Promise(resolve => setTimeout(resolve, 1000));
+        // const returnbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(2) > button > span', element => element.textContent.trim());
+        // expect(returnbtn).toBeTruthy();
+        // assert.equal(returnbtn, '返 回', 'text is incorrect');
+        // const editbetbtn = await page.$eval('#root > div > div > div > div > main > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div > div > div > div > table > tbody > tr:nth-child(2) > td.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first > button > span', element => element.textContent.trim());
+        // expect(editbetbtn).toBeTruthy();
+        // assert.equal(editbetbtn, '編輯押注設定', 'text is incorrect');
+    })
+    test('進入押注設定後，檢查新增押注設定彈窗，按新增按鈕檢查錯誤訊息', async () => {
         //點新增押注設定 
         await page.click("#root > div > div > div > div > main > div > div > div > div:nth-child(1) > div > div:nth-child(1) > button");
         await new Promise(resolve => setTimeout(resolve, 2000));
