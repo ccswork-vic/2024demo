@@ -3,6 +3,8 @@
 //排版文件：Shift + Option + F
 const puppeteer = require('puppeteer');
 const assert = require('assert');
+//const fetch = require('node-fetch');
+const fetch = require('node-fetch');
 
 let browser;
 let page;
@@ -147,6 +149,54 @@ describe('檢查會員清單', () => {
         assert.equal(userdata, 'RMB', 'userdata element text is incorrect');
 
     })
+    test.only('輸入存在玩家id，並檢查使用者幣別，對比api回傳值', async () => {
+        const xpath = "//*[text()='會員清單']";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(2) > div > div > div > div > div > span > span > span > span > svg > path");
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(2) > div > div > div > div > div > span");
+        await page.type('#fullAccount', 'vic0701');
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(3) > div > div > div > div > div > button");
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    
+        const userdata = await page.$eval('#root > div > div > div > div > main > div > div:nth-child(2) > div > div:nth-child(2) > div > div > div.ant-table-wrapper.css-1r287do > div > div > div > div > div > table > tbody > tr.ant-table-row.ant-table-row-level-0 > td:nth-child(4) > span > span', element => element.textContent.trim());
+        expect(userdata).toBeTruthy();
+        assert.equal(userdata, 'RMB', 'userdata element text is incorrect');
+    
+        // 發送API請求
+        const response = await fetch('https://test-admin-serv.zestplay.co/api/account/getAccountInfo?account=vic0701', {
+            method: 'GET', // 根據API需求調整HTTP方法
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InZpY2FnIiwicGVybWlzc2lvbnMiOltdLCJpYXQiOjE3MjEyNjkxMzAsImV4cCI6MTcyMTI3MjczMH0.rF9x0Wd91RPmEuCF8WXMoyJyWcsd3WdUm2kqRuYTXFo`
+            }
+        });
+        const apiData = await response.json();
+        // 打印API返回的數據
+        console.log(apiData);
+
+    // 確保accountInfo和currencyList存在
+        expect(apiData.accountInfo).toBeTruthy();
+        expect(apiData.accountInfo.currencyList).toBeTruthy();
+        expect(apiData.accountInfo.currencyList.length).toBeGreaterThan(0);
+    
+        // 獲取API返回的貨幣
+        const apiCurrency = apiData.accountInfo.currencyList[0].currency;
+        expect(apiCurrency).toBeTruthy();
+        assert.equal(apiCurrency, 'RMB', 'API currency data is incorrect');
+    
+        // 比較API返回的值與頁面上的值
+        assert.equal(userdata, apiCurrency, 'Page display currency does not match API currency');
+    });
     test.only('輸入存在玩家id，鎖定/取消鎖定使用者', async () => {
         const xpath = "//*[text()='會員清單']";
         await new Promise(resolve => setTimeout(resolve, 1000));
