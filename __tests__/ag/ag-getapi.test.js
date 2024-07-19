@@ -105,7 +105,7 @@ test.only('檢查麵包屑', async () => {
     expect(Breadcrumbs).toContain('會員管理');
     expect(Breadcrumbs).toContain('會員清單');
 })
-test.only('檢查輸入框預設文字', async () => {
+test('檢查輸入框預設文字', async () => {
     const xpath = "//*[text()='會員清單']";
     await new Promise(resolve => setTimeout(resolve, 1000));
     await page.evaluate((xpath) => {
@@ -121,7 +121,7 @@ test.only('檢查輸入框預設文字', async () => {
     expect(placeholderText).toBeTruthy();
     assert.equal(placeholderText, '請輸入指定帳號', 'playidsearch text is incorrect');
 })
-test.only('輸入不存在玩家id，檢查錯誤提示', async () => {
+test('輸入不存在玩家id，檢查錯誤提示', async () => {
     const xpath = "//*[text()='會員清單']";
     await new Promise(resolve => setTimeout(resolve, 1000));
     await page.evaluate((xpath) => {
