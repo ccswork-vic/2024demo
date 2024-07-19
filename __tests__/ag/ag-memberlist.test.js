@@ -21,9 +21,29 @@ beforeAll(async () => {
     await page.goto('https://test-agent.zestplay.co/login', { waitUntil: "domcontentloaded" });
     await page.waitForSelector('#root > div > div > div > div > form > div > div:nth-child(4) > button', { timeout: 60000 });
 
-    // 登入
+    // 輸帳密
     await page.type('#account', 'vicag');
     await page.type('#password', 'aaaa1234');
+
+    // 設置請求攔截器
+    await page.setRequestInterception(true);
+    page.on('request', (request) => {
+        request.continue();
+    });
+    page.on('response', async (response) => {
+        const url = response.url();
+        const requestMethod = response.request().method();
+        if (url === 'https://test-admin-serv.zestplay.co/api/postLogin' && requestMethod === 'POST') {
+            try {
+                const data = await response.json();
+                token = data.ticket;
+                console.log('Token captured:', token);
+            } catch (err) {
+                console.error('Error capturing token:', err);
+            }
+        }
+    });
+    //點登入
     await page.click("#root > div > div > div > div > form > div > div:nth-child(4) > button");
     await page.waitForSelector('#root > div > div > header > div._icon_iyfbn_38.ml-auto.flex.items-center.justify-center > div.ml-4.cursor-pointer.font-bold > button > span.ml-1', { timeout: 60000 });
 });
@@ -164,7 +184,7 @@ describe('檢查會員清單', () => {
     
         await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(2) > div > div > div > div > div > span > span > span > span > svg > path");
         await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(2) > div > div > div > div > div > span");
-        await page.type('#fullAccount', 'vic0701');
+        await page.type('#fullAccount', 'vic032523');
         await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(3) > div > div > div > div > div > button");
         await new Promise(resolve => setTimeout(resolve, 1000));
     
@@ -173,18 +193,18 @@ describe('檢查會員清單', () => {
         assert.equal(userdata, 'RMB', 'userdata element text is incorrect');
     
         // 發送API請求
-        const response = await fetch('https://test-admin-serv.zestplay.co/api/account/getAccountInfo?account=vic0701', {
+        const response = await fetch('https://test-admin-serv.zestplay.co/api/account/getAccountInfo?account=vic032523', {
             method: 'GET', // 根據API需求調整HTTP方法
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InZpY2FnIiwicGVybWlzc2lvbnMiOltdLCJpYXQiOjE3MjEyNjkxMzAsImV4cCI6MTcyMTI3MjczMH0.rF9x0Wd91RPmEuCF8WXMoyJyWcsd3WdUm2kqRuYTXFo`
+                'Authorization': `Bearer ${token}`
             }
         });
         const apiData = await response.json();
         // 打印API返回的數據
         console.log(apiData);
 
-    // 確保accountInfo和currencyList存在
+        // 確保accountInfo和currencyList存在
         expect(apiData.accountInfo).toBeTruthy();
         expect(apiData.accountInfo.currencyList).toBeTruthy();
         expect(apiData.accountInfo.currencyList.length).toBeGreaterThan(0);
@@ -196,6 +216,57 @@ describe('檢查會員清單', () => {
     
         // 比較API返回的值與頁面上的值
         assert.equal(userdata, apiCurrency, 'Page display currency does not match API currency');
+    });
+    test.only('檢查頁面顯示的餘額與API返回值是否一致', async () => {
+        const xpath = "//*[text()='會員清單']";
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await page.evaluate((xpath) => {
+            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (element) {
+                element.click();
+            } else {
+                throw new Error(`Element with XPath ${xpath} not found.`);
+            }
+        }, xpath);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(2) > div > div > div > div > div > span > span > span > span > svg > path");
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(2) > div > div > div > div > div > span");
+        await page.type('#fullAccount', 'vic0522');
+        await page.click("#root > div > div > div > div > main > div > div:nth-child(1) > div > div > form > div > div:nth-child(3) > div > div > div > div > div > button");
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    
+        // 發送API請求
+        const response = await fetch('https://test-admin-serv.zestplay.co/api/account/getAccountInfo?account=vic0522', {
+            method: 'GET', // 根據API需求調整HTTP方法
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const apiData = await response.json();
+        // 印出API返回的數據
+        console.log(apiData);
+    
+        // 確定accountInfo和currencyList存在
+        expect(apiData.accountInfo).toBeTruthy();
+        expect(apiData.accountInfo.currencyList).toBeTruthy();
+        expect(apiData.accountInfo.currencyList.length).toBeGreaterThan(0);
+    
+        // 拿API返回的Balance
+        const apiBalance = apiData.accountInfo.currencyList[0].balance;
+        expect(apiBalance).toBeTruthy();
+        console.log(apiBalance);
+    
+        // 比較API返回的值與頁面上的值
+        const pageBalance = await page.$eval('.text-small.text-nowrap .block .plus.my-0', element => element.textContent.trim());
+        expect(pageBalance).toBeTruthy();
+        console.log(pageBalance);
+        // 將API的餘額格式化為與頁面一致的格式
+        const formattedApiBalance = `$${parseFloat(apiBalance).toLocaleString('en-US', { minimumFractionDigits: 3 })}`;
+        console.log(formattedApiBalance);
+    
+        assert.equal(pageBalance, formattedApiBalance, 'Page display balance does not match API balance');
     });
     test.only('輸入存在玩家id，鎖定/取消鎖定使用者', async () => {
         const xpath = "//*[text()='會員清單']";
