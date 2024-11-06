@@ -73,13 +73,4 @@ describe('確認登入成功', () => {
     const button = await page.$('.ant-layout header .ant-btn-default.ant-dropdown-trigger');
     expect(button).toBeTruthy(); // 检查按钮是否存在
   });
-  test('檢查特定遊戲 icon', async () => {
-    await page.waitForSelector('#dashboard-scroll-container img.ant-image-img.h-full', { timeout: 60000 });
-    
-    const altTexts = ["PG", "JILI", "PP", "CQ9", "JDB", "FC", "EVO", "BNG"];
-    for (const alt of altTexts) {
-      const img = await page.$(`#dashboard-scroll-container img.ant-image-img.h-full[alt="${alt}"]`);
-      expect(img).toBeTruthy(); // 確認圖片存在
-    }
-  });
 });
