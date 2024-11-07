@@ -10,7 +10,7 @@ beforeAll(async () => {
 
   browser = await puppeteer.launch({
     headless: false, // 设置为 true 则在无头模式下运行测试
-    defaultViewport: null // 关闭默认视窗
+    defaultViewport: false // 关闭默认视窗
   });
   page = await browser.newPage();
   await page.goto('https://dev.botan888.co/casino/home?modal=auth&tab=login', { waitUntil: "domcontentloaded" });
