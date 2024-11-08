@@ -67,4 +67,90 @@ describe('檢查首頁基本元素', () => {
       expect(bannerImage).toBeTruthy(); // 確認圖片存在
     }
   });
-});
+  test('檢查贊助商圖片', async () => {
+    await page.waitForSelector('._image_hke5k_18', { timeout: 60000 });
+    
+    const Sponsorssrc = [
+      "/assets/gaming-CBVzKF2H.png",
+      "/assets/gaming-1-BOzmrkrN.png",
+      "/assets/gaming-2-D49F9KYV.png",
+    ];
+  
+    for (const src of Sponsorssrc) {
+      const SponsorsImage = await page.$(`img._image_hke5k_18[src="${src}"]`);
+      expect(SponsorsImage).toBeTruthy(); // 確認圖片存在
+    }
+  });
+  test('檢查遊戲商圖片', async () => {
+    await page.waitForSelector('._image_jaitl_18', { timeout: 60000 });
+    
+    const gameproviderImages = await page.$$('._image_jaitl_18');
+    expect(gameproviderImages.length).toBe(8);
+  });
+  test('檢查底下連結', async () => {
+    await page.waitForSelector('._list_17qkg_11', { timeout: 60000 });
+  
+    const expectedTexts = [
+      "สล็อต",
+      "Gamble Aware",
+      "คำถามที่พบบ่อย",
+      "เงื่อนไขการให้บริการ"
+    ];
+  
+    // 提取 _list_17qkg_11 中的所有子元素的文本
+    const listItemsTextContent = await page.$$eval('._list_17qkg_11 > *', elements =>
+      elements.map(el => el.textContent.trim())
+    );
+
+    // 確認每個預期的文本是否出現在 listItemsTextContent 中
+    for (const text of expectedTexts) {
+      const found = listItemsTextContent.some(item => item.includes(text));
+      expect(found).toBeTruthy(); // 確認文本存在
+    }
+  });
+  test('檢查社群軟體區塊是否存在', async () => {
+    await page.waitForSelector('._community-icon_17qkg_42', { timeout: 60000 });
+    const communityAlts = [
+      "facebook",
+      "line",
+      "telegram",
+    ];
+    for (const altText of communityAlts) {
+      const communityalt = await page.$(`._community-icon_17qkg_42[alt="${altText}"]`);
+      expect(communityalt).toBeTruthy(); // 確認fb line telegram 存在
+    }
+  });
+  test('檢查 logo 和版權聲明', async () => {
+    // 等待元素加載
+    await page.waitForSelector('.flex.flex-col.items-center', { timeout: 60000 });
+  
+    // 檢查 logo 的 src 是否存在
+    const logoImage = await page.$('img[src="/assets/logo-D7mm_G3_.png"]');
+    expect(logoImage).toBeTruthy(); // 確認圖片存在
+  
+    // 檢查版權聲明的文本是否正確
+    const copyrightText = await page.$eval('small.mb-2', el => el.textContent.trim());
+    expect(copyrightText).toBe('© 2024 Casino.com | All Rights Reserved');
+  });
+  test.skip('檢查宣告區塊是否存在', async () => {
+    await page.waitForSelector('.pb-10._remind-text_aq2p6_1', { timeout: 60000 });
+    const expectedTexts = [
+      "casino ดำเนินการภายใต้ใบอนุญาตแบบไม่ผูกขาดที่ Small House B.V",
+      "ซึ่งเป็นบริษัทที่จดทะเบียนใน Curacao หมายเลขบริษัท 163888 และมีที่อยู่จดทะเบียนที่:",
+      "Zuikertuintjeweg Z/N, Curacao"
+    ];
+  
+    // 提取 .pb-10._remind-text_aq2p6_1 中的所有子元素的文本
+    const listItemsTextContent = await page.$$eval('.pb-10._remind-text_aq2p6_1 > *', elements =>
+      elements.map(el => el.textContent.trim())
+    );
+
+    // 確認每個預期的文本是否出現在 listItemsTextContent 中
+    for (const text of expectedTexts) {
+      const found = listItemsTextContent.some(item => item.includes(text));
+      expect(found).toBeTruthy(); // 確認文本存在
+    }
+  });
+  });
+
+ 
