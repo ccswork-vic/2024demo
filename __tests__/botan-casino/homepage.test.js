@@ -1,6 +1,7 @@
 // 指定跑哪一個檔案 npx jest __tests__/xxxxxx.test.js
 const puppeteer = require('puppeteer');
 const assert = require('assert');
+const { bannersrc, bannerAlts } = require('../bannerSources');
 
 let browser;
 let page;
@@ -41,12 +42,12 @@ describe('檢查首頁基本元素', () => {
 
   test('檢查多張 banner 圖片是否存在', async () => {
     await page.waitForSelector('.swiper-wrapper img._banner-image_5t1u6_75', { timeout: 60000 });
-    const bannerAlts = [
-      "สมัครสมาชิก รับ 1,000",
-      "โปรโมชั่นฝากเงินครั้งแรก",
-      "ฝากครั้งที่สอง รับโบนัส 50% เพิ่มโอกาสชนะ",
-      "รับเงินรางวัล $150,000 ทุกสัปดาห์!",
-    ];
+    // const bannerAlts = [
+    //   "สมัครสมาชิก รับ 1,000",
+    //   "โปรโมชั่นฝากเงินครั้งแรก",
+    //   "ฝากครั้งที่สอง รับโบนัส 50% เพิ่มโอกาสชนะ",
+    //   "รับเงินรางวัล $150,000 ทุกสัปดาห์!",
+    // ];
     for (const altText of bannerAlts) {
       const bannerImage = await page.$(`img._banner-image_5t1u6_75[alt="${altText}"]`);
       expect(bannerImage).toBeTruthy(); // 確認圖片存在
@@ -55,12 +56,12 @@ describe('檢查首頁基本元素', () => {
   test('檢查多張 banner 圖片連結', async () => {
     await page.waitForSelector('.swiper-wrapper img._banner-image_5t1u6_75', { timeout: 60000 });
     
-    const bannersrc = [
-      "https://dev.botan888.co/images/Promotion_bonus100percent_TH_900.webp",
-      "https://dev.botan888.co/images/Promotion_seconddepositbonus_TH_900_v2.webp",
-      "/assets/banner1-C5Qfv-L4.webp",
-      "/assets/banner2-CmT3qWpg.webp",
-    ];
+    // const bannersrc = [
+    //   "https://dev.botan888.co/images/Promotion_bonus100percent_TH_900.webp",
+    //   "https://dev.botan888.co/images/Promotion_seconddepositbonus_TH_900_v2.webp",
+    //   "/assets/banner1-C5Qfv-L4.webp",
+    //   "/assets/banner2-CmT3qWpg.webp",
+    // ];
   
     for (const src of bannersrc) {
       const bannerImage = await page.$(`img._banner-image_5t1u6_75[src="${src}"]`);
