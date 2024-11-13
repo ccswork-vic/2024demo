@@ -42,7 +42,6 @@ describe('確認登入彈窗停留在頁面上', () => {
       expect(popup).toBeTruthy(); // 检查按钮是否存在
     });
     test('檢查登入彈窗的標題', async () => {
-      //const ForgotpwdText = await page.$eval('body > div:nth-child(2) > div > div.ant-modal-wrap.ant-modal-centered > div > div:nth-child(2) > div > div.ant-modal-header', element => element.textContent.trim());
       const ForgotpwdText = await page.$eval('body > div:nth-child(2) > div > div.ant-modal-wrap.ant-modal-centered > div > div:nth-child(1) > div > div.ant-modal-header', element => element.textContent.trim());
       assert.equal(ForgotpwdText, 'เข้าสู่ระบบ', 'text is incorrect');
     });
@@ -60,37 +59,94 @@ describe('確認登入彈窗停留在頁面上', () => {
       assert.equal(ForgotpwdText, 'ยังไม่มีบัญชี?', 'text is incorrect');
     });
   });
-  
 describe('更改輸入帳號，再次嘗試登入失敗', () => {
     test('檢查登入失敗提示', async () => {
       await page.waitForFunction(() => !document.querySelector('div.ant-notification-notice-description'));//等待錯誤訊息關閉
-      await page.click('#validateOnly_account', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸數的帳號選起來
+      await page.click('#validateOnly_account', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸入的帳號選起來
       await page.keyboard.press('Backspace'); // 刪除選中的內容
       await page.type('#validateOnly_account', '099911111999999');
+      await page.click('#validateOnly_password', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸入的密碼選起來
+      await page.keyboard.press('Backspace'); // 刪除選中的內容
       await page.type('#validateOnly_password', 'aaaa12345');
       await page.click("#validateOnly > div.ant-form-item.mb-0.css-vcrba0 > div > div > div > div > button");
       await page.waitForSelector('div > div > div > div > div.ant-notification-notice-description', { timeout: 60000 });
       const WelcomeText = await page.$eval('div > div > div > div > div.ant-notification-notice-description', element => element.textContent.trim());
       assert.equal(WelcomeText, 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (11020001)', 'Admin setting element text is incorrect');
-
-       // 等待彈窗並加上時間讓他完全顯示
-       await new Promise(resolve => setTimeout(resolve, 4000)); 
+        // 等待彈窗並加上時間讓他完全顯示
+      await new Promise(resolve => setTimeout(resolve, 2000)); 
     });
   });
-
-  describe('輸入鎖定帳號，檢查提示訊息', () => {
+describe('輸入鎖定帳號，檢查提示訊息', () => {
     test('檢查登入失敗提示', async () => {
       await page.waitForFunction(() => !document.querySelector('div.ant-notification-notice-description')); //等待錯誤訊息關閉
-      await page.click('#validateOnly_account', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸數的帳號選起來
+      await page.click('#validateOnly_account', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸入的帳號選起來
       await page.keyboard.press('Backspace'); // 刪除選中的內容
-      await page.type('#validateOnly_account', '0911111111');
+      await page.type('#validateOnly_account', '0999111111');
+      await page.click('#validateOnly_password', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸入的密碼選起來
+      await page.keyboard.press('Backspace'); // 刪除選中的內容
       await page.type('#validateOnly_password', 'fkiorgkoekr');
       await page.click("#validateOnly > div.ant-form-item.mb-0.css-vcrba0 > div > div > div > div > button");
       await page.waitForSelector('div > div > div > div > div.ant-notification-notice-description', { timeout: 60000 });
       const WelcomeText = await page.$eval('div > div > div > div > div.ant-notification-notice-description', element => element.textContent.trim());
       assert.equal(WelcomeText, 'บัญชีคุณถูกล็อก กรุณาติดต่อฝ่ายบริการเพื่อดำเนินการแก้ไข (11020004)', 'Admin setting element text is incorrect');
-
-       // 等待彈窗並加上時間讓他完全顯示
-       await new Promise(resolve => setTimeout(resolve, 4000)); 
+        // 等待彈窗並加上時間讓他完全顯示
+      await new Promise(resolve => setTimeout(resolve, 2000)); 
+    });
+  });
+describe('輸入未過otp驗證帳號，檢查提示訊息', () => {
+    test('檢查登入失敗提示', async () => {
+      await page.waitForFunction(() => !document.querySelector('div.ant-notification-notice-description')); //等待錯誤訊息關閉
+      await page.click('#validateOnly_account', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸入的帳號選起來
+      await page.keyboard.press('Backspace'); // 刪除選中的內容
+      await page.type('#validateOnly_account', '0999111117');
+      await page.click('#validateOnly_password', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸入的密碼選起來
+      await page.keyboard.press('Backspace'); // 刪除選中的內容
+      await page.type('#validateOnly_password', 'aaaa1234');
+      await page.click("#validateOnly > div.ant-form-item.mb-0.css-vcrba0 > div > div > div > div > button");
+      await page.waitForSelector('div > div > div > div > div.ant-notification-notice-description', { timeout: 60000 });
+      const WelcomeText = await page.$eval('div > div > div > div > div.ant-notification-notice-description', element => element.textContent.trim());
+      assert.equal(WelcomeText, 'ผู้ใช้ยังไม่ได้รับการยืนยันบัญชี กรุณายืนยันบัญชี (11020003)', 'Admin setting element text is incorrect');
+  
+         // 等待彈窗並加上時間讓他完全顯示
+        await new Promise(resolve => setTimeout(resolve, 2000)); 
+    });
+    test('檢查otp彈窗存在', async () => {
+      await page.waitForSelector('body > div:nth-child(2) > div > div.ant-modal-wrap.ant-modal-centered > div > div:nth-child(1) > div');
+      const popup = await page.$('body > div:nth-child(2) > div > div.ant-modal-wrap.ant-modal-centered > div > div:nth-child(1) > div');
+      expect(popup).toBeTruthy(); // 检查按钮是否存在
+    });
+    test('檢查otp彈窗的標題', async () => {
+      const ForgotpwdText = await page.$eval('body > div:nth-child(2) > div > div.ant-modal-wrap.ant-modal-centered > div > div:nth-child(1) > div > div.ant-modal-header', element => element.textContent.trim());
+      assert.equal(ForgotpwdText, 'ยืนยันหมายเลขโทรศัพท์', 'text is incorrect');
+    });
+    test('檢查otp彈窗的送出按鈕', async () => {
+      await page.waitForSelector('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(2) > button');
+      const loginbtn = await page.$('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(2) > button');
+      expect(loginbtn).toBeTruthy(); // 检查按钮是否存在
+    });
+    test('檢查otp彈窗的送出按鈕文字', async () => {
+      await page.waitForSelector('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(2) > button', { timeout: 10000 });
+      const SendbtnText = await page.$eval('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(2) > button', element => element.textContent.trim());
+      assert.equal(SendbtnText, 'ส่ง', 'text is incorrect');
+    });
+    test('檢查otp彈窗的重發驗證碼按鈕', async () => {
+      await page.waitForSelector('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(1) > button');
+      const loginbtn = await page.$('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(1) > button');
+      expect(loginbtn).toBeTruthy(); // 检查按钮是否存在
+    });
+    test('檢查otp彈窗的重發驗證碼按鈕文字', async () => {
+      await page.waitForSelector('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(1) > button', { timeout: 10000 });
+      const ResendbtnText = await page.$eval('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(1) > button', element => element.textContent.trim());
+      const countdownRegex = /^\d{2}:\d{2}:\d{2}$|^\d{2}:\d{2}$/;
+      if (countdownRegex.test(ResendbtnText)) {
+        console.log('倒數計時:', ResendbtnText);
+        // 你可以在這裡添加對倒數計時的額外檢查，例如驗證倒數時間是否合理
+      } else {
+        // 如果不是倒數時間，則檢查文字是否為 "ส่งรหัสอีกครั้ง"
+        assert.equal(ResendbtnText, 'ส่งรหัสอีกครั้ง', 'text is incorrect');
+        console.log('按鈕文字是:', ResendbtnText);
+      }
+      //assert.equal(ResendbtnText, 'ส่งรหัสอีกครั้ง', 'text is incorrect');
+      await new Promise(resolve => setTimeout(resolve, 4000)); 
     });
   });
