@@ -1,9 +1,15 @@
 module.exports = {
     bannersrc: [
+      "https://dev.botan888.co/images/Promotion_registerget1k_TH_900.webp",
       "https://dev.botan888.co/images/Promotion_bonus100percent_TH_900.webp",
       "https://dev.botan888.co/images/Promotion_seconddepositbonus_TH_900_v2.webp",
-      "/assets/banner1-C5Qfv-L4.webp",
-      "/assets/banner2-CmT3qWpg.webp",
+      "/assets/banner1-DvwNp4G7.jpg",
+      "/assets/banner2-BOuwdAAc.jpg",
+      "/assets/banner3-yN9At2xV.jpg",
+      "/assets/banner4-BnHaGrm7.jpg",
+      "/assets/banner5-JhufrqdN.jpg",
+      "/assets/banner6-sWPQJEWS.jpg",
+      "/assets/banner7-BZwxSkoN.jpg",
     ],
     bannerAlts: [
       "สมัครสมาชิก รับ 1,000",
