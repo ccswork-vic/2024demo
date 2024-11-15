@@ -19,8 +19,8 @@ beforeAll(async () => {
   // 登录
   await page.type('#validateOnly_account', '0999111112');
   await page.type('#validateOnly_password', 'aaaa12345');
-  await page.click("#validateOnly > div.ant-form-item.mb-0.css-vcrba0 > div > div > div > div > button");
-  await page.waitForSelector('#validateOnly > div.ant-form-item.mb-0.css-vcrba0 > div > div > div > div > button', { timeout: 60000 });
+  await page.click("#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button");
+  await page.waitForSelector('#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button', { timeout: 60000 });
 });
 
 afterAll(async () => {
@@ -46,8 +46,8 @@ describe('確認登入彈窗停留在頁面上', () => {
       assert.equal(ForgotpwdText, 'เข้าสู่ระบบ', 'text is incorrect');
     });
     test('檢查登入彈窗的登入按鈕', async () => {
-      await page.waitForSelector('#validateOnly > div.ant-form-item.mb-0.css-vcrba0 > div > div > div > div > button');
-      const loginbtn = await page.$('#validateOnly > div.ant-form-item.mb-0.css-vcrba0 > div > div > div > div > button');
+      await page.waitForSelector('#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button');
+      const loginbtn = await page.$('#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button');
       expect(loginbtn).toBeTruthy(); // 检查按钮是否存在
     });
     test('檢查登入彈窗的忘記密碼文字', async () => {
@@ -68,7 +68,7 @@ describe('更改輸入帳號，再次嘗試登入失敗', () => {
       await page.click('#validateOnly_password', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸入的密碼選起來
       await page.keyboard.press('Backspace'); // 刪除選中的內容
       await page.type('#validateOnly_password', 'aaaa12345');
-      await page.click("#validateOnly > div.ant-form-item.mb-0.css-vcrba0 > div > div > div > div > button");
+      await page.click("#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button");
       await page.waitForSelector('div > div > div > div > div.ant-notification-notice-description', { timeout: 60000 });
       const WelcomeText = await page.$eval('div > div > div > div > div.ant-notification-notice-description', element => element.textContent.trim());
       assert.equal(WelcomeText, 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (11020001)', 'Admin setting element text is incorrect');
@@ -85,7 +85,7 @@ describe('輸入鎖定帳號，檢查提示訊息', () => {
       await page.click('#validateOnly_password', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸入的密碼選起來
       await page.keyboard.press('Backspace'); // 刪除選中的內容
       await page.type('#validateOnly_password', 'fkiorgkoekr');
-      await page.click("#validateOnly > div.ant-form-item.mb-0.css-vcrba0 > div > div > div > div > button");
+      await page.click("#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button");
       await page.waitForSelector('div > div > div > div > div.ant-notification-notice-description', { timeout: 60000 });
       const WelcomeText = await page.$eval('div > div > div > div > div.ant-notification-notice-description', element => element.textContent.trim());
       assert.equal(WelcomeText, 'บัญชีคุณถูกล็อก กรุณาติดต่อฝ่ายบริการเพื่อดำเนินการแก้ไข (11020004)', 'Admin setting element text is incorrect');
@@ -102,7 +102,7 @@ describe('輸入未過otp驗證帳號，檢查提示訊息', () => {
       await page.click('#validateOnly_password', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸入的密碼選起來
       await page.keyboard.press('Backspace'); // 刪除選中的內容
       await page.type('#validateOnly_password', 'aaaa1234');
-      await page.click("#validateOnly > div.ant-form-item.mb-0.css-vcrba0 > div > div > div > div > button");
+      await page.click("#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button");
       await page.waitForSelector('div > div > div > div > div.ant-notification-notice-description', { timeout: 60000 });
       const WelcomeText = await page.$eval('div > div > div > div > div.ant-notification-notice-description', element => element.textContent.trim());
       assert.equal(WelcomeText, 'ผู้ใช้ยังไม่ได้รับการยืนยันบัญชี กรุณายืนยันบัญชี (11020003)', 'Admin setting element text is incorrect');
@@ -120,23 +120,23 @@ describe('輸入未過otp驗證帳號，檢查提示訊息', () => {
       assert.equal(ForgotpwdText, 'ยืนยันหมายเลขโทรศัพท์', 'text is incorrect');
     });
     test('檢查otp彈窗的送出按鈕', async () => {
-      await page.waitForSelector('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(2) > button');
-      const loginbtn = await page.$('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(2) > button');
+      await page.waitForSelector('#validateOnly > div.ant-row > div:nth-child(2) > button');
+      const loginbtn = await page.$('#validateOnly > div.ant-row > div:nth-child(2) > button');
       expect(loginbtn).toBeTruthy(); // 检查按钮是否存在
     });
     test('檢查otp彈窗的送出按鈕文字', async () => {
-      await page.waitForSelector('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(2) > button', { timeout: 10000 });
-      const SendbtnText = await page.$eval('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(2) > button', element => element.textContent.trim());
+      await page.waitForSelector('#validateOnly > div.ant-row > div:nth-child(2) > button', { timeout: 10000 });
+      const SendbtnText = await page.$eval('#validateOnly > div.ant-row > div:nth-child(2) > button', element => element.textContent.trim());
       assert.equal(SendbtnText, 'ส่ง', 'text is incorrect');
     });
     test('檢查otp彈窗的重發驗證碼按鈕', async () => {
-      await page.waitForSelector('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(1) > button');
-      const loginbtn = await page.$('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(1) > button');
+      await page.waitForSelector('#validateOnly > div.ant-row > div:nth-child(1) > button');
+      const loginbtn = await page.$('#validateOnly > div.ant-row > div:nth-child(1) > button');
       expect(loginbtn).toBeTruthy(); // 检查按钮是否存在
     });
     test('檢查otp彈窗的重發驗證碼按鈕文字', async () => {
-      await page.waitForSelector('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(1) > button', { timeout: 10000 });
-      const ResendbtnText = await page.$eval('#validateOnly > div.ant-row.css-vcrba0 > div:nth-child(1) > button', element => element.textContent.trim());
+      await page.waitForSelector('#validateOnly > div.ant-row > div:nth-child(1) > button', { timeout: 10000 });
+      const ResendbtnText = await page.$eval('#validateOnly > div.ant-row > div:nth-child(1) > button', element => element.textContent.trim());
       const countdownRegex = /^\d{2}:\d{2}:\d{2}$|^\d{2}:\d{2}$/;
       if (countdownRegex.test(ResendbtnText)) {
         console.log('倒數計時:', ResendbtnText);
