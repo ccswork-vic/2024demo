@@ -17,7 +17,7 @@ beforeAll(async () => {
   await page.waitForSelector('#validateOnly_account', { timeout: 60000 });
 
   // 登录
-  await page.type('#validateOnly_account', '0999111115');
+  await page.type('#validateOnly_account', '0999111116');
   await page.type('#validateOnly_password', 'aaaa1234');
   await page.click("#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button");
   await page.waitForSelector('#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button', { timeout: 60000 });
