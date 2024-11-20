@@ -39,7 +39,6 @@ describe('檢查首頁基本元素', () => {
       expect(img).toBeTruthy(); // 確認圖片存在
     }
   });
-
   test('檢查多張 banner 圖片是否存在', async () => {
     await page.waitForSelector('.swiper-wrapper img._banner-image_5t1u6_75', { timeout: 60000 });
     // const bannerAlts = [
@@ -133,7 +132,7 @@ describe('檢查首頁基本元素', () => {
     const copyrightText = await page.$eval('small.mb-2', el => el.textContent.trim());
     expect(copyrightText).toBe('© 2024 Casino.com | All Rights Reserved');
   });
-  test.skip('檢查宣告區塊是否存在', async () => {
+  test('檢查宣告區塊是否存在', async () => {
     await page.waitForSelector('.pb-10._remind-text_aq2p6_1', { timeout: 60000 });
     const expectedTexts = [
       "casino ดำเนินการภายใต้ใบอนุญาตแบบไม่ผูกขาดที่ Small House B.V",
@@ -153,5 +152,112 @@ describe('檢查首頁基本元素', () => {
     }
   });
   });
+  describe('檢查左側清單', () => {
+  
 
- 
+  // test('檢查左側已開放清單-v2', async () => {
+  //     await page.waitForSelector('._menu-content_1u7zk_33 ._menu-title_1u7zk_50', { timeout: 60000 });
+      
+  //     const altTexts = ["Hot Games", "ค่ายเกมทั้งหมด", "โปรโมชั่น",];
+  //     for (const alt of altTexts) {
+  //       const title = await page.evaluate((alt) => {
+  //         return Array.from(document.querySelectorAll('._menu-title_1u7zk_50')).some(el => el.textContent === alt);
+  //       }, alt);
+  //       expect(title).toBe(true); // 確認文字內容匹配的元素存在
+  //     }
+  // });
+  
+  test('檢查左側已開放清單', async () => {
+    await page.waitForSelector('._menu-content_1u7zk_33 ._menu-title_1u7zk_50', { timeout: 60000 });
+  
+    const expectedTexts = ["Hot Games", "ค่ายเกมทั้งหมด", "โปรโมชั่น"];
+    
+    // 提取所有 _menu-title_1u7zk_50 的文本內容
+    const titles = await page.$$eval('._menu-title_1u7zk_50', elements =>
+      elements.map(el => el.textContent.trim())
+    );
+  
+    const missingTexts = [];
+
+  // 確認每個預期文本是否存在於提取的文本列表中
+  for (const text of expectedTexts) {
+    const found = titles.includes(text);
+    if (!found) {
+      missingTexts.push(text); // 如果找不到，將文本儲存到 missingTexts 陣列中
+    }
+  }
+
+  // 如果有未找到的文本，列印出來
+  if (missingTexts.length > 0) {
+    console.log('已開放清單沒出現:', missingTexts.join(', '));
+  }
+
+  // 確保所有預期文本都找到了
+  for (const text of expectedTexts) {
+    const found = titles.includes(text);
+    expect(found).toBeTruthy(); // 確認文本存在
+  }
+  });
+  test('檢查左側未開放清單', async () => {
+    await page.waitForSelector('._menu-content_1u7zk_33 ._menu-title_1u7zk_50._menu-title-disabled_1u7zk_56', { timeout: 60000 });
+  
+    const expectedTexts = ["สร้างรายได้","โบนัส","เกมโปรดaaa","เกมโaaa"];
+    
+    // 提取所有 _menu-title_1u7zk_50 的文本內容
+    const titles = await page.$$eval('._menu-title-disabled_1u7zk_56', elements =>
+      elements.map(el => el.textContent.trim())
+    );
+  
+    const missingTexts = [];
+
+  // 確認每個預期文本是否存在於提取的文本列表中
+  for (const text of expectedTexts) {
+    const found = titles.includes(text);
+    if (!found) {
+      missingTexts.push(text); // 如果找不到，將文本儲存到 missingTexts 陣列中
+    }
+  }
+
+  // 如果有未找到的文本，列印出來
+  if (missingTexts.length > 0) {
+    console.log('未開放清單沒出現:', missingTexts.join(', '));
+  }
+
+  // 確保所有預期文本都找到了
+  for (const text of expectedTexts) {
+    const found = titles.includes(text);
+    expect(found).toBeTruthy(); // 確認文本存在
+  }
+  });
+  test('檢查左側最上方兩個清單', async () => {
+    await page.waitForSelector('._menu-title_6jfab_66', { timeout: 60000 });
+  
+    const expectedTexts = ["ภารกิจ","หมุนกงล้อ"];
+    
+    // 提取所有 _menu-title_1u7zk_50 的文本內容
+    const titles = await page.$$eval('._menu-title_6jfab_66', elements =>
+      elements.map(el => el.textContent.trim())
+    );
+  
+    const missingTexts = [];
+
+  // 確認每個預期文本是否存在於提取的文本列表中
+  for (const text of expectedTexts) {
+    const found = titles.includes(text);
+    if (!found) {
+      missingTexts.push(text); // 如果找不到，將文本儲存到 missingTexts 陣列中
+    }
+  }
+
+  // 如果有未找到的文本，列印出來
+  if (missingTexts.length > 0) {
+    console.log('最上方兩個清單沒出現:', missingTexts.join(', '));
+  }
+
+  // 確保所有預期文本都找到了
+  for (const text of expectedTexts) {
+    const found = titles.includes(text);
+    expect(found).toBeTruthy(); // 確認文本存在
+  }
+  });
+  });
