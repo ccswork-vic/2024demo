@@ -1,8 +1,8 @@
 // 指定跑哪一個檔案 npx jest __tests__/xxxxxx.test.js
 const puppeteer = require('puppeteer');
 const assert = require('assert');
-const { bannersrc, bannerAlts, socialMedia} = require('../bannerSources');
-const { checkBannersExist,checkTitlesExist } = require('../utils.js');
+const { bannersrc, bannerAlts, socialMedia,navopentexts,navdisabletexts} = require('../bannerSources');
+const { checkExist } = require('../utils.js');
 
 let browser;
 let page;
@@ -42,37 +42,27 @@ describe('檢查首頁基本元素', () => {
   });
   test('檢查多張 banner 圖片是否存在', async () => {
     await page.waitForSelector('.swiper-slide img[alt]', { timeout: 60000 });
-    //await page.waitForSelector('.swiper-wrapper img._banner-image_1yygj_73', { timeout: 60000 });
+    
+    const bannerSources = await page.evaluate(() => {
+      const images = document.querySelectorAll('.swiper-slide img[alt]');
+      return Array.from(images).map(img => img.getAttribute('alt'));
+    });
+  
+    checkExist(bannerSources, bannerAlts, 'Banner alt');
 
-    for (const altText of bannerAlts) {
-      //const bannerImage = await page.$(`img._banner-image_5t1u6_75[alt="${altText}"]`);
-      const bannerImage = await page.$(`.swiper-slide img[alt="${altText}"]`);
-      expect(bannerImage).toBeTruthy(); // 確認圖片存在
-    }
   });
   test('檢查多張 banner 圖片連結', async () => {
-    //await page.waitForSelector('.swiper-wrapper img._banner-image_5t1u6_75', { timeout: 60000 });
+    
     await page.waitForSelector('.swiper-slide img[src]', { timeout: 60000 });
-    // const missingBanners = [];  // 用來儲存缺少的圖片
-    // for (const src of bannersrc) {
-    //   const bannerImage = await page.$(`.swiper-slide img[src="${src}"]`);
-      
-    //   if (!bannerImage) {
-    //     missingBanners.push(src);  // 如果圖片找不到，加入缺少的陣列
-    //   }
-    // }
   
-    // // 如果有缺少的圖片，列印出來
-    // if (missingBanners.length > 0) {
-    //   console.log('缺少的 banner 圖片:', missingBanners.join(', '));
-    // }
+    // 获取页面上所有图片的 src 属性
+    const bannerSources = await page.evaluate(() => {
+      const images = document.querySelectorAll('.swiper-slide img[src]');
+      return Array.from(images).map(img => img.getAttribute('src'));
+    });
   
-    // // 確保每張圖片都存在
-    // for (const src of bannersrc) {
-    //   const bannerImage = await page.$(`.swiper-slide img[src="${src}"]`);
-    //   expect(bannerImage).toBeTruthy(); // 確認圖片存在
-    // }
-    await checkBannersExist(page, bannersrc); 
+    // 使用 checkExist 函数来检查是否存在这些图片的 src
+    checkExist(bannerSources, bannersrc, 'Banner 圖片');  // 傳入測試名稱
   });
   test('檢查贊助商圖片', async () => {
     //await page.waitForSelector('._image_hke5k_18', { timeout: 60000 });
@@ -156,26 +146,10 @@ describe('檢查首頁基本元素', () => {
   });
 describe('檢查左側清單', () => {
   
-
-  // test('檢查左側已開放清單-v2', async () => {
-  //     await page.waitForSelector('._menu-content_1u7zk_33 ._menu-title_1u7zk_50', { timeout: 60000 });
-      
-  //     const altTexts = ["Hot Games", "ค่ายเกมทั้งหมด", "โปรโมชั่น",];
-  //     for (const alt of altTexts) {
-  //       const title = await page.evaluate((alt) => {
-  //         return Array.from(document.querySelectorAll('._menu-title_1u7zk_50')).some(el => el.textContent === alt);
-  //       }, alt);
-  //       expect(title).toBe(true); // 確認文字內容匹配的元素存在
-  //     }
-  // });
-  
   test('檢查左側已開放清單', async () => {
     
     await page.waitForSelector("div[class*='_menu-title']", { timeout: 60000 });
-  
-    const expectedTexts = ["Hot Games", "ค่ายเกมทั้งหมด", "โปรโมชั่น"];
     
-    // 提取所有 _menu-title_1u7zk_50 的文本內容
     const altValues = ['熱門', '優惠活動', '所有遊戲廠商'];
 
     const titles = await page.evaluate((alts) => {
@@ -183,64 +157,22 @@ describe('檢查左側清單', () => {
       const elements = document.querySelectorAll(selectors);
       return Array.from(elements).map(el => el.textContent.trim());
     }, altValues);
-  
-  //   const missingTexts = [];
 
-  // // 確認每個預期文本是否存在於提取的文本列表中
-  // for (const text of expectedTexts) {
-  //   const found = titles.includes(text);
-  //   if (!found) {
-  //     missingTexts.push(text); // 如果找不到，將文本儲存到 missingTexts 陣列中
-  //   }
-  // }
-
-  // // 如果有未找到的文本，列印出來
-  // if (missingTexts.length > 0) {
-  //   console.log('已開放清單沒出現:', missingTexts.join(', '));
-  // }
-
-  // // 確保所有預期文本都找到了
-  // for (const text of expectedTexts) {
-  //   const found = titles.includes(text);
-  //   expect(found).toBeTruthy(); // 確認文本存在
-  // }
-  checkTitlesExist(titles, expectedTexts);
+    checkExist(titles, navopentexts, '已開放清單');  // 傳入測試名稱
+    
   });
   test('檢查左側未開放清單', async () => {
-    //await page.waitForSelector('._menu-content_1u7zk_33 ._menu-title_1u7zk_50._menu-title-disabled_1u7zk_56', { timeout: 60000 });
-  
-    const expectedTexts = ["สร้างรายได้","โบนัส","เกมโปรดaaa","เกมโaaa"];
+    await page.waitForSelector("div[class*='_menu-title-disabled']", { timeout: 60000 });
+    //const expectedTexts = ["สร้างรายได้","โบนัส","เกมโปรดaaa","เกมโaaa"];
     
-    // 提取所有 _menu-title_1u7zk_50 的文本內容
-    // const titles = await page.$$eval('._menu-title-disabled_1u7zk_56', elements =>
-    //   elements.map(el => el.textContent.trim())
-    // );
     const titles = await page.evaluate(() => {
       const elements = document.querySelectorAll("div[class*='_menu-title-disabled']");
       return Array.from(elements).map(el => el.textContent.trim());
     });
   
-  //   const missingTexts = [];
-
-  // // 確認每個預期文本是否存在於提取的文本列表中
-  // for (const text of expectedTexts) {
-  //   const found = titles.includes(text);
-  //   if (!found) {
-  //     missingTexts.push(text); // 如果找不到，將文本儲存到 missingTexts 陣列中
-  //   }
-  // }
-
-  // // 如果有未找到的文本，列印出來
-  // if (missingTexts.length > 0) {
-  //   console.log('未開放清單沒出現:', missingTexts.join(', '));
-  // }
-
-  // // 確保所有預期文本都找到了
-  // for (const text of expectedTexts) {
-  //   const found = titles.includes(text);
-  //   expect(found).toBeTruthy(); // 確認文本存在
-  // }
-  checkTitlesExist(titles, expectedTexts, '未開放清單');  // 傳入測試名稱
+    checkExist(titles, navdisabletexts, '未開放清單');  // 傳入測試名稱
+  
+  //checkTitlesExist(titles, navdisabletexts, '未開放清單');  // 傳入測試名稱
   });
   test('檢查左側最上方兩個清單', async () => {
     //await page.waitForSelector('._menu-title_z4ojk_64', { timeout: 60000 });
