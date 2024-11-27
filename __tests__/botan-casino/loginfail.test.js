@@ -55,7 +55,7 @@ describe('確認登入彈窗停留在頁面上', () => {
       assert.equal(ForgotpwdText, 'ลืมรหัสผ่าน ?', 'text is incorrect');
     });
     test('檢查登入彈窗的還沒有帳戶文字', async () => {
-      const ForgotpwdText = await page.$eval('#rc-tabs-0-panel-login > div > span.cursor-pointer.ml-1._remind-text_9uzaz_35', element => element.textContent.trim());
+      const ForgotpwdText = await page.$eval('.cursor-pointer.ml-1', element => element.textContent.trim());
       assert.equal(ForgotpwdText, 'ยังไม่มีบัญชี?', 'text is incorrect');
     });
   });
