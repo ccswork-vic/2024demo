@@ -138,7 +138,7 @@ describe('檢查首頁基本元素', () => {
     }
   });
   });
-describe.skip('檢查左側清單', () => {
+describe('檢查左側清單', () => {
   
 
   // test('檢查左側已開放清單-v2', async () => {
@@ -154,14 +154,16 @@ describe.skip('檢查左側清單', () => {
   // });
   
   test('檢查左側已開放清單', async () => {
-    await page.waitForSelector('._menu-content_1u7zk_33 ._menu-title_1u7zk_50', { timeout: 60000 });
+    
+    //await page.waitForSelector('._menu-content_1u7zk_33 ._menu-title_1u7zk_50', { timeout: 60000 });
   
     const expectedTexts = ["Hot Games", "ค่ายเกมทั้งหมด", "โปรโมชั่น"];
     
     // 提取所有 _menu-title_1u7zk_50 的文本內容
-    const titles = await page.$$eval('._menu-title_1u7zk_50', elements =>
-      elements.map(el => el.textContent.trim())
-    );
+    const titles = await page.evaluate(() => {
+      const elements = document.querySelectorAll("div[class*='_menu-title']");
+      return Array.from(elements).map(el => el.textContent.trim());
+    });
   
     const missingTexts = [];
 
@@ -185,14 +187,18 @@ describe.skip('檢查左側清單', () => {
   }
   });
   test('檢查左側未開放清單', async () => {
-    await page.waitForSelector('._menu-content_1u7zk_33 ._menu-title_1u7zk_50._menu-title-disabled_1u7zk_56', { timeout: 60000 });
+    //await page.waitForSelector('._menu-content_1u7zk_33 ._menu-title_1u7zk_50._menu-title-disabled_1u7zk_56', { timeout: 60000 });
   
     const expectedTexts = ["สร้างรายได้","โบนัส","เกมโปรดaaa","เกมโaaa"];
     
     // 提取所有 _menu-title_1u7zk_50 的文本內容
-    const titles = await page.$$eval('._menu-title-disabled_1u7zk_56', elements =>
-      elements.map(el => el.textContent.trim())
-    );
+    // const titles = await page.$$eval('._menu-title-disabled_1u7zk_56', elements =>
+    //   elements.map(el => el.textContent.trim())
+    // );
+    const titles = await page.evaluate(() => {
+      const elements = document.querySelectorAll("div[class*='_menu-title-disabled']");
+      return Array.from(elements).map(el => el.textContent.trim());
+    });
   
     const missingTexts = [];
 
@@ -216,14 +222,19 @@ describe.skip('檢查左側清單', () => {
   }
   });
   test('檢查左側最上方兩個清單', async () => {
-    await page.waitForSelector('._menu-title_z4ojk_64', { timeout: 60000 });
+    //await page.waitForSelector('._menu-title_z4ojk_64', { timeout: 60000 });
   
     const expectedTexts = ["ภารกิจ","หมุนกงล้อ"];
     
     // 提取所有 _menu-title_1u7zk_50 的文本內容
-    const titles = await page.$$eval('._menu-title_z4ojk_64', elements =>
-      elements.map(el => el.textContent.trim())
-    );
+    // const titles = await page.$$eval('._menu-title_z4ojk_64', elements =>
+    //   elements.map(el => el.textContent.trim())
+    // );
+    const titles = await page.evaluate(() => {
+      const elements = document.querySelectorAll("div[class*='_menu-title']");
+      return Array.from(elements).map(el => el.textContent.trim());
+    });
+  
   
     const missingTexts = [];
 

@@ -1,10 +1,10 @@
 module.exports = {
     bannersrc: [
-      "https://dev.botan888.co/images/Promotion_registerget1k_TH_900.webp",
-      "https://dev.botan888.co/images/Promotion_bonus100percent_TH_900.webp",
-      "https://dev.botan888.co/images/Promotion_seconddepositbonus_TH_900_v2.webp",
-      "https://dev.botan888.co/images/Promotion_bonusdaily10_TH_900_v2.jpg",
-      "https://dev.botan888.co/images/Promotion_registerget200_TH_900.jpg",
+      "https://dev.botan888.co/images/Promotion_registerget1k_TH_900.webp", //註冊送
+      "https://dev.botan888.co/images/Promotion_bonus100percent_TH_900.webp", //首儲
+      "https://dev.botan888.co/images/Promotion_seconddepositbonus_TH_900_v2.webp",//二儲
+      "https://dev.botan888.co/images/Promotion_bonusdaily10_TH_900_v2.jpg",//天天儲值
+      "https://dev.botan888.co/images/Promotion_wednesday-bonus_TH_900.jpg",//週三
       "/assets/banner1-DvwNp4G7.jpg",
       "/assets/banner2-BOuwdAAc.jpg",
       "/assets/banner3-yN9At2xV.jpg",
