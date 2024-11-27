@@ -5,6 +5,7 @@ module.exports = {
       "https://dev.botan888.co/images/Promotion_seconddepositbonus_TH_900_v2.webp",//二儲
       "https://dev.botan888.co/images/Promotion_bonusdaily10_TH_900_v2.jpg",//天天儲值
       "https://dev.botan888.co/images/Promotion_wednesday-bonus_TH_900.jpg",//週三
+      "/assets/banner1-DvwNp99997.jpg",//測試找不到圖片報錯用
       "/assets/banner1-DvwNp4G7.jpg",
       "/assets/banner2-BOuwdAAc.jpg",
       "/assets/banner3-yN9At2xV.jpg",
