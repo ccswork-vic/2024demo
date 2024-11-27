@@ -34,6 +34,7 @@ describe('確認登入成功', () => {
     assert.equal(WelcomeText, 'ยินดีต้อนรับ 660999111116', 'Admin setting element text is incorrect');
   });
   test('檢查註冊送活動彈窗', async () => {
+    await new Promise(resolve => setTimeout(resolve, 2000));
     const xpath = "//*[text()='เข้าร่วม']";
     await new Promise(resolve => setTimeout(resolve, 1000));
     await page.evaluate((xpath) => {

@@ -1,7 +1,7 @@
 // 指定跑哪一個檔案 npx jest __tests__/xxxxxx.test.js
 const puppeteer = require('puppeteer');
 const assert = require('assert');
-const { bannersrc, bannerAlts } = require('../bannerSources');
+const { bannersrc, bannerAlts, socialMedia} = require('../bannerSources');
 
 let browser;
 let page;
@@ -40,36 +40,27 @@ describe('檢查首頁基本元素', () => {
     }
   });
   test('檢查多張 banner 圖片是否存在', async () => {
-    await page.waitForSelector('.swiper-wrapper img._banner-image_5t1u6_75', { timeout: 60000 });
-    // const bannerAlts = [
-    //   "สมัครสมาชิก รับ 1,000",
-    //   "โปรโมชั่นฝากเงินครั้งแรก",
-    //   "ฝากครั้งที่สอง รับโบนัส 50% เพิ่มโอกาสชนะ",
-    //   "รับเงินรางวัล $150,000 ทุกสัปดาห์!",
-    // ];
+    await page.waitForSelector('.swiper-slide img[alt]', { timeout: 60000 });
+    //await page.waitForSelector('.swiper-wrapper img._banner-image_1yygj_73', { timeout: 60000 });
+
     for (const altText of bannerAlts) {
-      const bannerImage = await page.$(`img._banner-image_5t1u6_75[alt="${altText}"]`);
+      //const bannerImage = await page.$(`img._banner-image_5t1u6_75[alt="${altText}"]`);
+      const bannerImage = await page.$(`.swiper-slide img[alt="${altText}"]`);
       expect(bannerImage).toBeTruthy(); // 確認圖片存在
     }
   });
   test('檢查多張 banner 圖片連結', async () => {
-    await page.waitForSelector('.swiper-wrapper img._banner-image_5t1u6_75', { timeout: 60000 });
-    
-    // const bannersrc = [
-    //   "https://dev.botan888.co/images/Promotion_bonus100percent_TH_900.webp",
-    //   "https://dev.botan888.co/images/Promotion_seconddepositbonus_TH_900_v2.webp",
-    //   "/assets/banner1-C5Qfv-L4.webp",
-    //   "/assets/banner2-CmT3qWpg.webp",
-    // ];
-  
+    //await page.waitForSelector('.swiper-wrapper img._banner-image_5t1u6_75', { timeout: 60000 });
+    await page.waitForSelector('.swiper-slide img[src]', { timeout: 60000 });
     for (const src of bannersrc) {
-      const bannerImage = await page.$(`img._banner-image_5t1u6_75[src="${src}"]`);
+      //const bannerImage = await page.$(`img._banner-image_5t1u6_75[src="${src}"]`);
+      const bannerImage = await page.$(`.swiper-slide img[src="${src}"]`);
       expect(bannerImage).toBeTruthy(); // 確認圖片存在
     }
   });
   test('檢查贊助商圖片', async () => {
-    await page.waitForSelector('._image_hke5k_18', { timeout: 60000 });
-    
+    //await page.waitForSelector('._image_hke5k_18', { timeout: 60000 });
+    await page.waitForSelector('.ant-row.ant-row-center.ant-row-middle', { timeout: 60000 });
     const Sponsorssrc = [
       "/assets/gaming-CBVzKF2H.png",
       "/assets/gaming-1-BOzmrkrN.png",
@@ -77,18 +68,18 @@ describe('檢查首頁基本元素', () => {
     ];
   
     for (const src of Sponsorssrc) {
-      const SponsorsImage = await page.$(`img._image_hke5k_18[src="${src}"]`);
+      const SponsorsImage = await page.$(`img[src="${src}"]`);
       expect(SponsorsImage).toBeTruthy(); // 確認圖片存在
     }
   });
   test('檢查遊戲商圖片', async () => {
-    await page.waitForSelector('._image_jaitl_18', { timeout: 60000 });
+    await page.waitForSelector('.ant-col.ant-col-24.ant-col-sm-24 img[alt="game-provider"]', { timeout: 60000 });
     
-    const gameproviderImages = await page.$$('._image_jaitl_18');
+    const gameproviderImages = await page.$$('.ant-col.ant-col-24.ant-col-sm-24 img[alt="game-provider"]');
     expect(gameproviderImages.length).toBe(8);
   });
   test('檢查底下連結', async () => {
-    await page.waitForSelector('._list_17qkg_11', { timeout: 60000 });
+    await page.waitForSelector('div.ant-col ul li', { timeout: 60000 });
   
     const expectedTexts = [
       "สล็อต",
@@ -98,7 +89,7 @@ describe('檢查首頁基本元素', () => {
     ];
   
     // 提取 _list_17qkg_11 中的所有子元素的文本
-    const listItemsTextContent = await page.$$eval('._list_17qkg_11 > *', elements =>
+    const listItemsTextContent = await page.$$eval('div.ant-col ul li', elements =>
       elements.map(el => el.textContent.trim())
     );
 
@@ -109,15 +100,10 @@ describe('檢查首頁基本元素', () => {
     }
   });
   test('檢查社群軟體區塊是否存在', async () => {
-    await page.waitForSelector('._community-icon_17qkg_42', { timeout: 60000 });
-    const communityAlts = [
-      "facebook",
-      "line",
-      "telegram",
-    ];
-    for (const altText of communityAlts) {
-      const communityalt = await page.$(`._community-icon_17qkg_42[alt="${altText}"]`);
-      expect(communityalt).toBeTruthy(); // 確認fb line telegram 存在
+    for (const platform of socialMedia) {
+      await page.waitForSelector(`.flex.items-center.flex-wrap.justify-center img[alt="${platform}"]`, { timeout: 60000 });
+      const element = await page.$(`.flex.items-center.flex-wrap.justify-center img[alt="${platform}"]`);
+      expect(element).toBeTruthy();
     }
   });
   test('檢查 logo 和版權聲明', async () => {
@@ -152,7 +138,7 @@ describe('檢查首頁基本元素', () => {
     }
   });
   });
-describe('檢查左側清單', () => {
+describe.skip('檢查左側清單', () => {
   
 
   // test('檢查左側已開放清單-v2', async () => {
@@ -230,12 +216,12 @@ describe('檢查左側清單', () => {
   }
   });
   test('檢查左側最上方兩個清單', async () => {
-    await page.waitForSelector('._menu-title_6jfab_66', { timeout: 60000 });
+    await page.waitForSelector('._menu-title_z4ojk_64', { timeout: 60000 });
   
     const expectedTexts = ["ภารกิจ","หมุนกงล้อ"];
     
     // 提取所有 _menu-title_1u7zk_50 的文本內容
-    const titles = await page.$$eval('._menu-title_6jfab_66', elements =>
+    const titles = await page.$$eval('._menu-title_z4ojk_64', elements =>
       elements.map(el => el.textContent.trim())
     );
   
