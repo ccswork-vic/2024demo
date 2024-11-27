@@ -231,7 +231,7 @@ describe('檢查左側清單', () => {
     //   elements.map(el => el.textContent.trim())
     // );
     const titles = await page.evaluate(() => {
-      const elements = document.querySelectorAll("div[class*='_menu-title']");
+      const elements = document.querySelectorAll("div.menu-box[style*='linear-gradient'] div[class*='_menu-title']"); //使用雙重屬性定位到上方兩張圖
       return Array.from(elements).map(el => el.textContent.trim());
     });
   
