@@ -20,5 +20,12 @@ module.exports = {
     ],
     socialMedia: ["facebook","line","telegram"],
     navopentexts: ["Hot Games", "ค่ายเกมทั้งหมด", "โปรโมชั่น"],
-    navdisabletexts: ["สร้างรายได้","โบนัส","เกมโปรดaaa","เกมโaaa"]
+    navdisabletexts: ["สร้างรายได้","โบนัส","เกมโปรดaaa","เกมโaaa"],
+    promotionbanners : {
+      activity1:"https://dev.botan888.co/images/Promotion_registerget1k_TH_300.webp", //註冊送
+      activity2:"https://dev.botan888.co/images/Promotion_bonus100percent_TH_300.webp", //首儲
+      activity3:"https://dev.botan888.co/images/Promotion_seconddepositbonus_TH_300.webp",//二儲
+      activity4:"https://dev.botan888.co/images/Promotion_bonusdaily10_TH_300_v2.jpg",//天天儲值
+      activity5:"https://dev.botan888.co/images/Promotion_wednesday-bonus_TH_300.jpg",//週三
+    },
   };
