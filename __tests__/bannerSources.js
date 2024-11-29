@@ -18,11 +18,7 @@ module.exports = {
       "ฝากครั้งที่สอง รับโบนัส 50% เพิ่มโอกาสชนะ",
       "รับเงินรางวัล $150,000 ทุกสัปดาห์!",
     ],
-    socialMedia: [
-      "facebook",
-      "line",
-      "telegram",
-    ],
+    socialMedia: ["facebook","line","telegram"],
     navopentexts: ["Hot Games", "ค่ายเกมทั้งหมด", "โปรโมชั่น"],
     navdisabletexts: ["สร้างรายได้","โบนัส","เกมโปรดaaa","เกมโaaa"]
   };

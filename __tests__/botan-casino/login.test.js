@@ -17,7 +17,7 @@ beforeAll(async () => {
   await page.waitForSelector('#validateOnly_account', { timeout: 60000 });
 
   // 登录
-  await page.type('#validateOnly_account', '0999111116');
+  await page.type('#validateOnly_account', '0999111119');
   await page.type('#validateOnly_password', 'aaaa1234');
   await page.click("#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button");
   await page.waitForSelector('#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button', { timeout: 60000 });
@@ -31,7 +31,7 @@ describe('確認登入成功', () => {
   test('檢查登入成功彈窗', async () => {
     await page.waitForSelector('div > div > div > div > div.ant-notification-notice-description', { timeout: 60000 });
     const WelcomeText = await page.$eval('div > div > div > div > div.ant-notification-notice-description', element => element.textContent.trim());
-    assert.equal(WelcomeText, 'ยินดีต้อนรับ 660999111116', 'Admin setting element text is incorrect');
+    assert.equal(WelcomeText, 'ยินดีต้อนรับ 660999111119', 'text is incorrect');
   });
   test('檢查註冊送活動彈窗', async () => {
     await new Promise(resolve => setTimeout(resolve, 2000));

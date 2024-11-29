@@ -1,6 +1,7 @@
 // 指定跑哪一個檔案 npx jest __tests__/xxxxxx.test.js
 const puppeteer = require('puppeteer');
 const assert = require('assert');
+const {  socialMedia,} = require('../bannerSources');
 
 let browser;
 let page;
@@ -40,7 +41,7 @@ describe('檢查wallet', () => {
     }, xpath);
     expect(xpath).toBeTruthy(); // 检查按钮是否存在
   });
-  test.skip('檢查左側清單存在帳戶管理', async () => {
+  test('檢查左側清單存在帳戶管理', async () => {
     //await page.goto('https://dev.botan888.co/wallet/balance', { waitUntil: "domcontentloaded" });
     const xpath = "//*[text()='การจัดการบัญชี']";
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -136,3 +137,85 @@ describe('檢查wallet', () => {
   });
   
 });
+describe('檢查footer區塊', () => {
+  
+  test('檢查贊助商圖片', async () => {
+    //await page.waitForSelector('._image_hke5k_18', { timeout: 60000 });
+    await page.waitForSelector('.ant-row.ant-row-center.ant-row-middle', { timeout: 60000 });
+    const Sponsorssrc = [
+      "/assets/gaming-CBVzKF2H.png",
+      "/assets/gaming-1-BOzmrkrN.png",
+      "/assets/gaming-2-D49F9KYV.png",
+    ];
+  
+    for (const src of Sponsorssrc) {
+      const SponsorsImage = await page.$(`img[src="${src}"]`);
+      expect(SponsorsImage).toBeTruthy(); // 確認圖片存在
+    }
+  });
+  test('檢查遊戲商圖片', async () => {
+    await page.waitForSelector('.ant-col.ant-col-24.ant-col-sm-24 img[alt="game-provider"]', { timeout: 60000 });
+    
+    const gameproviderImages = await page.$$('.ant-col.ant-col-24.ant-col-sm-24 img[alt="game-provider"]');
+    expect(gameproviderImages.length).toBe(8);
+  });
+  test('檢查底下連結', async () => {
+    await page.waitForSelector('div.ant-col ul li', { timeout: 60000 });
+  
+    const expectedTexts = [
+      "สล็อต",
+      "Gamble Aware",
+      "คำถามที่พบบ่อย",
+      "เงื่อนไขการให้บริการ"
+    ];
+  
+    // 提取 _list_17qkg_11 中的所有子元素的文本
+    const listItemsTextContent = await page.$$eval('div.ant-col ul li', elements =>
+      elements.map(el => el.textContent.trim())
+    );
+
+    // 確認每個預期的文本是否出現在 listItemsTextContent 中
+    for (const text of expectedTexts) {
+      const found = listItemsTextContent.some(item => item.includes(text));
+      expect(found).toBeTruthy(); // 確認文本存在
+    }
+  });
+  test('檢查社群軟體區塊是否存在', async () => {
+    for (const platform of socialMedia) {
+      await page.waitForSelector(`.flex.items-center.flex-wrap.justify-center img[alt="${platform}"]`, { timeout: 60000 });
+      const element = await page.$(`.flex.items-center.flex-wrap.justify-center img[alt="${platform}"]`);
+      expect(element).toBeTruthy();
+    }
+  });
+  test('檢查 logo 和版權聲明', async () => {
+    // 等待元素加載
+    await page.waitForSelector('.flex.flex-col.items-center', { timeout: 60000 });
+  
+    // 檢查 logo 的 src 是否存在
+    const logoImage = await page.$('img[src="/assets/logo-D7mm_G3_.png"]');
+    expect(logoImage).toBeTruthy(); // 確認圖片存在
+  
+    // 檢查版權聲明的文本是否正確
+    const copyrightText = await page.$eval('small.mb-2', el => el.textContent.trim());
+    expect(copyrightText).toBe('© 2024 Casino.com | All Rights Reserved');
+  });
+  test('檢查宣告區塊是否存在', async () => {
+    await page.waitForSelector('.pb-10._remind-text_aq2p6_1', { timeout: 60000 });
+    const expectedTexts = [
+      "casino ดำเนินการภายใต้ใบอนุญาตแบบไม่ผูกขาดที่ Small House B.V",
+      "ซึ่งเป็นบริษัทที่จดทะเบียนใน Curacao หมายเลขบริษัท 163888 และมีที่อยู่จดทะเบียนที่:",
+      "Zuikertuintjeweg Z/N, Curacao"
+    ];
+  
+    // 提取 .pb-10._remind-text_aq2p6_1 中的所有子元素的文本
+    const listItemsTextContent = await page.$$eval('.pb-10._remind-text_aq2p6_1 > *', elements =>
+      elements.map(el => el.textContent.trim())
+    );
+
+    // 確認每個預期的文本是否出現在 listItemsTextContent 中
+    for (const text of expectedTexts) {
+      const found = listItemsTextContent.some(item => item.includes(text));
+      expect(found).toBeTruthy(); // 確認文本存在
+    }
+  });
+  });
