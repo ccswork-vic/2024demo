@@ -1,7 +1,7 @@
 // 指定跑哪一個檔案 npx jest __tests__/xxxxxx.test.js
 const puppeteer = require('puppeteer');
 const assert = require('assert');
-const { bannersrc, bannerAlts, socialMedia,navopentexts,navdisabletexts} = require('../bannerSources');
+const { bannersrc, bannerAlts, socialMedia,navopentexts,navdisabletexts,gameprovidersrc} = require('../bannerSources');
 const { checkExist } = require('../utils.js');
 
 let browser;
@@ -31,7 +31,7 @@ afterAll(async () => {
 
 describe('檢查首頁基本元素', () => {
   
-  test('檢查特定遊戲 icon', async () => {
+  test('檢查八個遊戲icon存在', async () => {
     await page.waitForSelector('#dashboard-scroll-container img.ant-image-img.h-full', { timeout: 60000 });
     
     const altTexts = ["PG", "JILI", "PP", "CQ9", "JDB", "FC", "EVO", "BNG"];
@@ -39,6 +39,17 @@ describe('檢查首頁基本元素', () => {
       const img = await page.$(`#dashboard-scroll-container img.ant-image-img.h-full[alt="${alt}"]`);
       expect(img).toBeTruthy(); // 確認圖片存在
     }
+  });
+  test('檢查八個遊戲商 icon圖片連結', async () => {
+    await page.waitForSelector('.swiper-wrapper .ant-image-img.h-full[src]', { timeout: 60000 });
+    
+    const bannerSources = await page.evaluate(() => {
+      const images = document.querySelectorAll('.swiper-wrapper .ant-image-img.h-full[src]');
+      return Array.from(images).map(img => img.getAttribute('src'));
+    });
+  
+    // 使用 checkExist 函数来检查是否存在这些图片的 src
+    checkExist(bannerSources, gameprovidersrc, '遊戲商大icon 圖片');  // 傳入測試名稱
   });
   test('檢查多張 banner 圖片是否存在', async () => {
     await page.waitForSelector('.swiper-slide img[alt]', { timeout: 60000 });
