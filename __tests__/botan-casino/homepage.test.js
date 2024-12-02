@@ -75,6 +75,16 @@ describe('檢查首頁基本元素', () => {
     // 使用 checkExist 函数来检查是否存在这些图片的 src
     checkExist(bannerSources, bannersrc, 'Banner 圖片');  // 傳入測試名稱
   });
+  test('檢查首頁預設載入遊戲數量大於或等於20', async () => {
+    // 等待指定範圍內的圖片加載完成
+    await page.waitForSelector('.group.flex.flex-col .ant-image img.ant-image-img[src]', { timeout: 60000 });
+  
+    // 獲取限定區域內的圖片元素
+    const gameproviderImages = await page.$$('.group.flex.flex-col .ant-image img.ant-image-img[src]');
+    
+    // 驗證圖片數量是否大於或等於20
+    expect(gameproviderImages.length).toBeGreaterThanOrEqual(20);
+  });
   test('檢查贊助商圖片', async () => {
     //await page.waitForSelector('._image_hke5k_18', { timeout: 60000 });
     await page.waitForSelector('.ant-row.ant-row-center.ant-row-middle', { timeout: 60000 });

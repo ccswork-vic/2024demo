@@ -30,7 +30,7 @@ module.exports = {
     ],
     socialMedia: ["facebook","line","telegram"],
     navopentexts: ["Hot Games", "ค่ายเกมทั้งหมด", "โปรโมชั่น"],
-    navdisabletexts: ["สร้างรายได้","โบนัส","เกมโปรดaaa","เกมโaaa"],
+    navdisabletexts: ["สร้างรายได้","โบนัส","เกมโปรด","เกมที่เล่นล่าสุด","เกมยอดนิยม","Feature Buy-In","เกมใหม่มาแรง","การแข่งขัน","VIP คลับ"],
     promotionbanners : {
       activity1:"https://dev.botan888.co/images/Promotion_registerget1k_TH_300.webp", //註冊送
       activity2:"https://dev.botan888.co/images/Promotion_bonus100percent_TH_300.webp", //首儲
