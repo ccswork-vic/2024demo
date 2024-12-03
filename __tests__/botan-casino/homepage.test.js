@@ -164,6 +164,81 @@ describe('檢查首頁基本元素', () => {
       expect(found).toBeTruthy(); // 確認文本存在
     }
   });
+  test('檢查右下角客服按鈕並點擊', async () => {
+    // 等待按鈕元素可見
+    await page.waitForSelector('.flex.item-center img[alt="service icon"]', { timeout: 10000 });
+    
+    // 點擊按鈕
+    await page.click('.flex.item-center img[alt="service icon"]');
+
+    // 驗證點擊後是否出現新的 DOM 結構
+    await page.waitForSelector('div[class*="_tool-box"][class*="-open"]', { timeout: 10000 });
+    const isToolBoxOpen = await page.$('div[class*="_tool-box"][class*="-open"]') !== null;
+
+    // 驗證是否點擊成功
+    expect(isToolBoxOpen).toBe(true);
+    const serviceIconsCount = await page.evaluate(() => {
+      return document.querySelectorAll('div[class*="_tool-box"][class*="-open"] img[alt="service icon"]').length;
+  });
+  expect(serviceIconsCount).toBe(3);
+  });
+//   test('檢查右下角客服按鈕並點擊-v2', async () => {
+//     const xpath = '//div[contains(@class, "flex item-center")]//img[@alt="service icon"]';
+
+//     // 使用 XPath 查找按鈕
+//     const result = await page.evaluate((xpath) => {
+//       const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+//         if (element) {
+//             element.click(); // 點擊找到的按鈕
+//             return { success: true, message: '按鈕已成功點擊' };
+//         } else {
+//             return { success: false, message: `未找到按鈕，XPath: ${xpath}` };
+//         }
+//     }, xpath);
+
+//     // 驗證按鈕是否被點擊
+//     expect(result.success).toBe(true);
+
+//     // 驗證點擊後是否出現新的 DOM 結構
+//     const isToolBoxOpen = await page.evaluate(() => {
+//         return document.querySelector('div[class*="_tool-box"][class*="-open"]') !== null;
+//     });
+//     expect(isToolBoxOpen).toBe(true);
+
+//     // 驗證 alt="service icon" 的圖片數量
+//     const serviceIconsCount = await page.evaluate(() => {
+//         return document.querySelectorAll('div[class*="_tool-box"][class*="-open"] img[alt="service icon"]').length;
+//     });
+//     expect(serviceIconsCount).toBe(3);
+// });
+test('檢查頁面向下滾並點擊totop按鈕', async () => {
+
+  // 模擬頁面滾動
+  await page.evaluate(() => {
+    const element = document.querySelector('.flex.flex-col.items-center');
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+});
+
+  // 等待「回到頂部」按鈕出現
+  const buttonSelector = 'img[alt="go top icon"]';
+  await page.waitForSelector(buttonSelector, { timeout: 10000 });
+
+  // 確認按鈕是否出現
+  const button = await page.$(buttonSelector);
+  expect(button).not.toBeNull(); // 確保按鈕存在
+  await new Promise(resolve => setTimeout(resolve, 5000));// 為了看到向下滾動 多停留幾秒
+  // 點擊「回到頂部」按鈕
+  await page.click(buttonSelector);
+
+  // 等待頁面滾動回頂部
+  await new Promise(resolve => setTimeout(resolve, 1000));// 等待一秒鐘
+
+  // 驗證頁面是否回到頂部，可以檢查滾動位置
+  const scrollY = await page.evaluate(() => window.scrollY);
+  expect(scrollY).toBe(0); // scrollY 為 0 表示頁面未滾動，處於頂部狀態。如果頁面有滾動，這個值就會大於 0
+});
   });
 describe('檢查左側清單', () => {
   
