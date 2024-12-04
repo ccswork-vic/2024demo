@@ -75,6 +75,22 @@ describe('檢查首頁基本元素', () => {
     // 使用 checkExist 函数来检查是否存在这些图片的 src
     checkExist(bannerSources, bannersrc, 'Banner 圖片');  // 傳入測試名稱
   });
+  test('檢查遊戲商區塊小標題', async () => {
+    // 如果元素名 沒有動態的值，直接寫.divclass層 .目標層
+    await page.waitForSelector('.mt-4 .flex.items-center.justify-between', { timeout: 60000 });
+  
+    // 檢查文本是否正確
+    const subtitle1Text = await page.$eval('div[class^="mt-4"] .flex.items-center.text-lg span', el => el.textContent.trim());
+    expect(subtitle1Text).toBe('ค่ายเกมทั้งหมด');
+  });
+  test('檢查老虎機區塊小標題', async () => {
+    // 如果元素名有動態值，可以用div[class^="_game-list"] 去寫
+    await page.waitForSelector('div[class^="_game-list"] .flex.items-center.justify-between', { timeout: 60000 });
+  
+    // 檢查版權聲明的文本是否正確
+    const subtitle2Text = await page.$eval('div[class^="_game-list"] .flex.items-center.text-lg span', el => el.textContent.trim());
+    expect(subtitle2Text).toBe('เกมสล็อต');
+  });
   test('檢查首頁預設載入遊戲數量大於或等於20', async () => {
     // 等待指定範圍內的圖片加載完成
     await page.waitForSelector('.group.flex.flex-col .ant-image img.ant-image-img[src]', { timeout: 60000 });
@@ -167,10 +183,10 @@ describe('檢查首頁基本元素', () => {
   test('檢查右下角客服按鈕並點擊', async () => {
     // 等待按鈕元素可見
     await page.waitForSelector('.flex.item-center img[alt="service icon"]', { timeout: 10000 });
-    
+    await new Promise(resolve => setTimeout(resolve, 1000));
     // 點擊按鈕
     await page.click('.flex.item-center img[alt="service icon"]');
-
+    await new Promise(resolve => setTimeout(resolve, 1000));
     // 驗證點擊後是否出現新的 DOM 結構
     await page.waitForSelector('div[class*="_tool-box"][class*="-open"]', { timeout: 10000 });
     const isToolBoxOpen = await page.$('div[class*="_tool-box"][class*="-open"]') !== null;
