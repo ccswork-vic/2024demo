@@ -38,4 +38,5 @@ module.exports = {
       activity4:"https://dev.botan888.co/images/Promotion_bonusdaily10_TH_300_v2.jpg",//天天儲值
       activity5:"https://dev.botan888.co/images/Promotion_wednesday-bonus_TH_300.jpg",//週三
     },
+    gameControlButtons: ['เต็มหน้าจอ', 'กลับ', 'รีโหลด'],
   };

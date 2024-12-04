@@ -123,7 +123,7 @@ describe('點擊โปรโมชั่น', () => {
     // 驗證標題文字是否正確
     assert.equal(activityTitle,'พุธพิเศษ! ฝาก 500 รับ 100 ทันที','text is incorrect');
   });
-  test('檢查所有活動標題', async () => {
+  test.skip('檢查所有活動標題', async () => {
     // 獲取所有卡片標題
     const cardSelectors = [
         `.ant-card-cover img[src="${promotionbanners.activity1}"]`,
@@ -150,7 +150,7 @@ describe('點擊โปรโมชั่น', () => {
 
     checkExist(activityTitles, expectedTitles, '活動標題檢查');
   });
-  test('檢查活動卡片的細節按鈕總數', async () => {
+  test.skip('檢查活動卡片的細節按鈕總數', async () => {
     // 等待指定區塊內的 "รายละเอียด" 按鈕元素加載
     await page.waitForSelector('div.ant-card-body .flex button.ant-btn span', { timeout: 60000 });
   

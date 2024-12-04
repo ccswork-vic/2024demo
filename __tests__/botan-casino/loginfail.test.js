@@ -139,12 +139,12 @@ describe('輸入未過otp驗證帳號，檢查提示訊息', () => {
       const ResendbtnText = await page.$eval('#validateOnly > div.ant-row > div:nth-child(1) > button', element => element.textContent.trim());
       const countdownRegex = /^\d{2}:\d{2}:\d{2}$|^\d{2}:\d{2}$/;
       if (countdownRegex.test(ResendbtnText)) {
-        console.log('倒數計時:', ResendbtnText);
+        //console.log('倒數計時:', ResendbtnText);
         // 你可以在這裡添加對倒數計時的額外檢查，例如驗證倒數時間是否合理
       } else {
         // 如果不是倒數時間，則檢查文字是否為 "ส่งรหัสอีกครั้ง"
         assert.equal(ResendbtnText, 'ส่งรหัสอีกครั้ง', 'text is incorrect');
-        console.log('按鈕文字是:', ResendbtnText);
+        //console.log('按鈕文字是:', ResendbtnText);
       }
       //assert.equal(ResendbtnText, 'ส่งรหัสอีกครั้ง', 'text is incorrect');
       await new Promise(resolve => setTimeout(resolve, 4000)); 
