@@ -29,7 +29,7 @@ beforeAll(async () => {
     page.on('response', async (response) => {
         const url = response.url();
         const requestMethod = response.request().method();
-        if (url === 'https://test-admin-serv.zestplay.co/api/postLogin' && requestMethod === 'POST') {
+        if (url === 'https://test-agent-serv.zestplay.co/api/postLogin' && requestMethod === 'POST') {
             try {
                 const data = await response.json();
                 token = data.ticket;
@@ -165,7 +165,7 @@ test.only('輸入存在玩家id，並檢查使用者幣別，對比api回傳值'
     assert.equal(userdata, 'RMB', 'userdata element text is incorrect');
 
     // 發送API請求
-    const response = await fetch('https://test-admin-serv.zestplay.co/api/account/getAccountInfo?account=vic032523', {
+    const response = await fetch('https://test-agent-serv.zestplay.co/api/account/getAccountInfo?account=vic032523', {
         method: 'GET', // 根據API需求調整HTTP方法
         headers: {
             'Content-Type': 'application/json',
@@ -210,7 +210,7 @@ test.only('檢查頁面顯示的餘額與API返回值是否一致', async () => 
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     // 發送API請求
-    const response = await fetch('https://test-admin-serv.zestplay.co/api/account/getAccountInfo?account=vic032523', {
+    const response = await fetch('https://test-agent-serv.zestplay.co/api/account/getAccountInfo?account=vic032523', {
         method: 'GET', // 根據API需求調整HTTP方法
         headers: {
             'Content-Type': 'application/json',
