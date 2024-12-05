@@ -1,7 +1,7 @@
 // 指定跑哪一個檔案 npx jest __tests__/xxxxxx.test.js
 const puppeteer = require('puppeteer');
 const assert = require('assert');
-const {  socialMedia,} = require('../bannerSources');
+const {  socialMedia,} = require('../utils/botanSources');
 
 let browser;
 let page;
@@ -82,7 +82,7 @@ describe('檢查wallet', () => {
   test('檢查該頁面標題', async () => {
     await page.waitForSelector('.flex.items-center.gap-2.text-lg', { timeout: 60000 });
     const WelcomeText = await page.$eval('.flex.items-center.gap-2.text-lg', element => element.textContent.trim());
-    assert.equal(WelcomeText, 'กระเป๋า', 'Admin setting element text is incorrect');
+    assert.equal(WelcomeText, 'กระเป๋า', 'text is incorrect');
       // 等待彈窗並加上時間讓他完全顯示
     await new Promise(resolve => setTimeout(resolve, 2000)); 
   });
