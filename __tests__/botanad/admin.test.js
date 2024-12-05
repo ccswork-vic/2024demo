@@ -26,6 +26,11 @@ beforeAll(async () => {
 afterAll(async () => {
   await browser.close();
 });
+describe('動態取測試版號', () => {
+  it(`當前後台測試版本號：${process.env.BACKEND_PROJECT_VERSION}`, () => {
+    const version = process.env.BACKEND_PROJECT_VERSION || '未知版本';
+  });
+});
 
 describe('檢查左側目錄', () => {
   test('檢查admin 左邊選單存在報表', async () => {
