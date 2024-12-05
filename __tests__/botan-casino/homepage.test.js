@@ -28,6 +28,13 @@ beforeAll(async () => {
 afterAll(async () => {
   await browser.close();
 });
+describe('測試版本號', () => {
+  it(`當前測試版本號：${process.env.PROJECT_VERSION}`, () => {
+    const version = process.env.PROJECT_VERSION || '未知版本';
+    //console.log(`當前測試版本號: ${version}`);  // 在測試日誌中打印版本號
+    //expect(version).not.toBe('未知版本'); // 可選，根據需求做判斷
+  });
+});
 
 describe('檢查首頁基本元素', () => {
   

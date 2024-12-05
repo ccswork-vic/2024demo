@@ -1,14 +1,12 @@
-const fetch = require('node-fetch');
+const fetch = require('node-fetch'); // 確保已安裝 node-fetch
 
 const getVersion = async () => {
-  try {
     const response = await fetch('https://dev.botan888.co/version.json');
+    if (!response.ok) {
+        throw new Error(`無法取得版本資訊，HTTP 狀態碼: ${response.status}`);
+    }
     const data = await response.json();
-    return data.version; // 根據你的資料結構，提取 `version`
-  } catch (error) {
-    console.error('⚠️ 無法取得版本號:', error);
-    return 'Unknown'; // 如果失敗，返回 'Unknown'
-  }
+    return data.version; // 假設版本號存在於 JSON 的 "version" 屬性中
 };
 
 module.exports = getVersion;
