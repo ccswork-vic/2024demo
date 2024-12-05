@@ -1,8 +1,8 @@
 // 指定跑哪一個檔案 npx jest __tests__/xxxxxx.test.js
 const puppeteer = require('puppeteer');
 const assert = require('assert');
-const { bannersrc, bannerAlts, socialMedia,navopentexts,navdisabletexts,gameprovidersrc} = require('../utils/botanSources.js');
-const { checkExist } = require('../utils/utils.js');
+const { bannersrc, bannerAlts, socialMedia,navopentexts,navdisabletexts,gameprovidersrc} = require('../../utils/botanSources.js');
+const { checkExist } = require('../../utils/utils.js');
 
 let browser;
 let page;
