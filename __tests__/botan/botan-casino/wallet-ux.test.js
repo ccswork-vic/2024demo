@@ -137,7 +137,7 @@ describe('檢查wallet', () => {
   });
   
 });
-describe.skip('檢查footer區塊', () => {
+describe('檢查footer區塊', () => {
   
   // test.skip('檢查贊助商圖片', async () => {
   //   //await page.waitForSelector('._image_hke5k_18', { timeout: 60000 });
@@ -154,9 +154,9 @@ describe.skip('檢查footer區塊', () => {
   //   }
   // });
   test('檢查遊戲商圖片', async () => {
-    await page.waitForSelector('.ant-col.ant-col-24.ant-col-sm-24 img[alt="game-provider"]', { timeout: 60000 });
+    await page.waitForSelector('.ant-row.ant-row-start img[alt="game-provider"]', { timeout: 60000 });
     
-    const gameproviderImages = await page.$$('.ant-col.ant-col-24.ant-col-sm-24 img[alt="game-provider"]');
+    const gameproviderImages = await page.$$('.ant-row.ant-row-start img[alt="game-provider"]');
     expect(gameproviderImages.length).toBe(8);
   });
   test('檢查底下連結', async () => {
@@ -182,33 +182,30 @@ describe.skip('檢查footer區塊', () => {
   });
   test('檢查社群軟體區塊是否存在', async () => {
     for (const platform of socialMedia) {
-      await page.waitForSelector(`.flex.items-center.flex-wrap.justify-center img[alt="${platform}"]`, { timeout: 60000 });
-      const element = await page.$(`.flex.items-center.flex-wrap.justify-center img[alt="${platform}"]`);
+      await page.waitForSelector(`svg[aria-label="${platform}"]`, { timeout: 60000 });
+      const element = await page.$(`svg[aria-label="${platform}"]`);
       expect(element).toBeTruthy();
     }
   });
-  test('檢查 logo 和版權聲明', async () => {
-    // 等待元素加載
-    await page.waitForSelector('.flex.flex-col.items-center', { timeout: 60000 });
-  
-    // 檢查 logo 的 src 是否存在
-    const logoImage = await page.$('img[src="/assets/logo-D7mm_G3_.png"]');
-    expect(logoImage).toBeTruthy(); // 確認圖片存在
-  
+  test('檢查 版權聲明', async () => {
+    // // 等待元素加載
+    await new Promise(resolve => setTimeout(resolve, 2000));// 等待一秒鐘
+     await page.waitForSelector('.flex.justify-between.items-center.mb-\\[24px\\] span.text-\\[gray\\]', { timeout: 6000 });
+
     // 檢查版權聲明的文本是否正確
-    const copyrightText = await page.$eval('small.mb-2', el => el.textContent.trim());
+    const copyrightText = await page.$eval('.flex.justify-between.items-center.mb-\\[24px\\] span.text-\\[gray\\]', el => el.textContent.trim());
     expect(copyrightText).toBe('© 2024 Casino.com | All Rights Reserved');
   });
   test('檢查宣告區塊是否存在', async () => {
-    await page.waitForSelector('.pb-10._remind-text_aq2p6_1', { timeout: 60000 });
+    await page.waitForSelector('._remind-text_2honh_1', { timeout: 60000 });
     const expectedTexts = [
       "casino ดำเนินการภายใต้ใบอนุญาตแบบไม่ผูกขาดที่ Small House B.V",
-      "ซึ่งเป็นบริษัทที่จดทะเบียนใน Curacao หมายเลขบริษัท 163888 และมีที่อยู่จดทะเบียนที่:",
-      "Zuikertuintjeweg Z/N, Curacao"
+      "Zuikertuintjeweg Z/N, Curacao",
+      "ซึ่งเป็นบริษัทที่จดทะเบียนใน Curacao หมายเลขบริษัท 163888 และมีที่อยู่จดทะเบียนที่:"
     ];
   
     // 提取 .pb-10._remind-text_aq2p6_1 中的所有子元素的文本
-    const listItemsTextContent = await page.$$eval('.pb-10._remind-text_aq2p6_1 > *', elements =>
+    const listItemsTextContent = await page.$$eval('._remind-text_2honh_1', elements =>
       elements.map(el => el.textContent.trim())
     );
 

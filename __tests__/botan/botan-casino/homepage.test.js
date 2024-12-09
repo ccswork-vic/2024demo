@@ -133,14 +133,14 @@ describe('檢查首頁基本元素', () => {
       expect(found).toBeTruthy(); // 確認文本存在
     }
   });
-  test.skip('檢查社群軟體區塊是否存在', async () => {
+  test('檢查社群軟體區塊是否存在', async () => {
     for (const platform of socialMedia) {
-      await page.waitForSelector(`.flex.items-center.flex-wrap.justify-center img[alt="${platform}"]`, { timeout: 60000 });
-      const element = await page.$(`.flex.items-center.flex-wrap.justify-center img[alt="${platform}"]`);
+      await page.waitForSelector(`svg[aria-label="${platform}"]`, { timeout: 60000 });
+      const element = await page.$(`svg[aria-label="${platform}"]`);
       expect(element).toBeTruthy();
     }
   });
-  test.skip('檢查 版權聲明', async () => {
+  test('檢查 版權聲明', async () => {
     // // 等待元素加載
     await new Promise(resolve => setTimeout(resolve, 2000));// 等待一秒鐘
      await page.waitForSelector('.flex.justify-between.items-center.mb-\\[24px\\] span.text-\\[gray\\]', { timeout: 6000 });
@@ -149,16 +149,16 @@ describe('檢查首頁基本元素', () => {
     const copyrightText = await page.$eval('.flex.justify-between.items-center.mb-\\[24px\\] span.text-\\[gray\\]', el => el.textContent.trim());
     expect(copyrightText).toBe('© 2024 Casino.com | All Rights Reserved');
   });
-  test.skip('檢查宣告區塊是否存在', async () => {
-    await page.waitForSelector('.pb-10._remind-text_aq2p6_1', { timeout: 60000 });
+  test('檢查宣告區塊是否存在', async () => {
+    await page.waitForSelector('._remind-text_2honh_1', { timeout: 60000 });
     const expectedTexts = [
       "casino ดำเนินการภายใต้ใบอนุญาตแบบไม่ผูกขาดที่ Small House B.V",
-      "ซึ่งเป็นบริษัทที่จดทะเบียนใน Curacao หมายเลขบริษัท 163888 และมีที่อยู่จดทะเบียนที่:",
-      "Zuikertuintjeweg Z/N, Curacao"
+      "Zuikertuintjeweg Z/N, Curacao",
+      "ซึ่งเป็นบริษัทที่จดทะเบียนใน Curacao หมายเลขบริษัท 163888 และมีที่อยู่จดทะเบียนที่:"
     ];
   
     // 提取 .pb-10._remind-text_aq2p6_1 中的所有子元素的文本
-    const listItemsTextContent = await page.$$eval('.pb-10._remind-text_aq2p6_1 > *', elements =>
+    const listItemsTextContent = await page.$$eval('._remind-text_2honh_1', elements =>
       elements.map(el => el.textContent.trim())
     );
 
@@ -215,7 +215,7 @@ describe('檢查首頁基本元素', () => {
 //     });
 //     expect(serviceIconsCount).toBe(3);
 // });
-test('檢查頁面向下滾並點擊totop按鈕', async () => {
+  test('檢查頁面向下滾並點擊totop按鈕', async () => {
 
   // 模擬頁面滾動
   await page.evaluate(() => {
@@ -242,7 +242,7 @@ test('檢查頁面向下滾並點擊totop按鈕', async () => {
   // 驗證頁面是否回到頂部，可以檢查滾動位置
   const scrollY = await page.evaluate(() => window.scrollY);
   expect(scrollY).toBe(0); // scrollY 為 0 表示頁面未滾動，處於頂部狀態。如果頁面有滾動，這個值就會大於 0
-});
+  });
   });
 describe('檢查左側清單', () => {
   
