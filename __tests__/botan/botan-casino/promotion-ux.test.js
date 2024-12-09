@@ -230,4 +230,8 @@ describe('檢查footer區塊', () => {
       expect(found).toBeTruthy(); // 確認文本存在
     }
   });
+  test('檢查客服清單按鈕', async () => {
+    const serviceicon = await page.$('.flex.item-center img[alt="service icon"]');
+    expect(serviceicon).toBeTruthy(); // 確認圖片存在
+  });
   });
