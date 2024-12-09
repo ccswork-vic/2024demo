@@ -2,6 +2,7 @@ const getVersion = require('./__tests__/utils/getFrontendVersion'); // 引用你
 const getBackendVersion = require('./__tests__/utils/getBackendVersion'); // 引用後台版本號的函數
 
 module.exports = async () => {
+    console.log('setupVersion.js is running...');
     try {
         const isBotanCasinoTest = process.argv.some(arg => arg.includes('botan-casino'));
         const isBotanAdTest = process.argv.some(arg => arg.includes('botanad'));

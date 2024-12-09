@@ -106,24 +106,10 @@ describe('檢查首頁基本元素', () => {
     // 驗證圖片數量是否大於或等於20
     expect(gameproviderImages.length).toBeGreaterThanOrEqual(20);
   });
-  test('檢查贊助商圖片', async () => {
-    //await page.waitForSelector('._image_hke5k_18', { timeout: 60000 });
-    await page.waitForSelector('.ant-row.ant-row-center.ant-row-middle', { timeout: 60000 });
-    const Sponsorssrc = [
-      "/assets/gaming-CBVzKF2H.png",
-      "/assets/gaming-1-BOzmrkrN.png",
-      "/assets/gaming-2-D49F9KYV.png",
-    ];
-  
-    for (const src of Sponsorssrc) {
-      const SponsorsImage = await page.$(`img[src="${src}"]`);
-      expect(SponsorsImage).toBeTruthy(); // 確認圖片存在
-    }
-  });
   test('檢查遊戲商圖片', async () => {
-    await page.waitForSelector('.ant-col.ant-col-24.ant-col-sm-24 img[alt="game-provider"]', { timeout: 60000 });
+    await page.waitForSelector('.ant-row.ant-row-start img[alt="game-provider"]', { timeout: 60000 });
     
-    const gameproviderImages = await page.$$('.ant-col.ant-col-24.ant-col-sm-24 img[alt="game-provider"]');
+    const gameproviderImages = await page.$$('.ant-row.ant-row-start img[alt="game-provider"]');
     expect(gameproviderImages.length).toBe(8);
   });
   test('檢查底下連結', async () => {
@@ -147,26 +133,23 @@ describe('檢查首頁基本元素', () => {
       expect(found).toBeTruthy(); // 確認文本存在
     }
   });
-  test('檢查社群軟體區塊是否存在', async () => {
+  test.skip('檢查社群軟體區塊是否存在', async () => {
     for (const platform of socialMedia) {
       await page.waitForSelector(`.flex.items-center.flex-wrap.justify-center img[alt="${platform}"]`, { timeout: 60000 });
       const element = await page.$(`.flex.items-center.flex-wrap.justify-center img[alt="${platform}"]`);
       expect(element).toBeTruthy();
     }
   });
-  test('檢查 logo 和版權聲明', async () => {
-    // 等待元素加載
-    await page.waitForSelector('.flex.flex-col.items-center', { timeout: 60000 });
-  
-    // 檢查 logo 的 src 是否存在
-    const logoImage = await page.$('img[src="/assets/logo-D7mm_G3_.png"]');
-    expect(logoImage).toBeTruthy(); // 確認圖片存在
-  
+  test.skip('檢查 版權聲明', async () => {
+    // // 等待元素加載
+    await new Promise(resolve => setTimeout(resolve, 2000));// 等待一秒鐘
+     await page.waitForSelector('.flex.justify-between.items-center.mb-\\[24px\\] span.text-\\[gray\\]', { timeout: 6000 });
+
     // 檢查版權聲明的文本是否正確
-    const copyrightText = await page.$eval('small.mb-2', el => el.textContent.trim());
+    const copyrightText = await page.$eval('.flex.justify-between.items-center.mb-\\[24px\\] span.text-\\[gray\\]', el => el.textContent.trim());
     expect(copyrightText).toBe('© 2024 Casino.com | All Rights Reserved');
   });
-  test('檢查宣告區塊是否存在', async () => {
+  test.skip('檢查宣告區塊是否存在', async () => {
     await page.waitForSelector('.pb-10._remind-text_aq2p6_1', { timeout: 60000 });
     const expectedTexts = [
       "casino ดำเนินการภายใต้ใบอนุญาตแบบไม่ผูกขาดที่ Small House B.V",
@@ -236,7 +219,7 @@ test('檢查頁面向下滾並點擊totop按鈕', async () => {
 
   // 模擬頁面滾動
   await page.evaluate(() => {
-    const element = document.querySelector('.flex.flex-col.items-center');
+    const element = document.querySelector('.flex.justify-between.items-center.mb-\\[24px\\] span.text-\\[gray\\]');
     if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }

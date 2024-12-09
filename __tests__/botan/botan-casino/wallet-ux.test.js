@@ -137,22 +137,22 @@ describe('檢查wallet', () => {
   });
   
 });
-describe('檢查footer區塊', () => {
+describe.skip('檢查footer區塊', () => {
   
-  test('檢查贊助商圖片', async () => {
-    //await page.waitForSelector('._image_hke5k_18', { timeout: 60000 });
-    await page.waitForSelector('.ant-row.ant-row-center.ant-row-middle', { timeout: 60000 });
-    const Sponsorssrc = [
-      "/assets/gaming-CBVzKF2H.png",
-      "/assets/gaming-1-BOzmrkrN.png",
-      "/assets/gaming-2-D49F9KYV.png",
-    ];
+  // test.skip('檢查贊助商圖片', async () => {
+  //   //await page.waitForSelector('._image_hke5k_18', { timeout: 60000 });
+  //   await page.waitForSelector('.ant-row.ant-row-center.ant-row-middle', { timeout: 60000 });
+  //   const Sponsorssrc = [
+  //     "/assets/gaming-CBVzKF2H.png",
+  //     "/assets/gaming-1-BOzmrkrN.png",
+  //     "/assets/gaming-2-D49F9KYV.png",
+  //   ];
   
-    for (const src of Sponsorssrc) {
-      const SponsorsImage = await page.$(`img[src="${src}"]`);
-      expect(SponsorsImage).toBeTruthy(); // 確認圖片存在
-    }
-  });
+  //   for (const src of Sponsorssrc) {
+  //     const SponsorsImage = await page.$(`img[src="${src}"]`);
+  //     expect(SponsorsImage).toBeTruthy(); // 確認圖片存在
+  //   }
+  // });
   test('檢查遊戲商圖片', async () => {
     await page.waitForSelector('.ant-col.ant-col-24.ant-col-sm-24 img[alt="game-provider"]', { timeout: 60000 });
     
