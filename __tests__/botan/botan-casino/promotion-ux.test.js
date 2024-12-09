@@ -164,7 +164,10 @@ describe('點擊โปรโมชั่น', () => {
   });
 });
 describe('檢查footer區塊', () => {
-  
+  test('檢查botan logo', async () => {
+    const logoImage = await page.$('img[src="/assets/logo-D7mm_G3_.png"]');
+    expect(logoImage).toBeTruthy(); // 確認圖片存在
+  });
   test('檢查遊戲商圖片', async () => {
     await page.waitForSelector('.ant-row.ant-row-start img[alt="game-provider"]', { timeout: 60000 });
     

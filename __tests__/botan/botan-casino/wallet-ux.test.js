@@ -138,7 +138,10 @@ describe('檢查wallet', () => {
   
 });
 describe('檢查footer區塊', () => {
-  
+  test('檢查botan logo', async () => {
+    const logoImage = await page.$('img[src="/assets/logo-D7mm_G3_.png"]');
+    expect(logoImage).toBeTruthy(); // 確認圖片存在
+  });
   // test.skip('檢查贊助商圖片', async () => {
   //   //await page.waitForSelector('._image_hke5k_18', { timeout: 60000 });
   //   await page.waitForSelector('.ant-row.ant-row-center.ant-row-middle', { timeout: 60000 });
