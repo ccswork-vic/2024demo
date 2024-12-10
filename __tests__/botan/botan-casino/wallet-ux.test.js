@@ -2,10 +2,14 @@
 const puppeteer = require('puppeteer');
 const assert = require('assert');
 const {  socialMedia,} = require('../../utils/botanSources');
+const { environments, defaultEnv } = require('../../utils/config');
 
 let browser;
 let page;
 jest.setTimeout(60000);
+
+const env = process.env.TEST_ENV || defaultEnv;
+const baseURL = environments[env];
 
 beforeAll(async () => {
 
@@ -14,7 +18,7 @@ beforeAll(async () => {
     defaultViewport: null // 关闭默认视窗
   });
   page = await browser.newPage();
-  await page.goto('https://dev.botan888.co/casino/home?modal=auth&tab=login', { waitUntil: "domcontentloaded" });
+  await page.goto(`${baseURL}/casino/home?modal=auth&tab=login`, { waitUntil: "domcontentloaded" });
   await page.waitForSelector('#validateOnly_account', { timeout: 60000 });
 
   // 登录
@@ -30,7 +34,7 @@ afterAll(async () => {
 
 describe('檢查wallet', () => {
   test('檢查左側清單存在balance', async () => {
-    await page.goto('https://dev.botan888.co/wallet/balance', { waitUntil: "domcontentloaded" });
+    await page.goto(`${baseURL}/wallet/balance`, { waitUntil: "domcontentloaded" });
     const xpath = "//*[text()='ยอดคงเหลือ']";
     await new Promise(resolve => setTimeout(resolve, 1000));
     await page.evaluate((xpath) => {

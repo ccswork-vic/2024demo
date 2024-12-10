@@ -1,3 +1,6 @@
+指定測試環境的語法 TEST_ENV=test npx jest __tests__/botan/botan-casino/gamepage-ux.test.js
+資料夾內依序執行語法 npx jest --runInBand --silent=false __tests__/botan-casino/ 
+只跑指定資料夾測項 npx jest --runInBand --silent=false __tests__/npx jest --runInBand --silent=false --testPathPattern="(__tests__/botan-casino|__tests__/botanad)"
 ＊ jest report設定
 1.npm install --save-dev jest-html-reporters jest-junit
 2.在根目錄新增jest.config.js
