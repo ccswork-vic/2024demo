@@ -3,10 +3,14 @@ const puppeteer = require('puppeteer');
 const assert = require('assert');
 const { socialMedia,gameControlButtons} = require('../../utils/botanSources.js');
 const { checkExist } = require('../../utils/utils.js');
+const { environments, defaultEnv } = require('../../utils/config');
 
 let browser;
 let page;
 jest.setTimeout(60000);
+
+const env = process.env.TEST_ENV || defaultEnv;
+const baseURL = environments[env];
 
 beforeAll(async () => {
 
@@ -15,7 +19,7 @@ beforeAll(async () => {
     defaultViewport: false // 关闭默认视窗
   });
   page = await browser.newPage();
-  await page.goto('https://dev.botan888.co/casino/home?modal=auth&tab=login', { waitUntil: "domcontentloaded" });
+  await page.goto(`${baseURL}/casino/home?modal=auth&tab=login`, { waitUntil: "domcontentloaded" });
   await page.waitForSelector('#validateOnly_account', { timeout: 60000 });
 
   // 登录
