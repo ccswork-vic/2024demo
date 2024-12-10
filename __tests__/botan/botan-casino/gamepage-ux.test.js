@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 const assert = require('assert');
 const { socialMedia,gameControlButtons} = require('../../utils/botanSources.js');
 const { checkExist } = require('../../utils/utils.js');
-const { environments, defaultEnv } = require('../../utils/config');
+const { environments, defaultEnv ,timeout} = require('../../utils/config');
 
 let browser;
 let page;
@@ -63,7 +63,7 @@ describe('檢查首頁基本元素', () => {
       expect(logoImage).toBeTruthy(); // 確認圖片存在
     });
     test('檢查遊戲商圖片', async () => {
-      await page.waitForSelector('.ant-row.ant-row-start img[alt="game-provider"]', { timeout: 60000 });
+      await page.waitForSelector('.ant-row.ant-row-start img[alt="game-provider"]', { timeout: timeout });
       
       const gameproviderImages = await page.$$('.ant-row.ant-row-start img[alt="game-provider"]');
       expect(gameproviderImages.length).toBe(8);

@@ -1,4 +1,7 @@
+
 const fetch = require('node-fetch'); // 確保已安裝 node-fetch
+
+
 
 const getVersion = async () => {
     const response = await fetch('https://dev.botan888.co/version.json');

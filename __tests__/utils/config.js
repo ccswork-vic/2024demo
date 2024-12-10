@@ -1,5 +1,6 @@
 module.exports = {
-    environments: {
+  timeout: 1000,  
+  environments: {
       dev: 'https://dev.botan888.co',
       test: 'https://test.botan888.co',
     },
