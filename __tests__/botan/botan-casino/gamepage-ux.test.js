@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 const assert = require('assert');
 const { socialMedia,gameControlButtons} = require('../../utils/botanSources.js');
 const { checkExist } = require('../../utils/utils.js');
-const { environments, defaultEnv ,timeout} = require('../../utils/config');
+const { environments, defaultEnv } = require('../../utils/config');
 
 let browser;
 let page;
@@ -63,9 +63,9 @@ describe('檢查首頁基本元素', () => {
       expect(logoImage).toBeTruthy(); // 確認圖片存在
     });
     test('檢查遊戲商圖片', async () => {
-      await page.waitForSelector('.ant-row.ant-row-start img[alt="game-provider"]', { timeout: timeout });
+      await page.waitForSelector('div.flex.row img[alt="game-provider"]', { timeout: 60000 });
       
-      const gameproviderImages = await page.$$('.ant-row.ant-row-start img[alt="game-provider"]');
+      const gameproviderImages = await page.$$('div.flex.row img[alt="game-provider"]');
       expect(gameproviderImages.length).toBe(8);
     });
     test('檢查底下連結', async () => {
@@ -99,10 +99,10 @@ describe('檢查首頁基本元素', () => {
     test('檢查 版權聲明', async () => {
       // // 等待元素加載
       await new Promise(resolve => setTimeout(resolve, 2000));// 等待一秒鐘
-       await page.waitForSelector('.flex.justify-between.items-center.mb-\\[24px\\] span.text-\\[gray\\]', { timeout: 6000 });
+       await page.waitForSelector('.flex.justify-between.items-center.mb-24 span.text-\\[gray\\]', { timeout: 6000 });
   
       // 檢查版權聲明的文本是否正確
-      const copyrightText = await page.$eval('.flex.justify-between.items-center.mb-\\[24px\\] span.text-\\[gray\\]', el => el.textContent.trim());
+      const copyrightText = await page.$eval('.flex.justify-between.items-center.mb-24 span.text-\\[gray\\]', el => el.textContent.trim());
       expect(copyrightText).toBe('© 2024 Casino.com | All Rights Reserved');
     });
     test('檢查宣告區塊是否存在', async () => {
