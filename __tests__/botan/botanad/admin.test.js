@@ -151,12 +151,48 @@ describe('檢查報表-玩家投注記錄報表內容顯示', () => {
     assert.equal(TimeText, 'ค้นหา', 'Statement Text element text is incorrect');
   });
 
-  test('輸入用戶名稱,檢查投注記錄', async () => {
+  test('輸入用戶名稱,檢查沒有投注記錄', async () => {
     await page.type('#search-form_account', '0933135135');
     await page.click("#search-form > div > div:nth-child(3) > div > div > div.ant-col.ant-form-item-control.css-kghr11 > div > div > button > span");
     await new Promise(resolve => setTimeout(resolve, 1000));
-     // 使用 $eval 獲取單一元素的內容
-     //const text = await page.$eval('.mb-2 .ant-row .m-0', element => element.textContent.trim());
+    
+    //使用 $eval 獲取單一元素的內容
+    //const text = await page.$eval('.mb-2 .ant-row .m-0', element => element.textContent.trim());
+    
+    // 使用 $$eval 匹配多個元素並返回文字陣列
+    const allTexts = await page.$$eval('.mb-2 .ant-row .m-0', elements =>
+      elements.map(element => element.textContent.trim()));
+      console.log(`匹配到的元素數量: ${allTexts}`);
+    expect(allTexts).toEqual(expect.arrayContaining(['สรุป', 'ผลการค้นหา']));
+  });
+
+  test('輸入時間區段與用戶名稱,檢查有投注記錄', async () => {
+        // 等待 Start date 輸入框加載
+    await page.waitForSelector('input[placeholder="Start date"]', { timeout: 60000 });
+    await page.click('input[placeholder="Start date"]', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸入的帳號選起來
+    await page.keyboard.press('Backspace'); // 刪除選中的內容
+        // 在 Start date 輸入框中輸入日期和時間
+    await page.type('input[placeholder="Start date"]', '02/11/2024 00:00:00', { delay: 100 });
+    await page.keyboard.press('Escape') //關閉第一個小日曆
+    
+        // 等待 End date 輸入框加載
+    await page.waitForSelector('input[placeholder="End date"]', { timeout: 60000 });
+    await page.click('input[placeholder="End date"]', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸入的帳號選起來
+    await page.keyboard.press('Backspace'); // 刪除選中的內容
+        // 在 End date 輸入框中輸入日期和時間
+    await page.type('input[placeholder="End date"]', '30/11/2024 00:00:00', { delay: 100 });
+  
+    
+    await page.click('#search-form_account', { clickCount: 3 }); // 等於滑鼠連續點擊三次帳號欄位，會把原本輸入的帳號選起來
+    await page.keyboard.press('Backspace'); // 刪除選中的內容
+    await page.type('#search-form_account', '0911168168');
+    await page.click("#search-form > div > div:nth-child(3) > div > div > div.ant-col.ant-form-item-control.css-kghr11 > div > div > button > span");
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    //使用 $eval 獲取單一元素的內容
+    //const text = await page.$eval('.mb-2 .ant-row .m-0', element => element.textContent.trim());
+    
+    // 使用 $$eval 匹配多個元素並返回文字陣列
     const allTexts = await page.$$eval('.mb-2 .ant-row .m-0', elements =>
       elements.map(element => element.textContent.trim()));
       console.log(`匹配到的元素數量: ${allTexts}`);
