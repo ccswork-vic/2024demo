@@ -174,6 +174,7 @@ describe('檢查首頁基本元素', () => {
   });
   test('檢查右下角客服按鈕並點擊', async () => {
     // 等待按鈕元素可見
+    await page.keyboard.press('Escape') //關閉頁面彈窗
     await page.waitForSelector('.flex.item-center img[alt="service icon"]', { timeout: 10000 });
     await new Promise(resolve => setTimeout(resolve, 1000));
     // 點擊按鈕
