@@ -23,6 +23,12 @@ beforeAll(async () => {
   await page.type('#validateOnly_password', 'aaaa1234');
   await page.click("#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button");
   await page.waitForSelector('#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button', { timeout: 60000 });
+  //關閉頁面彈窗的方法，有幾個彈窗加幾次。可以放在更前面 滑鼠的點擊比較好用
+  await page.keyboard.press('Escape') 
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  await page.mouse.click(100, 200);
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  //await page.mouse.click(150, 800);
 });
 
 afterAll(async () => {
@@ -173,8 +179,12 @@ describe('檢查首頁基本元素', () => {
     }
   });
   test('檢查右下角客服按鈕並點擊', async () => {
+    // //關閉頁面彈窗的方法，有幾個彈窗加幾次。可以放在更前面 滑鼠的點擊比較好用
+    // //await page.keyboard.press('Escape') //關閉頁面彈窗
+    // await page.mouse.click(100, 200);
+    // await new Promise(resolve => setTimeout(resolve, 1000));
+    // await page.mouse.click(150, 800);
     // 等待按鈕元素可見
-    await page.keyboard.press('Escape') //關閉頁面彈窗
     await page.waitForSelector('.flex.item-center img[alt="service icon"]', { timeout: 10000 });
     await new Promise(resolve => setTimeout(resolve, 1000));
     // 點擊按鈕

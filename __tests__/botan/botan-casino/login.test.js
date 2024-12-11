@@ -44,7 +44,10 @@ describe('確認登入成功', () => {
       }
     }, xpath);
     expect(xpath).toBeTruthy(); // 检查按钮是否存在
-    await page.keyboard.press('Escape');
+       //關閉頁面彈窗的方法，有幾個彈窗加幾次。可以放在更前面 滑鼠的點擊比較好用
+  await page.keyboard.press('Escape') 
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  await page.mouse.click(100, 200);
     //assert.equal(PopupbtnText, 'เข้าร่วม', 'Member management element text is incorrect');
   });
   test('檢查活動錢包', async () => {
