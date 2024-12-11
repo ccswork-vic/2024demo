@@ -1,10 +1,14 @@
 // 指定跑哪一個檔案 npx jest __tests__/xxxxxx.test.js
 const puppeteer = require('puppeteer');
 const assert = require('assert');
+const { environments, defaultEnv } = require('../../utils/config');
 
 let browser;
 let page;
 jest.setTimeout(60000);
+
+const env = process.env.TEST_ENV || defaultEnv;
+const baseURL = environments[env];
 
 beforeAll(async () => {
 
@@ -13,7 +17,7 @@ beforeAll(async () => {
     defaultViewport: null // 关闭默认视窗
   });
   page = await browser.newPage();
-  await page.goto('https://dev-admin.botan888.co/report/financial-dashboard', { waitUntil: "domcontentloaded" });
+  await page.goto(`${baseURL}/report/financial-dashboard`, { waitUntil: "domcontentloaded" });
   await page.waitForSelector('#basic > button', { timeout: 60000 });
 
   // 登录
@@ -147,6 +151,7 @@ describe('檢查報表-玩家投注記錄報表內容顯示', () => {
   await new Promise(resolve => setTimeout(resolve, 1000));
   })
   test('檢查搜尋按鈕', async () => {
+    await new Promise(resolve => setTimeout(resolve, 2000));// 等待一秒鐘
     const TimeText = await page.$eval('#search-form > div > div:nth-child(3) > div > div > div.ant-col.ant-form-item-control.css-kghr11 > div > div > button > span', element => element.textContent.trim());
     assert.equal(TimeText, 'ค้นหา', 'Statement Text element text is incorrect');
   });
@@ -162,7 +167,6 @@ describe('檢查報表-玩家投注記錄報表內容顯示', () => {
     // 使用 $$eval 匹配多個元素並返回文字陣列
     const allTexts = await page.$$eval('.mb-2 .ant-row .m-0', elements =>
       elements.map(element => element.textContent.trim()));
-      console.log(`匹配到的元素數量: ${allTexts}`);
     expect(allTexts).toEqual(expect.arrayContaining(['สรุป', 'ผลการค้นหา']));
   });
 
@@ -195,7 +199,6 @@ describe('檢查報表-玩家投注記錄報表內容顯示', () => {
     // 使用 $$eval 匹配多個元素並返回文字陣列
     const allTexts = await page.$$eval('.mb-2 .ant-row .m-0', elements =>
       elements.map(element => element.textContent.trim()));
-      console.log(`匹配到的元素數量: ${allTexts}`);
     expect(allTexts).toEqual(expect.arrayContaining(['สรุป', 'ผลการค้นหา']));
   });
 });
