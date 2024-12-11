@@ -17,7 +17,7 @@ beforeAll(async () => {
   await page.waitForSelector('#basic > button', { timeout: 60000 });
 
   // 登录
-  await page.type('#basic_account', 'admin03');
+  await page.type('#basic_account', 'qaadmin');
   await page.type('#basic_password', 'aaaa1234');
   await page.click("#basic > button");
   await page.waitForSelector('#basic > button', { timeout: 60000 });
@@ -149,6 +149,18 @@ describe('檢查報表-玩家投注記錄報表內容顯示', () => {
   test('檢查搜尋按鈕', async () => {
     const TimeText = await page.$eval('#search-form > div > div:nth-child(3) > div > div > div.ant-col.ant-form-item-control.css-kghr11 > div > div > button > span', element => element.textContent.trim());
     assert.equal(TimeText, 'ค้นหา', 'Statement Text element text is incorrect');
+  });
+
+  test('輸入用戶名稱,檢查投注記錄', async () => {
+    await page.type('#search-form_account', '0933135135');
+    await page.click("#search-form > div > div:nth-child(3) > div > div > div.ant-col.ant-form-item-control.css-kghr11 > div > div > button > span");
+    await new Promise(resolve => setTimeout(resolve, 1000));
+     // 使用 $eval 獲取單一元素的內容
+     //const text = await page.$eval('.mb-2 .ant-row .m-0', element => element.textContent.trim());
+    const allTexts = await page.$$eval('.mb-2 .ant-row .m-0', elements =>
+      elements.map(element => element.textContent.trim()));
+      console.log(`匹配到的元素數量: ${allTexts}`);
+    expect(allTexts).toEqual(expect.arrayContaining(['สรุป', 'ผลการค้นหา']));
   });
 });
 
