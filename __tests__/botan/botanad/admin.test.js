@@ -285,162 +285,162 @@ describe('檢查活動管理內容顯示', () => {
 })
 });
 
-describe('檢查用戶內容顯示', () => {
-  test.skip('點擊單一會員查詢', async () => {
-    const xpathForsearch = "//*[text()='รายการโปรโมชัน']";
+// describe.skip('檢查用戶內容顯示', () => {
+//   test.skip('點擊單一會員查詢', async () => {
+//     const xpathForsearch = "//*[text()='รายการโปรโมชัน']";
 
-    // 等待元素出现
-    await page.waitForFunction((xpath) => {
-        const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-        return result.singleNodeValue !== null;
-    }, { timeout: 60000 }, xpathForsearch);
+//     // 等待元素出现
+//     await page.waitForFunction((xpath) => {
+//         const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+//         return result.singleNodeValue !== null;
+//     }, { timeout: 60000 }, xpathForsearch);
 
-    // 点击元素
-    await page.evaluate((xpath) => {
-        const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-        const element = result.singleNodeValue;
-        if (element) {
-            element.click();
-        } else {
-            throw new Error(`Element with XPath ${xpath} not found.`);
-        }
-    }, xpathForsearch);
+//     // 点击元素
+//     await page.evaluate((xpath) => {
+//         const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+//         const element = result.singleNodeValue;
+//         if (element) {
+//             element.click();
+//         } else {
+//             throw new Error(`Element with XPath ${xpath} not found.`);
+//         }
+//     }, xpathForsearch);
 
-      // 等待子菜单展開
-      await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
-      //直接點擊
-  })
-  test.skip('進入單一會員後，檢查搜尋區塊', async () => {
+//       // 等待子菜单展開
+//       await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
+//       //直接點擊
+//   })
+//   test.skip('進入單一會員後，檢查搜尋區塊', async () => {
         
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const Status = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1)', element => element.textContent.trim());
-    expect(Status).toBeTruthy();
-    assert.equal(Status, 'สถานะ', 'text is incorrect');
-    const Image = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2)', element => element.textContent.trim());
-    expect(Image).toBeTruthy();
-    assert.equal(Image, 'รูปภาพ', 'text is incorrect');
-    const Name = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-fix-left-all', element => element.textContent.trim());
-    expect(Name).toBeTruthy();
-    assert.equal(Name, 'ชื่อกิจกรรม', 'text is incorrect');
-})
-  test.skip('進入單一會員後，檢查表格內容', async () => {
+//     await new Promise(resolve => setTimeout(resolve, 1000));
+//     const Status = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1)', element => element.textContent.trim());
+//     expect(Status).toBeTruthy();
+//     assert.equal(Status, 'สถานะ', 'text is incorrect');
+//     const Image = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2)', element => element.textContent.trim());
+//     expect(Image).toBeTruthy();
+//     assert.equal(Image, 'รูปภาพ', 'text is incorrect');
+//     const Name = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-fix-left-all', element => element.textContent.trim());
+//     expect(Name).toBeTruthy();
+//     assert.equal(Name, 'ชื่อกิจกรรม', 'text is incorrect');
+// })
+//   test.skip('進入單一會員後，檢查表格內容', async () => {
         
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const Status = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1)', element => element.textContent.trim());
-    expect(Status).toBeTruthy();
-    assert.equal(Status, 'สถานะ', 'text is incorrect');
-    const Image = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2)', element => element.textContent.trim());
-    expect(Image).toBeTruthy();
-    assert.equal(Image, 'รูปภาพ', 'text is incorrect');
-    const Name = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-fix-left-all', element => element.textContent.trim());
-    expect(Name).toBeTruthy();
-    assert.equal(Name, 'ชื่อกิจกรรม', 'text is incorrect');
-})
-});
+//     await new Promise(resolve => setTimeout(resolve, 1000));
+//     const Status = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1)', element => element.textContent.trim());
+//     expect(Status).toBeTruthy();
+//     assert.equal(Status, 'สถานะ', 'text is incorrect');
+//     const Image = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2)', element => element.textContent.trim());
+//     expect(Image).toBeTruthy();
+//     assert.equal(Image, 'รูปภาพ', 'text is incorrect');
+//     const Name = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-fix-left-all', element => element.textContent.trim());
+//     expect(Name).toBeTruthy();
+//     assert.equal(Name, 'ชื่อกิจกรรม', 'text is incorrect');
+// })
+// });
 
-describe('檢查金融中心-存款內容顯示', () => {
-  test.skip('點擊單一會員查詢', async () => {
-    const xpathForsearch = "//*[text()='รายการโปรโมชัน']";
+// describe.skip('檢查金融中心-存款內容顯示', () => {
+//   test.skip('點擊單一會員查詢', async () => {
+//     const xpathForsearch = "//*[text()='รายการโปรโมชัน']";
 
-    // 等待元素出现
-    await page.waitForFunction((xpath) => {
-        const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-        return result.singleNodeValue !== null;
-    }, { timeout: 60000 }, xpathForsearch);
+//     // 等待元素出现
+//     await page.waitForFunction((xpath) => {
+//         const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+//         return result.singleNodeValue !== null;
+//     }, { timeout: 60000 }, xpathForsearch);
 
-    // 点击元素
-    await page.evaluate((xpath) => {
-        const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-        const element = result.singleNodeValue;
-        if (element) {
-            element.click();
-        } else {
-            throw new Error(`Element with XPath ${xpath} not found.`);
-        }
-    }, xpathForsearch);
+//     // 点击元素
+//     await page.evaluate((xpath) => {
+//         const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+//         const element = result.singleNodeValue;
+//         if (element) {
+//             element.click();
+//         } else {
+//             throw new Error(`Element with XPath ${xpath} not found.`);
+//         }
+//     }, xpathForsearch);
 
-      // 等待子菜单展開
-      await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
-      //直接點擊
-  })
-  test.skip('進入單一會員後，檢查搜尋區塊', async () => {
+//       // 等待子菜单展開
+//       await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
+//       //直接點擊
+//   })
+//   test.skip('進入單一會員後，檢查搜尋區塊', async () => {
         
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const Status = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1)', element => element.textContent.trim());
-    expect(Status).toBeTruthy();
-    assert.equal(Status, 'สถานะ', 'text is incorrect');
-    const Image = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2)', element => element.textContent.trim());
-    expect(Image).toBeTruthy();
-    assert.equal(Image, 'รูปภาพ', 'text is incorrect');
-    const Name = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-fix-left-all', element => element.textContent.trim());
-    expect(Name).toBeTruthy();
-    assert.equal(Name, 'ชื่อกิจกรรม', 'text is incorrect');
-})
-  test.skip('進入單一會員後，檢查表格內容', async () => {
+//     await new Promise(resolve => setTimeout(resolve, 1000));
+//     const Status = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1)', element => element.textContent.trim());
+//     expect(Status).toBeTruthy();
+//     assert.equal(Status, 'สถานะ', 'text is incorrect');
+//     const Image = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2)', element => element.textContent.trim());
+//     expect(Image).toBeTruthy();
+//     assert.equal(Image, 'รูปภาพ', 'text is incorrect');
+//     const Name = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-fix-left-all', element => element.textContent.trim());
+//     expect(Name).toBeTruthy();
+//     assert.equal(Name, 'ชื่อกิจกรรม', 'text is incorrect');
+// })
+//   test.skip('進入單一會員後，檢查表格內容', async () => {
         
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const Status = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1)', element => element.textContent.trim());
-    expect(Status).toBeTruthy();
-    assert.equal(Status, 'สถานะ', 'text is incorrect');
-    const Image = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2)', element => element.textContent.trim());
-    expect(Image).toBeTruthy();
-    assert.equal(Image, 'รูปภาพ', 'text is incorrect');
-    const Name = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-fix-left-all', element => element.textContent.trim());
-    expect(Name).toBeTruthy();
-    assert.equal(Name, 'ชื่อกิจกรรม', 'text is incorrect');
-})
-});
+//     await new Promise(resolve => setTimeout(resolve, 1000));
+//     const Status = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1)', element => element.textContent.trim());
+//     expect(Status).toBeTruthy();
+//     assert.equal(Status, 'สถานะ', 'text is incorrect');
+//     const Image = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2)', element => element.textContent.trim());
+//     expect(Image).toBeTruthy();
+//     assert.equal(Image, 'รูปภาพ', 'text is incorrect');
+//     const Name = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-fix-left-all', element => element.textContent.trim());
+//     expect(Name).toBeTruthy();
+//     assert.equal(Name, 'ชื่อกิจกรรม', 'text is incorrect');
+// })
+// });
 
-describe('檢查金融中心-提款內容顯示', () => {
-  test.skip('點擊單一會員查詢', async () => {
-    const xpathForsearch = "//*[text()='รายการโปรโมชัน']";
+// describe.skip('檢查金融中心-提款內容顯示', () => {
+//   test.skip('點擊單一會員查詢', async () => {
+//     const xpathForsearch = "//*[text()='รายการโปรโมชัน']";
 
-    // 等待元素出现
-    await page.waitForFunction((xpath) => {
-        const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-        return result.singleNodeValue !== null;
-    }, { timeout: 60000 }, xpathForsearch);
+//     // 等待元素出现
+//     await page.waitForFunction((xpath) => {
+//         const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+//         return result.singleNodeValue !== null;
+//     }, { timeout: 60000 }, xpathForsearch);
 
-    // 点击元素
-    await page.evaluate((xpath) => {
-        const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-        const element = result.singleNodeValue;
-        if (element) {
-            element.click();
-        } else {
-            throw new Error(`Element with XPath ${xpath} not found.`);
-        }
-    }, xpathForsearch);
+//     // 点击元素
+//     await page.evaluate((xpath) => {
+//         const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+//         const element = result.singleNodeValue;
+//         if (element) {
+//             element.click();
+//         } else {
+//             throw new Error(`Element with XPath ${xpath} not found.`);
+//         }
+//     }, xpathForsearch);
 
-      // 等待子菜单展開
-      await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
-      //直接點擊
-  })
-  test.skip('進入單一會員後，檢查搜尋區塊', async () => {
+//       // 等待子菜单展開
+//       await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒鐘，確保子菜單展開
+//       //直接點擊
+//   })
+//   test.skip('進入單一會員後，檢查搜尋區塊', async () => {
         
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const Status = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1)', element => element.textContent.trim());
-    expect(Status).toBeTruthy();
-    assert.equal(Status, 'สถานะ', 'text is incorrect');
-    const Image = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2)', element => element.textContent.trim());
-    expect(Image).toBeTruthy();
-    assert.equal(Image, 'รูปภาพ', 'text is incorrect');
-    const Name = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-fix-left-all', element => element.textContent.trim());
-    expect(Name).toBeTruthy();
-    assert.equal(Name, 'ชื่อกิจกรรม', 'text is incorrect');
-})
-  test.skip('進入單一會員後，檢查表格內容', async () => {
+//     await new Promise(resolve => setTimeout(resolve, 1000));
+//     const Status = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1)', element => element.textContent.trim());
+//     expect(Status).toBeTruthy();
+//     assert.equal(Status, 'สถานะ', 'text is incorrect');
+//     const Image = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2)', element => element.textContent.trim());
+//     expect(Image).toBeTruthy();
+//     assert.equal(Image, 'รูปภาพ', 'text is incorrect');
+//     const Name = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-fix-left-all', element => element.textContent.trim());
+//     expect(Name).toBeTruthy();
+//     assert.equal(Name, 'ชื่อกิจกรรม', 'text is incorrect');
+// })
+//   test.skip('進入單一會員後，檢查表格內容', async () => {
         
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const Status = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1)', element => element.textContent.trim());
-    expect(Status).toBeTruthy();
-    assert.equal(Status, 'สถานะ', 'text is incorrect');
-    const Image = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2)', element => element.textContent.trim());
-    expect(Image).toBeTruthy();
-    assert.equal(Image, 'รูปภาพ', 'text is incorrect');
-    const Name = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-fix-left-all', element => element.textContent.trim());
-    expect(Name).toBeTruthy();
-    assert.equal(Name, 'ชื่อกิจกรรม', 'text is incorrect');
-})
-});
+//     await new Promise(resolve => setTimeout(resolve, 1000));
+//     const Status = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(1)', element => element.textContent.trim());
+//     expect(Status).toBeTruthy();
+//     assert.equal(Status, 'สถานะ', 'text is incorrect');
+//     const Image = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th:nth-child(2)', element => element.textContent.trim());
+//     expect(Image).toBeTruthy();
+//     assert.equal(Image, 'รูปภาพ', 'text is incorrect');
+//     const Name = await page.$eval('#root > div > div > div > main > div.ant-card.ant-card-bordered.shadow-lg.css-kghr11 > div > div > div > div > div > div > div > div > div > table > thead > tr > th.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last.ant-table-cell-fix-left-all', element => element.textContent.trim());
+//     expect(Name).toBeTruthy();
+//     assert.equal(Name, 'ชื่อกิจกรรม', 'text is incorrect');
+// })
+// });
 
