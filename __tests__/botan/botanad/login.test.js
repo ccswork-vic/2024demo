@@ -1,12 +1,12 @@
 const puppeteer = require('puppeteer');
 const assert = require('assert');
-const { environments, defaultEnv } = require('../../utils/config');
+const { environments, defaultAdminEnv } = require('../../utils/config');
 
 let browser;
 let page;
 jest.setTimeout(60000);
 
-const env = process.env.TEST_ENV || defaultEnv;
+const env = process.env.TEST_ENV || defaultAdminEnv;
 const baseURL = environments[env];
 
 beforeAll(async () => {

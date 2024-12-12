@@ -7,4 +7,5 @@ module.exports = {
       testadmin:'https://test-admin.botan888.co'
     },
     defaultEnv: 'dev', // 默認環境
+    defaultAdminEnv: 'devadmin', // 默認後台環境
   };

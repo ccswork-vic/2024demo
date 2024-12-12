@@ -1,13 +1,13 @@
 // 指定跑哪一個檔案 npx jest __tests__/xxxxxx.test.js
 const puppeteer = require('puppeteer');
 const assert = require('assert');
-const { environments, defaultEnv } = require('../../utils/config');
+const { environments, defaultAdminEnv } = require('../../utils/config');
 
 let browser;
 let page;
 jest.setTimeout(60000);
 
-const env = process.env.TEST_ENV || defaultEnv;
+const env = process.env.TEST_ENV || defaultAdminEnv;
 const baseURL = environments[env];
 
 beforeAll(async () => {
@@ -39,8 +39,9 @@ describe('動態取測試版號', () => {
 describe('檢查左側目錄', () => {
   test('檢查admin 左邊選單存在報表', async () => {
     await page.waitForSelector('#root > div > div > aside > div > ul > li:nth-child(1) > div > span', { timeout: 60000 });
-    const reoportsText = await page.$eval('#root > div > div > aside > div > ul > li:nth-child(1) > div > span', element => element.textContent.trim());
-    assert.equal(reoportsText, 'รายงาน', 'Admin setting element text is incorrect');
+    const reportsText = await page.$eval('#root > div > div > aside > div > ul > li:nth-child(1) > div > span', element => element.textContent.trim());
+    expect(reportsText).toBe('รายงาน');
+    //assert.equal(reoportsText, 'รายงาน', 'Admin setting element text is incorrect');
   });
   test('檢查admin 左邊選單存在活動管理', async () => {
     const missionPromotionsText = await page.$eval('#root > div > div > aside > div > ul > li.ant-menu-item > span', element => element.textContent.trim());
