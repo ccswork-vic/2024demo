@@ -20,4 +20,5 @@ module.exports = {
       }],
     ],
     globalSetup: './setupVersion.js', // 新增 globalSetup 配置
+    
   };

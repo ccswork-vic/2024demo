@@ -1,5 +1,7 @@
 指定測試環境的語法 TEST_ENV=test npx jest __tests__/botan/botan-casino/gamepage-ux.test.js
-資料夾內依序執行語法 npx jest --runInBand --silent=false __tests__/botan-casino/ 
+後台都加上TEST_ENV=devadmin npx jest --runInBand --silent=false __tests__/botan/botanad/login.test.js
+跑後台語法 需加上環境了 TEST_ENV=devadmin npx jest --runInBand --silent=false __tests__/botan/botanad
+資料夾內依序執行語法 npx jest --runInBand --silent=false __tests__/botan/botan-casino/ 
 只跑指定資料夾測項 npx jest --runInBand --silent=false __tests__/npx jest --runInBand --silent=false --testPathPattern="(__tests__/botan-casino|__tests__/botanad)"
 ＊ jest report設定
 1.npm install --save-dev jest-html-reporters jest-junit
@@ -121,3 +123,35 @@ npm install date-fns
 
     // 比較API返回的值與頁面上的值
     assert.equal(userdata, apiCurrency, 'Page display currency does not match API currency');
+
+
+    字串分割取值 slice 與split
+
+const str = 'UTC+7QAqaadmin';
+const result = str.slice(7);
+console.log(result); //輸出 “qaadmin”
+
+const bstr = 'utc+7abcvic';
+const bresult = str.slice(0, 3);  // 從索引位置 0 開始，截取長度為 3 的子字符串
+console.log(bresult);  // 輸出 "utc"
+
+const version = 'v0.0.96'.slice(3);
+console.log(version);  // 輸出: '0.96'
+
+const bversion = 'v0.0.96'
+const vvb = bversion.split('v0')[1];
+console.log(vvb);  // 輸出: '.0.96'
+
+const vic = 'utc+7advicadjon';
+const vics = vic.split('ad');
+console.log(vics[0]); // 'utc+7'
+console.log(vics[1]); // 'vic'
+console.log(vics[2]); // 'jon'
+
+
+const hugo = 'hugobessadorangetina';
+const hugos = hugo.split('ad')[1];
+console.log(hugos)
+console.log(hugos[0]); // 'utc+7'
+console.log(hugos[1]); // 'vic'
+// console.log(hugos[2]); // 'jon'
