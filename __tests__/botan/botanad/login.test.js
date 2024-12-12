@@ -45,22 +45,22 @@ describe('確認登入成功', () => {
     test('檢查左上角出現logo', async () => {
         const logoImage = await page.$('img[src="/assets/logo-BwNRnXYm.png"]');
         expect(logoImage).toBeTruthy(); // 確認圖片存在
-  });
-  test('檢查右上角出現登入使用者名稱', async () => {
+    });
+    test('檢查右上角出現登入使用者名稱', async () => {
     //const adminText = await page.$eval('.flex.items-center.gap-4', el => el.textContent.split('QA')[1].trim());
     //expect(adminText).toBe('qaadmin');
     const aaa = await page.$eval('.flex.items-center.gap-4', el => el.textContent.trim());
     const adminText = aaa.slice(7);
     expect(adminText).toBe('qaadmin');
     });
-  test('檢查右上角出現系統時區', async () => {
+    test('檢查右上角出現系統時區', async () => {
         const timezoneText = await page.$eval('.flex.items-center.gap-4 small', el => el.textContent.trim());
         expect(timezoneText).toBe('UTC+7');
-        });
-test('檢查footer版號與version相同', async () => {
+    });
+    test('檢查footer版號與version相同', async () => {
     const versiontext = await page.$eval('.ant-layout-footer.text-center', el => el.textContent.trim());
     //const version = versiontext.split('v')[1]; // 去掉開頭的 "v"
     const version = versiontext.slice(1);
     expect(version).toBe(process.env.BACKEND_PROJECT_VERSION);
-});
+    });
 });
