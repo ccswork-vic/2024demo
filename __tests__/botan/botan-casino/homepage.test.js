@@ -3,6 +3,7 @@ const puppeteer = require('puppeteer');
 const assert = require('assert');
 const { bannersrc, bannerAlts, socialMedia,navopentexts,navdisabletexts,gameprovidersrc} = require('../../utils/botanSources.js');
 const { checkExist } = require('../../utils/utils.js');
+const closeDialogIfExists = require('../../utils/closeDialog');
 
 let browser;
 let page;
@@ -23,11 +24,13 @@ beforeAll(async () => {
   await page.type('#validateOnly_password', 'aaaa1234');
   await page.click("#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button");
   await page.waitForSelector('#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button', { timeout: 60000 });
+  await new Promise(resolve => setTimeout(resolve, 3000));
+  await closeDialogIfExists(page);
   //關閉頁面彈窗的方法，有幾個彈窗加幾次。可以放在更前面 滑鼠的點擊比較好用
-  await page.keyboard.press('Escape') 
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  await page.mouse.click(100, 200);
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  // await page.keyboard.press('Escape') 
+  // await new Promise(resolve => setTimeout(resolve, 1000));
+  // await page.mouse.click(100, 200);
+  //await new Promise(resolve => setTimeout(resolve, 1000));
   //await page.mouse.click(150, 800);
 });
 

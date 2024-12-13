@@ -1,6 +1,7 @@
 // 指定跑哪一個檔案 npx jest __tests__/xxxxxx.test.js
 const puppeteer = require('puppeteer');
 const assert = require('assert');
+const closeDialogIfExists = require('../../utils/closeDialog');
 
 let browser;
 let page;
@@ -21,6 +22,10 @@ beforeAll(async () => {
   await page.type('#validateOnly_password', 'aaaa1234');
   await page.click("#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button");
   await page.waitForSelector('#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button', { timeout: 60000 });
+  //關閉頁面彈窗
+  await new Promise(resolve => setTimeout(resolve, 3000));
+  //await closeDialogIfExists(page);
+
 });
 
 afterAll(async () => {
@@ -45,12 +50,13 @@ describe('確認登入成功', () => {
     }, xpath);
     expect(xpath).toBeTruthy(); // 检查按钮是否存在
        //關閉頁面彈窗的方法，有幾個彈窗加幾次。可以放在更前面 滑鼠的點擊比較好用
-  await page.keyboard.press('Escape') 
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  await page.mouse.click(100, 200);
+  // await page.keyboard.press('Escape') 
+  // await new Promise(resolve => setTimeout(resolve, 2000));
+  // await page.mouse.click(100, 200);
     //assert.equal(PopupbtnText, 'เข้าร่วม', 'Member management element text is incorrect');
   });
   test('檢查活動錢包', async () => {
+    await closeDialogIfExists(page);
     const xpath = "//*[text()='กระเป๋าเควส']";
     await new Promise(resolve => setTimeout(resolve, 1000));
     await page.evaluate((xpath) => {

@@ -4,6 +4,8 @@ const assert = require('assert');
 const { socialMedia,gameControlButtons} = require('../../utils/botanSources.js');
 const { checkExist } = require('../../utils/utils.js');
 const { environments, defaultEnv } = require('../../utils/config');
+const closeDialogIfExists = require('../../utils/closeDialog');
+
 
 let browser;
 let page;
@@ -28,9 +30,8 @@ beforeAll(async () => {
   await page.click("#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button");
   await page.waitForSelector('#validateOnly > div.ant-form-item.mb-0 > div > div > div > div > button', { timeout: 60000 });
   //關閉頁面彈窗
-  await page.keyboard.press('Escape') 
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  await page.mouse.click(100, 200);
+  await new Promise(resolve => setTimeout(resolve, 3000));
+  await closeDialogIfExists(page);
 });
 
 afterAll(async () => {
