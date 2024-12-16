@@ -45,11 +45,21 @@ describe('檢查首頁基本元素', () => {
     await page.waitForSelector('.group.flex.flex-col .ant-image img.ant-image-img[src]', { timeout: 60000 });
     await new Promise(resolve => setTimeout(resolve, 4000));
     //await page.goto('https://dev.botan888.co/casino/game/1', { waitUntil: "domcontentloaded" });
-    
-    const gameproviderImages = await page.$$('.group.flex.flex-col .ant-image img.ant-image-img[src]');
-    await new Promise(resolve => setTimeout(resolve, 4000));
-    await page.click('.ant-image img[src="https://storage.googleapis.com/assets_jf/icons/en-us/104014093.png"]');
-    await new Promise(resolve => setTimeout(resolve, 4000));
+    const boundingBox = await page.$eval('._container_1w0mt_38 .group:nth-child(7) img', img => {
+      const rect = img.getBoundingClientRect();
+      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+    });
+    console.log(`圖片位置: x=${boundingBox.x}, y=${boundingBox.y}, width=${boundingBox.width}, height=${boundingBox.height}`);
+    // 使用 Puppeteer 的 mouse.click 點擊圖片中心
+    await page.mouse.click(boundingBox.x + boundingBox.width / 2, boundingBox.y + boundingBox.height / 2);    
+    //滑鼠點擊第一張圖 大概位置 350,600 第二張 450,600 第三張 550,600 .....etc
+    //第二排圖片 第一張 350,750 第二張
+    //await page.mouse.click(450,600);   
+
+    // const gameproviderImages = await page.$$('.group.flex.flex-col .ant-image img.ant-image-img[src]');
+    // await new Promise(resolve => setTimeout(resolve, 4000));
+    // await page.click('.ant-image img[src="https://storage.googleapis.com/assets_jf/icons/en-us/104014093.png"]');
+    // await new Promise(resolve => setTimeout(resolve, 4000));
 
     await page.waitForSelector('.my-5 .gap-2 .ant-btn span', { visible: true, timeout: 60000 });
     
