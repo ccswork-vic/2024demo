@@ -1,10 +1,16 @@
 module.exports = {
     bannersrc: [
-      "https://dev.botan888.co/images/Promotion_registerget1k_TH_900.webp", //註冊送
-      "https://dev.botan888.co/images/Promotion_bonus100percent_TH_900.webp", //首儲
-      "https://dev.botan888.co/images/Promotion_seconddepositbonus_TH_900_v2.webp",//二儲
-      "https://dev.botan888.co/images/Promotion_bonusdaily10_TH_900_v2.jpg",//天天儲值
-      "https://dev.botan888.co/images/Promotion_wednesday-bonus_TH_900.jpg",//週三
+      
+      "https://dev.botan888.co/images/Register-get-1k---900.jpg",//註冊送
+      "https://dev.botan888.co/images/firstdeposit_900.png",
+      "https://dev.botan888.co/images/Promotion_seconddepositbonus_TH_900.png",
+      "https://dev.botan888.co/images/Promotion_bonusdaily10_TH_900.png",
+      "https://dev.botan888.co/images/NEWWED_900.png",
+       //"https://dev.botan888.co/images/Promotion_registerget1k_TH_900.webp", //註冊送
+      // "https://dev.botan888.co/images/Promotion_bonus100percent_TH_900.webp", //首儲
+      // "https://dev.botan888.co/images/Promotion_seconddepositbonus_TH_900_v2.webp",//二儲
+      // "https://dev.botan888.co/images/Promotion_bonusdaily10_TH_900_v2.jpg",//天天儲值
+      // "https://dev.botan888.co/images/Promotion_wednesday-bonus_TH_900.jpg",//週三
       //"/assets/banner1-DvwNp99997.jpg",//測試找不到圖片報錯用
       "/assets/Promotion_VIP_TH-DvwNp4G7.jpg",
       "/assets/Promotion_weeklybonus2_TH-BOuwdAAc.jpg",

@@ -45,7 +45,7 @@ describe('檢查首頁基本元素', () => {
     await page.waitForSelector('.group.flex.flex-col .ant-image img.ant-image-img[src]', { timeout: 60000 });
     await new Promise(resolve => setTimeout(resolve, 4000));
     //await page.goto('https://dev.botan888.co/casino/game/1', { waitUntil: "domcontentloaded" });
-    const boundingBox = await page.$eval('._container_1w0mt_38 .group:nth-child(7) img', img => {
+    const boundingBox = await page.$eval('.group:nth-child(7) img', img => {
       const rect = img.getBoundingClientRect();
       return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
     });
@@ -61,11 +61,11 @@ describe('檢查首頁基本元素', () => {
     // await page.click('.ant-image img[src="https://storage.googleapis.com/assets_jf/icons/en-us/104014093.png"]');
     // await new Promise(resolve => setTimeout(resolve, 4000));
 
-    await page.waitForSelector('.my-5 .gap-2 .ant-btn span', { visible: true, timeout: 60000 });
+    await page.waitForSelector('.gap-2 .ant-btn span', { visible: true, timeout: 60000 });
     
     // 驗證遊戲控制按鈕
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const buttons = await page.$$eval('.my-5 .gap-2 .ant-btn span', spans =>
+    const buttons = await page.$$eval('.gap-2 .ant-btn span', spans =>
         spans.map(span => span.textContent.trim()).filter(text => text !== '')
       );
       checkExist(buttons, gameControlButtons, '遊戲控制按鈕');
