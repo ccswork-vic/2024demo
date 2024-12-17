@@ -53,7 +53,8 @@ describe('點擊โปรโมชั่น', () => {
   });
   test('檢查活動二的標題', async () => {
     // 找到包含目標圖片的卡片
-    const cardSelector = `.ant-card-cover img[src="${promotionbanners.activity2}"]`;
+    //const cardSelector = `.ant-card-cover img[src="${promotionbanners.activity2}"]`;
+    const cardSelector = '.ant-card:nth-of-type(2) .ant-card-cover img';
 
     // 等待圖片出現，確保卡片已加載
     await page.waitForSelector(cardSelector, { timeout: 60000 });
@@ -73,7 +74,8 @@ describe('點擊โปรโมชั่น', () => {
   });
   test('檢查活動三的標題', async () => {
     // 找到包含目標圖片的卡片
-    const cardSelector = `.ant-card-cover img[src="${promotionbanners.activity3}"]`;
+    //const cardSelector = `.ant-card-cover img[src="${promotionbanners.activity3}"]`;
+    const cardSelector = '.ant-card:nth-of-type(3) .ant-card-cover img';
 
     // 等待圖片出現，確保卡片已加載
     await page.waitForSelector(cardSelector, { timeout: 60000 });
@@ -93,7 +95,8 @@ describe('點擊โปรโมชั่น', () => {
   });
   test('檢查活動四的標題', async () => {
     // 找到包含目標圖片的卡片
-    const cardSelector = `.ant-card-cover img[src="${promotionbanners.activity4}"]`;
+    //const cardSelector = `.ant-card-cover img[src="${promotionbanners.activity4}"]`;
+    const cardSelector = '.ant-card:nth-of-type(4) .ant-card-cover img';
 
     // 等待圖片出現，確保卡片已加載
     await page.waitForSelector(cardSelector, { timeout: 60000 });
@@ -109,7 +112,8 @@ describe('點擊โปรโมชั่น', () => {
   });
   test('檢查活動五的標題', async () => {
     // 找到包含目標圖片的卡片
-    const cardSelector = `.ant-card-cover img[src="${promotionbanners.activity5}"]`;
+    //const cardSelector = `.ant-card-cover img[src="${promotionbanners.activity5}"]`;
+    const cardSelector = '.ant-card:nth-of-type(5) .ant-card-cover img';
 
     // 等待圖片出現，確保卡片已加載
     await page.waitForSelector(cardSelector, { timeout: 60000 });
