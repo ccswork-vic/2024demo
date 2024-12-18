@@ -91,18 +91,18 @@ describe('檢查首頁基本元素', () => {
   });
   test('檢查遊戲商區塊小標題', async () => {
     // 如果元素名 沒有動態的值，直接寫.divclass層 .目標層
-    await page.waitForSelector('.mt-4 .flex.items-center.justify-between', { timeout: 60000 });
+    await page.waitForSelector('div[class^="_game-list"] .flex.items-center.justify-between.mb-0', { timeout: 60000 });
   
     // 檢查文本是否正確
-    const subtitle1Text = await page.$eval('div[class^="mt-4"] .flex.items-center.text-lg span', el => el.textContent.trim());
+    const subtitle1Text = await page.$eval('div[class^="_game-list"] .flex.items-center.justify-between.mb-0 span', el => el.textContent.trim());
     expect(subtitle1Text).toBe('ค่ายเกมทั้งหมด');
   });
   test('檢查老虎機區塊小標題', async () => {
     // 如果元素名有動態值，可以用div[class^="_game-list"] 去寫
-    await page.waitForSelector('div[class^="_game-list"] .flex.items-center.justify-between', { timeout: 60000 });
+    await page.waitForSelector('div[class^="_game-list"] .flex.items-center.justify-between.mb-4', { timeout: 60000 });
   
-    // 檢查版權聲明的文本是否正確
-    const subtitle2Text = await page.$eval('div[class^="_game-list"] .flex.items-center.text-lg span', el => el.textContent.trim());
+    // 檢查的文本是否正確
+    const subtitle2Text = await page.$eval('div[class^="_game-list"] .flex.items-center.justify-between.mb-4 span', el => el.textContent.trim());
     expect(subtitle2Text).toBe('เกมสล็อต');
   });
   test('檢查首頁預設載入遊戲數量大於或等於20', async () => {
@@ -120,9 +120,9 @@ describe('檢查首頁基本元素', () => {
     expect(logoImage).toBeTruthy(); // 確認圖片存在
   });
   test('檢查遊戲商圖片', async () => {
-    await page.waitForSelector('div.flex.row img[alt="game-provider"]', { timeout: 60000 });
+    await page.waitForSelector('div.flex.row img', { timeout: 60000 });
     
-    const gameproviderImages = await page.$$('div.flex.row img[alt="game-provider"]');
+    const gameproviderImages = await page.$$('div.flex.row img');
     expect(gameproviderImages.length).toBe(8);
   });
   test('檢查底下連結', async () => {

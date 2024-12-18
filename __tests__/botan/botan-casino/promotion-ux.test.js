@@ -173,9 +173,9 @@ describe('檢查footer區塊', () => {
     expect(logoImage).toBeTruthy(); // 確認圖片存在
   });
   test('檢查遊戲商圖片', async () => {
-    await page.waitForSelector('div.flex.row img[alt="game-provider"]', { timeout: 60000 });
+    await page.waitForSelector('div.flex.row img', { timeout: 60000 });
     
-    const gameproviderImages = await page.$$('div.flex.row img[alt="game-provider"]');
+    const gameproviderImages = await page.$$('div.flex.row img');
     expect(gameproviderImages.length).toBe(8);
   });
   test('檢查底下連結', async () => {
