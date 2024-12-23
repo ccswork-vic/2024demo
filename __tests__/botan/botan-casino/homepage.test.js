@@ -268,7 +268,7 @@ describe('檢查左側清單', () => {
     
     await page.waitForSelector("div[class*='_menu-title']", { timeout: 60000 });
     
-    const altValues = ['熱門', '優惠活動', '所有遊戲廠商'];
+    const altValues = ['熱門', '優惠活動', '所有遊戲廠商','最受歡迎的遊戲','熱門新遊戲'];
 
     const titles = await page.evaluate((alts) => {
       const selectors = alts.map(alt => `div[class*='_menu_'] img[alt='${alt}'] ~ div[class*='_menu-title']`).join(', ');
